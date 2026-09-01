@@ -2396,13 +2396,13 @@ window.Quarto = {
 </header>
 
 
-<p>This document was created using <a href="https://quarto.org/docs/get-started/hello/rstudio.html">Quarto</a> a sort of language for combining code and text. When you’re following along in class, you can either copy-paste code directly from this page into an R-studio script file, or you can go over to the github site for this class, <a href="https://github.com/Neilblund/GVPT628_Fall2025/blob/main/Week%2001/classwork.qmd">download the .qmd file for this classwork</a> and then open it in R-studio and work with it as an interactive document.</p>
+<p>This document was created using <a href="https://quarto.org/docs/get-started/hello/rstudio.html">Quarto</a> a sort of language for combining code and text. When you’re following along in class, you can either copy-paste code directly from this page into an R-studio script file, or you can go over to the github site for this class, <a href="https://github.com/Neilblund/GVPT628_Fall2026/blob/main/Week%2001/classwork.qmd">download the .qmd file for this classwork</a> and then open it in R-studio and work with it as an interactive document.</p>
 <section id="data-and-packages" class="level1 page-columns page-full">
 <h1>Data and packages</h1>
 <p>You’ll want to start by loading the CHES data. We can do this using the <code>read_csv</code> function from the readr package. We <em>could</em> access this data set by downloading it from the <a href="https://www.chesdata.eu/">CHES website</a> and then importing it from a local file, but for <code>.csv</code> files like this one, we can actually download it by putting the web address directly in to our function in quotation marks:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ches<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">&#39;https://www.chesdata.eu/s/CHES_2024_final_v2.csv&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ches<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">&#39;https://github.com/chesdata/chesdata.github.io/releases/download/ches-europe/CHES_2024_final_v2.csv&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>After you’ve imported the data, take a second to <code>View()</code> the data frame you just imported and see how things are coded.</p>
 <p>Note that in the raw csv data, the party family variable is initially a set of numbers instead of a text value:</p>
@@ -5323,7 +5323,7 @@ Christian-Democratic            Socialist         Radical Left
 <span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>This document was created using <span class="co">[</span><span class="ot">Quarto</span><span class="co">](https://quarto.org/docs/get-started/hello/rstudio.html)</span> a sort of language for combining code and text. When you&#39;re following along in class, you can either copy-paste code directly from this page into an R-studio script file, or you can go over to the github site for this class, <span class="co">[</span><span class="ot">download the .qmd file for this classwork</span><span class="co">](https://github.com/Neilblund/GVPT628_Fall2025/blob/main/Week%2001/classwork.qmd)</span> and then open it in R-studio and work with it as an interactive document. </span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>This document was created using <span class="co">[</span><span class="ot">Quarto</span><span class="co">](https://quarto.org/docs/get-started/hello/rstudio.html)</span> a sort of language for combining code and text. When you&#39;re following along in class, you can either copy-paste code directly from this page into an R-studio script file, or you can go over to the github site for this class, <span class="co">[</span><span class="ot">download the .qmd file for this classwork</span><span class="co">](https://github.com/Neilblund/GVPT628_Fall2026/blob/main/Week%2001/classwork.qmd)</span> and then open it in R-studio and work with it as an interactive document. </span>
 <span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data and packages</span></span>
@@ -5332,7 +5332,7 @@ Christian-Democratic            Socialist         Radical Left
 <span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb47-29"><a href="#cb47-29" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a>ches<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">&#39;https://www.chesdata.eu/s/CHES_2024_final_v2.csv&#39;</span>)</span>
+<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a>ches<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">&#39;https://github.com/chesdata/chesdata.github.io/releases/download/ches-europe/CHES_2024_final_v2.csv&#39;</span>)</span>
 <span id="cb47-31"><a href="#cb47-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-32"><a href="#cb47-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-33"><a href="#cb47-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
