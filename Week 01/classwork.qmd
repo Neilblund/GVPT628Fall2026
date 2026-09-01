@@ -6,6 +6,7 @@ format:
     df-print: kable
     code-tools: true
     embed-resources: true
+    theme: cosmo
 ---
 
 ```{r setup, include=FALSE}
