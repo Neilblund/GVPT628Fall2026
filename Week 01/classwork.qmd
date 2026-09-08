@@ -253,11 +253,12 @@ ches|>filter(family=="Confessional")
 
 ```
 
-## Q5
+## Q4
 
 Use one of the sub-setting operations above to create a subset of the CHES data that only includes parties that received at least 10% of the vote in the last election:
 
 ```{r}
+# type your code here...
 
 
 
@@ -316,7 +317,7 @@ $$
 
 
 
-## Q6
+## Q5
 
 Use `table` and `prop.table` function to calculate the proportion of radical right parties in each country's parliament. You'll want to look at the `help` file for the function to figure out how to do this.
 
@@ -403,7 +404,7 @@ newtable<-ches|>
 
 Going forward, we'll mostly use the `dplyr` commands for this class, but knowing `aggregate` can be useful for interpreting other people's code.
 
-## Q7
+## Q6
 
 Use either the `dplyr` commands or `aggregate` to get each party family's average position on redistribution issues.
 
@@ -462,7 +463,7 @@ topnFunction(ches$party, ches$seat, n=15)
 
 ```
 
-## Q8
+## Q7
 
 How could I modify the function above to return both the party names and the values themselves?
 
