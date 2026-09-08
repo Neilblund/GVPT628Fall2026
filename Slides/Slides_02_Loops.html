@@ -2423,7 +2423,7 @@ text-align: left;
 <section id="pseudo-code-1" class="title-slide slide level2 center">
 <h2>Pseudo-code</h2>
 <p>What would this code do?</p>
-<div class="pseudocode-container quarto-float" data-line-number="true" data-no-end="false" data-indent-lines="false" data-indent-size="1.2em" data-comment-delimiter="//" data-line-number-punc=":" data-caption-prefix="Algorithm" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-indent-lines="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-line-number-punc=":" data-line-number="true" data-pseudocode-number="1">
 <div class="pseudocode">
 \begin{algorithm} \begin{algorithmic} \STATE v = $\text{a single numeric value}$ \IF {$v \geq 0$} \STATE $v$ \ELSE \STATE $-1\times v$ \ENDIF \end{algorithmic} \end{algorithm}
 </div>
@@ -2447,7 +2447,7 @@ text-align: left;
 <section id="pseudo-code-2" class="title-slide slide level2 center">
 <h2>Pseudo-code</h2>
 <p>What would this code do?</p>
-<div class="pseudocode-container quarto-float" data-line-number="true" data-no-end="false" data-indent-lines="false" data-indent-size="1.2em" data-comment-delimiter="//" data-line-number-punc=":" data-caption-prefix="Algorithm" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-indent-lines="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-line-number-punc=":" data-line-number="true" data-pseudocode-number="1">
 <div class="pseudocode">
 \begin{algorithm} \begin{algorithmic} \STATE $X = \text{[a vector of numbers]}$ \STATE $S = 0$ \FOR{$\text{each value } i \text{ in } X$} \STATE S = S + i \ENDFOR \end{algorithmic} \end{algorithm}
 </div>
@@ -2631,8 +2631,9 @@ text-align: left;
 <span id="cb18-5"><a href></a>  xsd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(xvar)</span>
 <span id="cb18-6"><a href></a>  <span class="fu">return</span>(xsd)</span>
 <span id="cb18-7"><a href></a>}</span>
-<span id="cb18-8"><a href></a>result<span class="ot">&lt;-</span><span class="fu">x_sd</span>(my_sample)</span>
-<span id="cb18-9"><a href></a>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-8"><a href></a></span>
+<span id="cb18-9"><a href></a>result<span class="ot">&lt;-</span><span class="fu">x_sd</span>(my_sample)</span>
+<span id="cb18-10"><a href></a>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.581139</code></pre>
 </div>
@@ -2673,8 +2674,8 @@ text-align: left;
 </div>
 </div>
 </section>
-<section id="function-default-arguments" class="slide level3">
-<h3>Function default arguments</h3>
+<section id="function-defaults" class="slide level3">
+<h3>Function Defaults</h3>
 <ul>
 <li>The formal arguments (specified in parentheses) are typically required for a function to run.</li>
 </ul>
@@ -2689,8 +2690,8 @@ text-align: left;
 <span id="cb23-8"><a href></a><span class="fu">x_sd</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="function-default-arguments-1" class="slide level3">
-<h3>Function default arguments</h3>
+<section id="function-defaults-1" class="slide level3">
+<h3>Function Defaults</h3>
 <p>However, you can set a default value for an argument that will be assigned unless the user enters a different value:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href></a>x_sd<span class="ot">&lt;-</span><span class="cf">function</span>(<span class="at">x =</span> <span class="dv">10</span>){</span>
@@ -2706,8 +2707,8 @@ text-align: left;
 </div>
 </div>
 </section>
-<section id="function-default-arguments-2" class="slide level3">
-<h3>Function default arguments</h3>
+<section id="function-defaults-2" class="slide level3">
+<h3>Function Defaults</h3>
 <p><code>na.rm</code> is an example of an argument that often has a default value for functions like <code>mean</code>, <code>sum</code> etc.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href></a>my_sample<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="cn">NA</span>)</span>
@@ -2764,8 +2765,8 @@ text-align: left;
 </details>
 </div>
 </section>
-<section id="using-functions" class="slide level3">
-<h3>Using functions</h3>
+<section id="when-to-make-a-function" class="slide level3">
+<h3>When to make a function</h3>
 <ul>
 <li><p>One good rule of thumb is to make a function when you find yourself copy-pasting code more than twice in a single sitting.</p></li>
 <li><p>A good practice is to specify functions at the top of the script so they’re easy to find. Alternatively, you can write them in a separate file and use <code>source(filename)</code> to load them into the environment.</p></li>
@@ -2788,7 +2789,7 @@ text-align: left;
 <section id="problem-in-pseudo-code" class="slide level3">
 <h3>Problem: in pseudo-code</h3>
 <p>In general terms, I want something that does this:</p>
-<div class="pseudocode-container quarto-float" data-line-number="true" data-no-end="false" data-indent-lines="false" data-indent-size="1.2em" data-comment-delimiter="//" data-line-number-punc=":" data-caption-prefix="Algorithm" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-indent-lines="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-line-number-punc=":" data-line-number="true" data-pseudocode-number="1">
 <div class="pseudocode">
 \begin{algorithm} \begin{algorithmic} \State $url = \text{a link to a .zip file}$ \State $\text{filename} = \text{a filename}$ \State $\text{datafolder} = \text{a folder to store unzipped data}$ \If{$\text{filename doesn&#39;t exist}$} \State \Call{download.file}{$\text{url}, \text{filename}$} \EndIf \State \Call{unzip.file}{$\text{filename}, \text{datafolder}$} \end{algorithmic} \end{algorithm}
 </div>
@@ -2952,7 +2953,7 @@ text-align: left;
 </section>
 <section id="the-problem-in-pseudo-code" class="slide level3">
 <h3>The problem in pseudo-code:</h3>
-<div class="pseudocode-container quarto-float" data-line-number="true" data-no-end="false" data-indent-lines="false" data-indent-size="1.2em" data-comment-delimiter="//" data-line-number-punc=":" data-caption-prefix="Algorithm" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-indent-lines="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-line-number-punc=":" data-line-number="true" data-pseudocode-number="1">
 <div class="pseudocode">
 \begin{algorithm} \begin{algorithmic} \State $files = \text{a dataframe with filenames and URLs}$ \STATE $\text{datafolder} = \text{a folder to store unzipped data}$ \FOR{$\text{each row } i \text{ in } files$} \STATE $\text{url} = \text{files}[i, \text{url}]$ \STATE $\text{filename} = \text{files}[i, \text{file}]$ \If{$\text{filename doesn&#39;t exist}$} \State \Call{download.file}{$\text{url}, \text{filename}$} \EndIf \State \Call{unzip.file}{$\text{filename}, \text{datafolder}$} \ENDFOR \end{algorithmic} \end{algorithm}
 </div>
