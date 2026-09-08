@@ -2355,22 +2355,22 @@ window.Quarto = {
   </ul></li>
   <li><a href="#subsetting" id="toc-subsetting" class="nav-link" data-scroll-target="#subsetting">Subsetting</a>
   <ul class="collapse">
-  <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
+  <li><a href="#q4" id="toc-q4" class="nav-link" data-scroll-target="#q4">Q4</a></li>
   </ul></li>
   <li><a href="#frequency-tables" id="toc-frequency-tables" class="nav-link" data-scroll-target="#frequency-tables">Frequency tables</a></li>
   <li><a href="#crosstabs" id="toc-crosstabs" class="nav-link" data-scroll-target="#crosstabs">Crosstabs</a>
   <ul class="collapse">
-  <li><a href="#q6" id="toc-q6" class="nav-link" data-scroll-target="#q6">Q6</a></li>
+  <li><a href="#q5" id="toc-q5" class="nav-link" data-scroll-target="#q5">Q5</a></li>
   </ul></li>
   <li><a href="#the-janitor-package" id="toc-the-janitor-package" class="nav-link" data-scroll-target="#the-janitor-package">The Janitor package</a></li>
   <li><a href="#aggregation-and-grouping" id="toc-aggregation-and-grouping" class="nav-link" data-scroll-target="#aggregation-and-grouping">Aggregation and grouping</a>
   <ul class="collapse">
   <li><a href="#dplyr-method" id="toc-dplyr-method" class="nav-link" data-scroll-target="#dplyr-method">dplyr method:</a></li>
-  <li><a href="#q7" id="toc-q7" class="nav-link" data-scroll-target="#q7">Q7</a></li>
+  <li><a href="#q6" id="toc-q6" class="nav-link" data-scroll-target="#q6">Q6</a></li>
   </ul></li>
   <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a>
   <ul class="collapse">
-  <li><a href="#q8" id="toc-q8" class="nav-link" data-scroll-target="#q8">Q8</a></li>
+  <li><a href="#q7" id="toc-q7" class="nav-link" data-scroll-target="#q7">Q7</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -4447,16 +4447,19 @@ Coefficients:
 </div>
 </div>
 </div>
-<section id="q5" class="level2">
-<h2 class="anchored" data-anchor-id="q5">Q5</h2>
+<section id="q4" class="level2">
+<h2 class="anchored" data-anchor-id="q4">Q4</h2>
 <p>Use one of the sub-setting operations above to create a subset of the CHES data that only includes parties that received at least 10% of the vote in the last election:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># type your code here...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 </section>
 <section id="frequency-tables" class="level1">
 <h1>Frequency tables</h1>
 <p>R’s <code>table</code> command will generate either one or two-dimensional frequency tables.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ches<span class="sc">$</span>family)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ches<span class="sc">$</span>family)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
        Radical Right        Conservatives              Liberal 
@@ -4471,9 +4474,9 @@ Christian-Democratic            Socialist         Radical Left
 </div>
 <p>In some cases, it may be more useful to examine the percentages in each group, rather than the raw frequencies. You can use the <code>prop.table</code> function to generate proportions from an existing table object.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>table_of_families<span class="ot">&lt;-</span><span class="fu">table</span>(ches<span class="sc">$</span>family)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(table_of_families)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>table_of_families<span class="ot">&lt;-</span><span class="fu">table</span>(ches<span class="sc">$</span>family)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(table_of_families)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
        Radical Right        Conservatives              Liberal 
@@ -4491,10 +4494,10 @@ Christian-Democratic            Socialist         Radical Left
 <h1>Crosstabs</h1>
 <p>Adding a second categorical variable to the table function will generate a cross tab. The first group will be presented in the rows, and the second group in the columns. In this example, I’m creating a new variable called <code>radical_right</code> that is TRUE if a given party is part of the radical right family. Then I’m creating a cross tab that allows me to see how many radical right parties held seats based on the year in which the election occurred:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>radical_right <span class="ot">&lt;-</span>  ches<span class="sc">$</span>family <span class="sc">==</span> <span class="st">&quot;Radical Right&quot;</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ches<span class="sc">$</span>electionyear, ches<span class="sc">$</span>radical_right)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>radical_right <span class="ot">&lt;-</span>  ches<span class="sc">$</span>family <span class="sc">==</span> <span class="st">&quot;Radical Right&quot;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ches<span class="sc">$</span>electionyear, ches<span class="sc">$</span>radical_right)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      
        FALSE TRUE
@@ -4506,9 +4509,9 @@ Christian-Democratic            Socialist         Radical Left
 </div>
 <p>In many cases, I’m interested in getting percentages rather than just raw frequencies. I can use the <code>prop.table</code> function to get proportions from a frequency table. By default, <code>prop.table</code> will just give the cell percentages:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>rr_table<span class="ot">&lt;-</span><span class="fu">table</span>(ches<span class="sc">$</span>electionyear, ches<span class="sc">$</span>radical_right)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(rr_table)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>rr_table<span class="ot">&lt;-</span><span class="fu">table</span>(ches<span class="sc">$</span>electionyear, ches<span class="sc">$</span>radical_right)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(rr_table)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      
             FALSE       TRUE
@@ -4522,11 +4525,11 @@ Christian-Democratic            Socialist         Radical Left
 <p><span class="math display">\[
 \frac{\text{Number of rad right wing parties in the data for year i}}{\text{Total number of parties in year i}}
 \]</span></p>
-<section id="q6" class="level2">
-<h2 class="anchored" data-anchor-id="q6">Q6</h2>
+<section id="q5" class="level2">
+<h2 class="anchored" data-anchor-id="q5">Q5</h2>
 <p>Use <code>table</code> and <code>prop.table</code> function to calculate the proportion of radical right parties in each country’s parliament. You’ll want to look at the <code>help</code> file for the function to figure out how to do this.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -4534,11 +4537,11 @@ Christian-Democratic            Socialist         Radical Left
 <h1>The Janitor package</h1>
 <p>There are a number of packages that (ostensibly) help you make nicer looking cross tabs that can be easily exported to a report. Its worth exploring these to see which ones are most useful for you, but one I want to highlight is <a href="https://cran.r-project.org/web/packages/janitor/vignettes/tabyls.html">the janitor package</a>, which allows you to use the <code>tabyl</code> command to create tables:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">tabyl</span>(<span class="at">dat=</span>ches, <span class="at">var1=</span>electionyear, <span class="at">var2=</span>radical_right)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>t1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">tabyl</span>(<span class="at">dat=</span>ches, <span class="at">var1=</span>electionyear, <span class="at">var2=</span>radical_right)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>t1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -4577,11 +4580,11 @@ Christian-Democratic            Socialist         Radical Left
 </div>
 <p>On its own, this isn’t much to write home about, but it provides a lot of nice options for <code>adorning</code> the table with additional statistics:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">|&gt;</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="st">&quot;row&quot;</span>)<span class="sc">|&gt;</span> <span class="co"># add totals</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>)<span class="sc">|&gt;</span> <span class="co"># calculate percentages</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>() <span class="co"># format percentages</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="st">&quot;row&quot;</span>)<span class="sc">|&gt;</span> <span class="co"># add totals</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>)<span class="sc">|&gt;</span> <span class="co"># calculate percentages</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>() <span class="co"># format percentages</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -4644,12 +4647,12 @@ Christian-Democratic            Socialist         Radical Left
 </code></pre>
 <p>The variable on the left will be the outcome measure you’re aggregating, the variable on the right will be the category you’re aggregating over. So, if we want to get the average level of corruption salience in each country, we can run this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># x = the formula, </span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># FUN= should be a function you want to run for each group</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>corruption_salience <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(<span class="at">x =</span> corrupt_salience <span class="sc">~</span> country , </span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">FUN =</span> mean, </span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">data =</span> ches )</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>corruption_salience</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># x = the formula, </span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># FUN= should be a function you want to run for each group</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>corruption_salience <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(<span class="at">x =</span> corrupt_salience <span class="sc">~</span> country , </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">FUN =</span> mean, </span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">data =</span> ches )</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>corruption_salience</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -4785,18 +4788,18 @@ Christian-Democratic            Socialist         Radical Left
 <h2 class="anchored" data-anchor-id="dplyr-method">dplyr method:</h2>
 <p>There’s also a <code>dplyr</code> method for this, that may be a little easier to parse. Here, we just use “group by” to declare grouping variable, and then use “summarize” to summarize over members of each group.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># if you haven&#39;t already loaded dplyr</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>newtable<span class="ot">&lt;-</span>ches<span class="sc">|&gt;</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country)<span class="sc">|&gt;</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_corruption_salience=</span> <span class="fu">mean</span>(corrupt_salience))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># if you haven&#39;t already loaded dplyr</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>newtable<span class="ot">&lt;-</span>ches<span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country)<span class="sc">|&gt;</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_corruption_salience=</span> <span class="fu">mean</span>(corrupt_salience))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Going forward, we’ll mostly use the <code>dplyr</code> commands for this class, but knowing <code>aggregate</code> can be useful for interpreting other people’s code.</p>
 </section>
-<section id="q7" class="level2">
-<h2 class="anchored" data-anchor-id="q7">Q7</h2>
+<section id="q6" class="level2">
+<h2 class="anchored" data-anchor-id="q6">Q6</h2>
 <p>Use either the <code>dplyr</code> commands or <code>aggregate</code> to get each party family’s average position on redistribution issues.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here....</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here....</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -4805,12 +4808,12 @@ Christian-Democratic            Socialist         Radical Left
 <p>Remember that R functions are just snippets of code that we can re-use. If I have done a calculation once, I can probably write a function to apply it to more general cases.</p>
 <p>For instance, here’s some code that I could use to get the top parties by vote share:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this gives row number for the highest to lowest value</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>top_n<span class="ot">&lt;-</span><span class="fu">order</span>(ches<span class="sc">$</span>vote, <span class="at">decreasing=</span>T)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] </span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># this subsets the values of party by the index in top_n:</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>party[top_n]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this gives row number for the highest to lowest value</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>top_n<span class="ot">&lt;-</span><span class="fu">order</span>(ches<span class="sc">$</span>vote, <span class="at">decreasing=</span>T)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># this subsets the values of party by the index in top_n:</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>party[top_n]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] &quot;PL&quot;          &quot;PN&quot;          &quot;ND&quot;          &quot;RN&quot;          &quot;AKP&quot;        
  [6] &quot;PiS&quot;         &quot;GS&quot;          &quot;HDZ&quot;         &quot;Fidesz-KDNP&quot; &quot;LAB&quot;        </code></pre>
@@ -4818,34 +4821,34 @@ Christian-Democratic            Socialist         Radical Left
 </div>
 <p>I could probably make this more generalized by creating a function.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>topnFunction <span class="ot">&lt;-</span> <span class="cf">function</span>(labels, values, n){ <span class="co"># the arguments </span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  top_n <span class="ot">&lt;-</span> <span class="fu">order</span>(values, <span class="at">decreasing=</span> T)[<span class="dv">1</span><span class="sc">:</span>n] <span class="co"># the subset</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  result<span class="ot">&lt;-</span>labels[top_n] <span class="co"># the result  </span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result) <span class="co"># the return statement</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>topnFunction <span class="ot">&lt;-</span> <span class="cf">function</span>(labels, values, n){ <span class="co"># the arguments </span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  top_n <span class="ot">&lt;-</span> <span class="fu">order</span>(values, <span class="at">decreasing=</span> T)[<span class="dv">1</span><span class="sc">:</span>n] <span class="co"># the subset</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  result<span class="ot">&lt;-</span>labels[top_n] <span class="co"># the result  </span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result) <span class="co"># the return statement</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now I can use this in a bunch of different scenarios. Maybe I want to get the top parties by seat share instead of vote share, then all I need to do is change the <code>values</code> argument:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">topnFunction</span>(ches<span class="sc">$</span>party, ches<span class="sc">$</span>seat, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">topnFunction</span>(ches<span class="sc">$</span>party, ches<span class="sc">$</span>seat, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] &quot;LAB&quot; &quot;AKP&quot; &quot;SPD&quot; &quot;PiS&quot; &quot;CHP&quot; &quot;PO&quot;  &quot;CDU&quot; &quot;ND&quot;  &quot;RN&quot;  &quot;PP&quot; </code></pre>
 </div>
 </div>
 <p>Or I can get more observations by changing <code>n</code></p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">topnFunction</span>(ches<span class="sc">$</span>party, ches<span class="sc">$</span>seat, <span class="at">n=</span><span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">topnFunction</span>(ches<span class="sc">$</span>party, ches<span class="sc">$</span>seat, <span class="at">n=</span><span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] &quot;LAB&quot;         &quot;AKP&quot;         &quot;SPD&quot;         &quot;PiS&quot;         &quot;CHP&quot;        
  [6] &quot;PO&quot;          &quot;CDU&quot;         &quot;ND&quot;          &quot;RN&quot;          &quot;PP&quot;         
 [11] &quot;Fidesz-KDNP&quot; &quot;PSOE&quot;        &quot;CONS&quot;        &quot;FDI&quot;         &quot;Grunen&quot;     </code></pre>
 </div>
 </div>
-<section id="q8" class="level2">
-<h2 class="anchored" data-anchor-id="q8">Q8</h2>
+<section id="q7" class="level2">
+<h2 class="anchored" data-anchor-id="q7">Q7</h2>
 <p>How could I modify the function above to return both the party names and the values themselves?</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#...your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#...your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <!-- -->
 
@@ -5305,470 +5308,474 @@ Christian-Democratic            Socialist         Radical Left
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Classwork 1: Indexing and subsetting&quot;</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="co">    df-print: kable</span></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="co">    embed-resources: true</span></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, <span class="at">warning =</span> <span class="cn">FALSE</span>, <span class="at">message =</span> <span class="cn">FALSE</span>, <span class="at">fig.align =</span> <span class="st">&quot;center&quot;</span>)</span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>This document was created using <span class="co">[</span><span class="ot">Quarto</span><span class="co">](https://quarto.org/docs/get-started/hello/rstudio.html)</span> a sort of language for combining code and text. When you&#39;re following along in class, you can either copy-paste code directly from this page into an R-studio script file, or you can go over to the github site for this class, <span class="co">[</span><span class="ot">download the .qmd file for this classwork</span><span class="co">](https://github.com/Neilblund/GVPT628_Fall2026/blob/main/Week%2001/classwork.qmd)</span> and then open it in R-studio and work with it as an interactive document. </span>
-<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data and packages</span></span>
-<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>You&#39;ll want to start by loading the CHES data. We can do this using the <span class="in">`read_csv`</span> function from the readr package. We *could* access this data set by downloading it from the <span class="co">[</span><span class="ot">CHES website</span><span class="co">](https://www.chesdata.eu/)</span> and then importing it from a local file, but for <span class="in">`.csv`</span> files like this one, we can actually download it by putting the web address directly in to our function in quotation marks:</span>
-<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-29"><a href="#cb47-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb47-31"><a href="#cb47-31" aria-hidden="true" tabindex="-1"></a>ches<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">&#39;https://github.com/chesdata/chesdata.github.io/releases/download/ches-europe/CHES_2024_final_v2.csv&#39;</span>)</span>
-<span id="cb47-32"><a href="#cb47-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-33"><a href="#cb47-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-34"><a href="#cb47-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-35"><a href="#cb47-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-36"><a href="#cb47-36" aria-hidden="true" tabindex="-1"></a>After you&#39;ve imported the data, take a second to <span class="in">`View()`</span> the data frame you just imported and see how things are coded. </span>
-<span id="cb47-37"><a href="#cb47-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-38"><a href="#cb47-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-39"><a href="#cb47-39" aria-hidden="true" tabindex="-1"></a>Note that in the raw csv data, the party family variable is initially a set of numbers instead of a text value:</span>
-<span id="cb47-42"><a href="#cb47-42" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-43"><a href="#cb47-43" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>family[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb47-44"><a href="#cb47-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-45"><a href="#cb47-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-46"><a href="#cb47-46" aria-hidden="true" tabindex="-1"></a> In order to convert these to text, we&#39;ll need to <span class="co">[</span><span class="ot">consult the codebook</span><span class="co">](https://static1.squarespace.com/static/5975c9bfdb29d6a05c65209b/t/6881094b92e5c57f83d73e8f/1753286987723/CHES+2024+Codebook.pdf)</span> and then convert the numeric variables to their respective text values.</span>
-<span id="cb47-47"><a href="#cb47-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-48"><a href="#cb47-48" aria-hidden="true" tabindex="-1"></a>R has a special built-in data type for this exact scenario called a &quot;factor variable&quot;. </span>
-<span id="cb47-49"><a href="#cb47-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-50"><a href="#cb47-50" aria-hidden="true" tabindex="-1"></a>::: {.column-margin}</span>
-<span id="cb47-51"><a href="#cb47-51" aria-hidden="true" tabindex="-1"></a>R factors are often a source of confusion for new users. Under the hood, a factor variable is just a set of numbers with an extra piece of data that maps those numeric values to text labels. We could also store variables like this as regular text values, but factor variables are helpful because they can make it easier to do things like fix the ordering of survey response items when we&#39;re making a graph or table.</span>
-<span id="cb47-52"><a href="#cb47-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-53"><a href="#cb47-53" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb47-54"><a href="#cb47-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-55"><a href="#cb47-55" aria-hidden="true" tabindex="-1"></a>We&#39;ll talk more about working with factors later on, but for now it&#39;s sufficient to know that we&#39;re doing this to turn the numbers into readable text:</span>
-<span id="cb47-56"><a href="#cb47-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-59"><a href="#cb47-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-60"><a href="#cb47-60" aria-hidden="true" tabindex="-1"></a>labels<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;Radical Right&quot;</span>,</span>
-<span id="cb47-61"><a href="#cb47-61" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Conservatives&quot;</span>,</span>
-<span id="cb47-62"><a href="#cb47-62" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Liberal&quot;</span>, </span>
-<span id="cb47-63"><a href="#cb47-63" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Christian-Democratic&quot;</span>,</span>
-<span id="cb47-64"><a href="#cb47-64" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Socialist&quot;</span>,</span>
-<span id="cb47-65"><a href="#cb47-65" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Radical Left&quot;</span>,</span>
-<span id="cb47-66"><a href="#cb47-66" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Green&quot;</span>, </span>
-<span id="cb47-67"><a href="#cb47-67" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Regionalist&quot;</span>, </span>
-<span id="cb47-68"><a href="#cb47-68" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;No family&quot;</span>,</span>
-<span id="cb47-69"><a href="#cb47-69" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Confessional&quot;</span>,</span>
-<span id="cb47-70"><a href="#cb47-70" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Agrarian/Center&quot;</span>)</span>
-<span id="cb47-71"><a href="#cb47-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-72"><a href="#cb47-72" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>family<span class="ot">&lt;-</span><span class="fu">factor</span>(ches<span class="sc">$</span>family, <span class="at">labels=</span>labels)</span>
-<span id="cb47-73"><a href="#cb47-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-74"><a href="#cb47-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-75"><a href="#cb47-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-76"><a href="#cb47-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-77"><a href="#cb47-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-78"><a href="#cb47-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-79"><a href="#cb47-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-80"><a href="#cb47-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-81"><a href="#cb47-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-82"><a href="#cb47-82" aria-hidden="true" tabindex="-1"></a>We&#39;ll do the same thing for the &quot;country&quot; variable: </span>
-<span id="cb47-83"><a href="#cb47-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-86"><a href="#cb47-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-87"><a href="#cb47-87" aria-hidden="true" tabindex="-1"></a>country_levels<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>, </span>
-<span id="cb47-88"><a href="#cb47-88" aria-hidden="true" tabindex="-1"></a>          <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">34</span>, <span class="dv">35</span>, <span class="dv">36</span>, <span class="dv">37</span>, <span class="dv">38</span>, <span class="dv">40</span>, <span class="dv">45</span>)</span>
-<span id="cb47-89"><a href="#cb47-89" aria-hidden="true" tabindex="-1"></a>country_labels<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;Belgium&quot;</span>, <span class="st">&quot;Denmark&quot;</span>, <span class="st">&quot;Germany&quot;</span>, <span class="st">&quot;Greece&quot;</span>, <span class="st">&quot;Spain&quot;</span>, <span class="st">&quot;France&quot;</span>, </span>
-<span id="cb47-90"><a href="#cb47-90" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Ireland&quot;</span>, <span class="st">&quot;Italy&quot;</span>, <span class="st">&quot;Netherlands&quot;</span>,  <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Portugal&quot;</span>, </span>
-<span id="cb47-91"><a href="#cb47-91" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Austria&quot;</span>, <span class="st">&quot;Finland&quot;</span>, <span class="st">&quot;Sweden&quot;</span>, <span class="st">&quot;Bulgaria&quot;</span>, <span class="st">&quot;Czech Republic&quot;</span>,  </span>
-<span id="cb47-92"><a href="#cb47-92" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Estonia&quot;</span>, <span class="st">&quot;Hungary&quot;</span>, <span class="st">&quot;Latvia&quot;</span>, <span class="st">&quot;Lithuania&quot;</span>,<span class="st">&quot;Poland&quot;</span>, <span class="st">&quot;Romania&quot;</span>, </span>
-<span id="cb47-93"><a href="#cb47-93" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Slovakia&quot;</span>, <span class="st">&quot;Slovenia&quot;</span>, <span class="st">&quot;Croatia&quot;</span>, <span class="st">&quot;Turkey&quot;</span>, <span class="st">&quot;Norway&quot;</span>, <span class="st">&quot;Switzerland&quot;</span>, </span>
-<span id="cb47-94"><a href="#cb47-94" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Malta&quot;</span>, <span class="st">&quot;Luxembourg&quot;</span>, <span class="st">&quot;Cyprus&quot;</span>, <span class="st">&quot;Iceland&quot;</span>)</span>
-<span id="cb47-95"><a href="#cb47-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-96"><a href="#cb47-96" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>country<span class="ot">&lt;-</span><span class="fu">factor</span>(ches<span class="sc">$</span>country, <span class="at">levels=</span>country_levels, <span class="at">labels=</span>country_labels)</span>
-<span id="cb47-97"><a href="#cb47-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-98"><a href="#cb47-98" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-99"><a href="#cb47-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-100"><a href="#cb47-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-101"><a href="#cb47-101" aria-hidden="true" tabindex="-1"></a>Take a minute to <span class="in">`View()`</span> the data set and see how things are coded now.</span>
-<span id="cb47-102"><a href="#cb47-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-103"><a href="#cb47-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-104"><a href="#cb47-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-105"><a href="#cb47-105" aria-hidden="true" tabindex="-1"></a><span class="fu"># Using a pipe</span></span>
-<span id="cb47-106"><a href="#cb47-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-107"><a href="#cb47-107" aria-hidden="true" tabindex="-1"></a>A lot of code you&#39;ll see in this course will use the &quot;pipe&quot; operator. Pipes are a way of making code more readable by chaining together a set of operations so that they read from left to right. </span>
-<span id="cb47-108"><a href="#cb47-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-109"><a href="#cb47-109" aria-hidden="true" tabindex="-1"></a>Consider a script that creates 100 random numbers, exponentiates them, sorts them from highest to lowest, and then plots the result. One way to do this would be with a set of nested commands like this: </span>
-<span id="cb47-110"><a href="#cb47-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-113"><a href="#cb47-113" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-114"><a href="#cb47-114" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb47-115"><a href="#cb47-115" aria-hidden="true" tabindex="-1"></a><span class="co"># get 100 samples from a normal distribution with mean zero and sd =1 and plot them</span></span>
-<span id="cb47-116"><a href="#cb47-116" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">sort</span>(<span class="fu">exp</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>))))</span>
-<span id="cb47-117"><a href="#cb47-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-118"><a href="#cb47-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-119"><a href="#cb47-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-120"><a href="#cb47-120" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-121"><a href="#cb47-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-122"><a href="#cb47-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-123"><a href="#cb47-123" aria-hidden="true" tabindex="-1"></a>Alternatively, we could write each step on a separate line and assign the results to a new variable:</span>
-<span id="cb47-124"><a href="#cb47-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-125"><a href="#cb47-125" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.height=4, fig.width=4}</span></span>
-<span id="cb47-126"><a href="#cb47-126" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb47-127"><a href="#cb47-127" aria-hidden="true" tabindex="-1"></a><span class="co"># get 100 samples from a normal distribution with mean zero and sd =1 </span></span>
-<span id="cb47-128"><a href="#cb47-128" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
-<span id="cb47-129"><a href="#cb47-129" aria-hidden="true" tabindex="-1"></a><span class="co"># exponentiate it</span></span>
-<span id="cb47-130"><a href="#cb47-130" aria-hidden="true" tabindex="-1"></a>exp_x<span class="ot">&lt;-</span><span class="fu">exp</span>(x)</span>
-<span id="cb47-131"><a href="#cb47-131" aria-hidden="true" tabindex="-1"></a><span class="co"># sort it </span></span>
-<span id="cb47-132"><a href="#cb47-132" aria-hidden="true" tabindex="-1"></a>sorted_x<span class="ot">&lt;-</span><span class="fu">sort</span>(exp_x)</span>
-<span id="cb47-133"><a href="#cb47-133" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the result</span></span>
-<span id="cb47-134"><a href="#cb47-134" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sorted_x)</span>
-<span id="cb47-135"><a href="#cb47-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-136"><a href="#cb47-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-137"><a href="#cb47-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-138"><a href="#cb47-138" aria-hidden="true" tabindex="-1"></a>Using the pipe operator allows us to perform this same operation without the nested parentheses or the creation of intermediate variables: </span>
-<span id="cb47-139"><a href="#cb47-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-140"><a href="#cb47-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.height=4, fig.width=4}</span></span>
-<span id="cb47-141"><a href="#cb47-141" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb47-142"><a href="#cb47-142" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">100</span>)<span class="sc">|&gt;</span></span>
-<span id="cb47-143"><a href="#cb47-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>()<span class="sc">|&gt;</span></span>
-<span id="cb47-144"><a href="#cb47-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>()<span class="sc">|&gt;</span></span>
-<span id="cb47-145"><a href="#cb47-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
-<span id="cb47-146"><a href="#cb47-146" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-147"><a href="#cb47-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-148"><a href="#cb47-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-149"><a href="#cb47-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-150"><a href="#cb47-150" aria-hidden="true" tabindex="-1"></a>Note that the pipe command will default to using the left-hand-side object as the first argument for the right hand side, but you can explicitly reference the left-hand-side variable using the <span class="in">`_`</span>. This is especially useful for functions that don&#39;t take &quot;data&quot; as their first argument. One example of this is the <span class="in">`lm()`</span> command:</span>
-<span id="cb47-151"><a href="#cb47-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-152"><a href="#cb47-152" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE}</span></span>
-<span id="cb47-153"><a href="#cb47-153" aria-hidden="true" tabindex="-1"></a><span class="co"># This gives an error:</span></span>
-<span id="cb47-154"><a href="#cb47-154" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">|&gt;</span></span>
-<span id="cb47-155"><a href="#cb47-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(eu_position <span class="sc">~</span> immigrate_policy)</span>
-<span id="cb47-156"><a href="#cb47-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-157"><a href="#cb47-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-158"><a href="#cb47-158" aria-hidden="true" tabindex="-1"></a><span class="co"># this works</span></span>
-<span id="cb47-159"><a href="#cb47-159" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">|&gt;</span></span>
-<span id="cb47-160"><a href="#cb47-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(eu_position <span class="sc">~</span> immigrate_policy, <span class="at">data=</span>_)</span>
-<span id="cb47-161"><a href="#cb47-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-162"><a href="#cb47-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-163"><a href="#cb47-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-164"><a href="#cb47-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-165"><a href="#cb47-165" aria-hidden="true" tabindex="-1"></a>The <span class="in">`%&gt;%`</span> is a version of the pipe that is associated with the <span class="in">`magrittr`</span> package. This *mostly* works just like the <span class="in">`|&gt;`</span> pipe that is part of base R, but it has some minor differences such as using <span class="in">`.`</span> instead of <span class="in">`_`</span> to reference data. (I mention it here because you might see it elsewhere, especially in code that pre-dates the introduction of a native pipe operator)</span>
-<span id="cb47-166"><a href="#cb47-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-169"><a href="#cb47-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-170"><a href="#cb47-170" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb47-171"><a href="#cb47-171" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">%&gt;%</span></span>
-<span id="cb47-172"><a href="#cb47-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(eu_position <span class="sc">~</span> immigrate_policy, <span class="at">data=</span>.)</span>
-<span id="cb47-173"><a href="#cb47-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-174"><a href="#cb47-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-175"><a href="#cb47-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-176"><a href="#cb47-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q1</span></span>
-<span id="cb47-177"><a href="#cb47-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-178"><a href="#cb47-178" aria-hidden="true" tabindex="-1"></a>Restate the following operation using a sequence of pipes</span>
-<span id="cb47-179"><a href="#cb47-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-182"><a href="#cb47-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-183"><a href="#cb47-183" aria-hidden="true" tabindex="-1"></a>chesfam<span class="ot">&lt;-</span><span class="fu">subset</span>(ches, <span class="at">select=</span>family) <span class="co"># retrieving only the families column</span></span>
-<span id="cb47-184"><a href="#cb47-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-185"><a href="#cb47-185" aria-hidden="true" tabindex="-1"></a>chesfam<span class="ot">&lt;-</span><span class="fu">table</span>(chesfam) <span class="co"># creating a frequency table</span></span>
-<span id="cb47-186"><a href="#cb47-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-187"><a href="#cb47-187" aria-hidden="true" tabindex="-1"></a>chesfam<span class="ot">&lt;-</span><span class="fu">sort</span>(chesfam) <span class="co"># sorting from lowest to highest</span></span>
-<span id="cb47-188"><a href="#cb47-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-189"><a href="#cb47-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-190"><a href="#cb47-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-191"><a href="#cb47-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-192"><a href="#cb47-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-195"><a href="#cb47-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-196"><a href="#cb47-196" aria-hidden="true" tabindex="-1"></a><span class="co"># type your code here...</span></span>
-<span id="cb47-197"><a href="#cb47-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-198"><a href="#cb47-198" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-199"><a href="#cb47-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-200"><a href="#cb47-200" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q2</span></span>
-<span id="cb47-201"><a href="#cb47-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-202"><a href="#cb47-202" aria-hidden="true" tabindex="-1"></a>Use one of the pipe operators to retrieve only the countries that are EU members (you&#39;ll want to use the <span class="in">`subset`</span> function for this)</span>
-<span id="cb47-203"><a href="#cb47-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-206"><a href="#cb47-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-207"><a href="#cb47-207" aria-hidden="true" tabindex="-1"></a><span class="co"># type your code here...</span></span>
-<span id="cb47-208"><a href="#cb47-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-209"><a href="#cb47-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-210"><a href="#cb47-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-211"><a href="#cb47-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-212"><a href="#cb47-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-213"><a href="#cb47-213" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q3</span></span>
-<span id="cb47-214"><a href="#cb47-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-215"><a href="#cb47-215" aria-hidden="true" tabindex="-1"></a>Use the pipe operator to get the square root of the variance for <span class="in">`lrecon`</span> (which measures the left-right positioning for each party)</span>
-<span id="cb47-216"><a href="#cb47-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-219"><a href="#cb47-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-220"><a href="#cb47-220" aria-hidden="true" tabindex="-1"></a><span class="co"># type your code here...</span></span>
-<span id="cb47-221"><a href="#cb47-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-222"><a href="#cb47-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-223"><a href="#cb47-223" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-224"><a href="#cb47-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-225"><a href="#cb47-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-226"><a href="#cb47-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-227"><a href="#cb47-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-228"><a href="#cb47-228" aria-hidden="true" tabindex="-1"></a><span class="fu"># Subsetting</span></span>
-<span id="cb47-229"><a href="#cb47-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-230"><a href="#cb47-230" aria-hidden="true" tabindex="-1"></a>Remember we have several options for sub-setting data sets. The most basic is by using a logical operator. For instance: the expression <span class="in">`ches$family==&quot;Confessional&quot;`</span> would return <span class="in">`TRUE`</span> for any element where the value of family was &quot;Confessional&quot; and <span class="in">`FALSE`</span> for any element where it didn&#39;t. Now I can use this logical vector to subset my data frame, returning all rows for confessional parties:</span>
-<span id="cb47-231"><a href="#cb47-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-234"><a href="#cb47-234" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-235"><a href="#cb47-235" aria-hidden="true" tabindex="-1"></a>confessional_parties<span class="ot">&lt;-</span>ches[ches<span class="sc">$</span>family<span class="sc">==</span><span class="st">&quot;Confessional&quot;</span>, ]</span>
-<span id="cb47-236"><a href="#cb47-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-237"><a href="#cb47-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-238"><a href="#cb47-238" aria-hidden="true" tabindex="-1"></a>confessional_parties</span>
-<span id="cb47-239"><a href="#cb47-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-240"><a href="#cb47-240" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-241"><a href="#cb47-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-242"><a href="#cb47-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-243"><a href="#cb47-243" aria-hidden="true" tabindex="-1"></a>We can also chain together multiple logical expressions to get a more specific slice of the data. For instance, maybe I only want agrarian parties whose position on economic issues is greater than or equal to 5. I could get by combining two logical comparisons with an ampersand: </span>
-<span id="cb47-244"><a href="#cb47-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-247"><a href="#cb47-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-248"><a href="#cb47-248" aria-hidden="true" tabindex="-1"></a>right_agrarians<span class="ot">&lt;-</span>ches[ches<span class="sc">$</span>family <span class="sc">==</span> <span class="st">&quot;Agrarian/Center&quot;</span> <span class="sc">&amp;</span> ches<span class="sc">$</span>lrecon<span class="sc">&gt;=</span><span class="dv">5</span>,]</span>
-<span id="cb47-249"><a href="#cb47-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-250"><a href="#cb47-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-251"><a href="#cb47-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-252"><a href="#cb47-252" aria-hidden="true" tabindex="-1"></a>right_agrarians</span>
-<span id="cb47-253"><a href="#cb47-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-254"><a href="#cb47-254" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-255"><a href="#cb47-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-256"><a href="#cb47-256" aria-hidden="true" tabindex="-1"></a>We can also use the <span class="in">`subset`</span> function to do the same operation above. Note that this function expects a data set as its first argument, and, once we&#39;ve specified that, we can reference columns within that data set without needing to use the <span class="in">`$`</span> notation:</span>
-<span id="cb47-257"><a href="#cb47-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-260"><a href="#cb47-260" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-261"><a href="#cb47-261" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(ches, family <span class="sc">==</span> <span class="st">&quot;Confessional&quot;</span>)</span>
-<span id="cb47-262"><a href="#cb47-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-263"><a href="#cb47-263" aria-hidden="true" tabindex="-1"></a><span class="co"># OR:</span></span>
-<span id="cb47-264"><a href="#cb47-264" aria-hidden="true" tabindex="-1"></a><span class="co"># ches |&gt; subset(family==&quot;Confessional&quot;)</span></span>
-<span id="cb47-265"><a href="#cb47-265" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-266"><a href="#cb47-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-267"><a href="#cb47-267" aria-hidden="true" tabindex="-1"></a>Another option we&#39;ll explore more in the future is the <span class="in">`filter`</span> argument from the dplyr library. The syntax for this is almost identical to the syntax for <span class="in">`subset`</span>, and it also takes a dataset as its first argument:</span>
-<span id="cb47-268"><a href="#cb47-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-271"><a href="#cb47-271" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-272"><a href="#cb47-272" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb47-273"><a href="#cb47-273" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">|&gt;</span><span class="fu">filter</span>(family<span class="sc">==</span><span class="st">&quot;Confessional&quot;</span>)</span>
-<span id="cb47-274"><a href="#cb47-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-275"><a href="#cb47-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-276"><a href="#cb47-276" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-277"><a href="#cb47-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-278"><a href="#cb47-278" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q5</span></span>
-<span id="cb47-279"><a href="#cb47-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-280"><a href="#cb47-280" aria-hidden="true" tabindex="-1"></a>Use one of the sub-setting operations above to create a subset of the CHES data that only includes parties that received at least 10% of the vote in the last election:</span>
-<span id="cb47-281"><a href="#cb47-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-284"><a href="#cb47-284" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-285"><a href="#cb47-285" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-286"><a href="#cb47-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-287"><a href="#cb47-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-288"><a href="#cb47-288" aria-hidden="true" tabindex="-1"></a><span class="fu"># Frequency tables</span></span>
-<span id="cb47-289"><a href="#cb47-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-290"><a href="#cb47-290" aria-hidden="true" tabindex="-1"></a>R&#39;s <span class="in">`table`</span> command will generate either one or two-dimensional frequency tables.</span>
-<span id="cb47-291"><a href="#cb47-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-294"><a href="#cb47-294" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-295"><a href="#cb47-295" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ches<span class="sc">$</span>family)</span>
-<span id="cb47-296"><a href="#cb47-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-297"><a href="#cb47-297" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-298"><a href="#cb47-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-299"><a href="#cb47-299" aria-hidden="true" tabindex="-1"></a>In some cases, it may be more useful to examine the percentages in each group, rather than the raw frequencies. You can use the <span class="in">`prop.table`</span> function to generate proportions from an existing table object.</span>
-<span id="cb47-300"><a href="#cb47-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-303"><a href="#cb47-303" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-304"><a href="#cb47-304" aria-hidden="true" tabindex="-1"></a>table_of_families<span class="ot">&lt;-</span><span class="fu">table</span>(ches<span class="sc">$</span>family)</span>
-<span id="cb47-305"><a href="#cb47-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-306"><a href="#cb47-306" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(table_of_families)</span>
-<span id="cb47-307"><a href="#cb47-307" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-308"><a href="#cb47-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-309"><a href="#cb47-309" aria-hidden="true" tabindex="-1"></a><span class="fu"># Crosstabs</span></span>
-<span id="cb47-310"><a href="#cb47-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-311"><a href="#cb47-311" aria-hidden="true" tabindex="-1"></a>Adding a second categorical variable to the table function will generate a cross tab. The first group will be presented in the rows, and the second group in the columns. In this example, I&#39;m creating a new variable called <span class="in">`radical_right`</span> that is TRUE if a given party is part of the radical right family. Then I&#39;m creating a cross tab that allows me to see how many radical right parties held seats based on the year in which the election occurred: </span>
-<span id="cb47-312"><a href="#cb47-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-313"><a href="#cb47-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-316"><a href="#cb47-316" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-317"><a href="#cb47-317" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>radical_right <span class="ot">&lt;-</span>  ches<span class="sc">$</span>family <span class="sc">==</span> <span class="st">&quot;Radical Right&quot;</span></span>
-<span id="cb47-318"><a href="#cb47-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-319"><a href="#cb47-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-320"><a href="#cb47-320" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ches<span class="sc">$</span>electionyear, ches<span class="sc">$</span>radical_right)</span>
-<span id="cb47-321"><a href="#cb47-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-322"><a href="#cb47-322" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-323"><a href="#cb47-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-324"><a href="#cb47-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-325"><a href="#cb47-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-326"><a href="#cb47-326" aria-hidden="true" tabindex="-1"></a>In many cases, I&#39;m  interested in getting percentages rather than just raw frequencies. I can use the <span class="in">`prop.table`</span> function to get proportions from a frequency table. By default, <span class="in">`prop.table`</span> will just give the cell percentages:</span>
-<span id="cb47-327"><a href="#cb47-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-330"><a href="#cb47-330" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-331"><a href="#cb47-331" aria-hidden="true" tabindex="-1"></a>rr_table<span class="ot">&lt;-</span><span class="fu">table</span>(ches<span class="sc">$</span>electionyear, ches<span class="sc">$</span>radical_right)</span>
-<span id="cb47-332"><a href="#cb47-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-333"><a href="#cb47-333" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(rr_table)</span>
-<span id="cb47-334"><a href="#cb47-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-335"><a href="#cb47-335" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-336"><a href="#cb47-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-337"><a href="#cb47-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-338"><a href="#cb47-338" aria-hidden="true" tabindex="-1"></a>...But this isn&#39;t always a useful metric. More often, we&#39;ll want to use a cross tab to answer a question like &quot;what percentage of people in group X have characteristic Y?&quot; For instance: &quot;what percentage of parties in a countries parliament were from the radical right family&quot; To answer this question, I&#39;ll need to calculate:</span>
-<span id="cb47-339"><a href="#cb47-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-340"><a href="#cb47-340" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb47-341"><a href="#cb47-341" aria-hidden="true" tabindex="-1"></a>\frac{\text{Number of rad right wing parties in the data for year i}}{\text{Total number of parties in year i}}</span>
-<span id="cb47-342"><a href="#cb47-342" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb47-343"><a href="#cb47-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-344"><a href="#cb47-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-345"><a href="#cb47-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-346"><a href="#cb47-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-347"><a href="#cb47-347" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q6</span></span>
-<span id="cb47-348"><a href="#cb47-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-349"><a href="#cb47-349" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`table`</span> and <span class="in">`prop.table`</span> function to calculate the proportion of radical right parties in each country&#39;s parliament. You&#39;ll want to look at the <span class="in">`help`</span> file for the function to figure out how to do this.</span>
-<span id="cb47-350"><a href="#cb47-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-353"><a href="#cb47-353" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-354"><a href="#cb47-354" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter your code here</span></span>
-<span id="cb47-355"><a href="#cb47-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-356"><a href="#cb47-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-357"><a href="#cb47-357" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-358"><a href="#cb47-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-359"><a href="#cb47-359" aria-hidden="true" tabindex="-1"></a><span class="fu"># The Janitor package</span></span>
-<span id="cb47-360"><a href="#cb47-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-361"><a href="#cb47-361" aria-hidden="true" tabindex="-1"></a>There are a number of packages that (ostensibly) help you make nicer looking cross tabs that can be easily exported to a report. Its worth exploring these to see which ones are most useful for you, but one I want to highlight is <span class="co">[</span><span class="ot">the janitor package</span><span class="co">](https://cran.r-project.org/web/packages/janitor/vignettes/tabyls.html)</span>, which allows you to use the <span class="in">`tabyl`</span> command to create tables:</span>
-<span id="cb47-362"><a href="#cb47-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-363"><a href="#cb47-363" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, message=FALSE}</span></span>
-<span id="cb47-364"><a href="#cb47-364" aria-hidden="true" tabindex="-1"></a><span class="co">#| collapse: true</span></span>
-<span id="cb47-365"><a href="#cb47-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-366"><a href="#cb47-366" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb47-367"><a href="#cb47-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-368"><a href="#cb47-368" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">tabyl</span>(<span class="at">dat=</span>ches, <span class="at">var1=</span>electionyear, <span class="at">var2=</span>radical_right)</span>
-<span id="cb47-369"><a href="#cb47-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-370"><a href="#cb47-370" aria-hidden="true" tabindex="-1"></a>t1</span>
-<span id="cb47-371"><a href="#cb47-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-372"><a href="#cb47-372" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-373"><a href="#cb47-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-374"><a href="#cb47-374" aria-hidden="true" tabindex="-1"></a>On its own, this isn&#39;t much to write home about, but it provides a lot of nice options for <span class="in">`adorning`</span> the table with additional statistics:</span>
-<span id="cb47-375"><a href="#cb47-375" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-378"><a href="#cb47-378" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-379"><a href="#cb47-379" aria-hidden="true" tabindex="-1"></a><span class="co">#| collapse: true</span></span>
-<span id="cb47-380"><a href="#cb47-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-381"><a href="#cb47-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-382"><a href="#cb47-382" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">|&gt;</span></span>
-<span id="cb47-383"><a href="#cb47-383" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="st">&quot;row&quot;</span>)<span class="sc">|&gt;</span> <span class="co"># add totals</span></span>
-<span id="cb47-384"><a href="#cb47-384" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>)<span class="sc">|&gt;</span> <span class="co"># calculate percentages</span></span>
-<span id="cb47-385"><a href="#cb47-385" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>() <span class="co"># format percentages</span></span>
-<span id="cb47-386"><a href="#cb47-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-387"><a href="#cb47-387" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-388"><a href="#cb47-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-389"><a href="#cb47-389" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb47-390"><a href="#cb47-390" aria-hidden="true" tabindex="-1"></a><span class="fu">### R-Packages for presentation-ready tables</span></span>
-<span id="cb47-391"><a href="#cb47-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-392"><a href="#cb47-392" aria-hidden="true" tabindex="-1"></a>The janitor package has the advantage of having relatively simple syntax, which makes it great for exploring a data set. However, if you&#39;re looking to include cross tabs in a report or presentation you may want to consider one of the R packages that can create more aesthetically pleasing tables. For this you might want to consider <span class="co">[</span><span class="ot">`gt`</span><span class="co">](https://gt.rstudio.com/)</span>, <span class="co">[</span><span class="ot">`kableExtra`</span><span class="co">](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html)</span>, or the <span class="co">[</span><span class="ot">`modelsummary`</span><span class="co">](https://modelsummary.com/)</span> package.</span>
-<span id="cb47-393"><a href="#cb47-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-394"><a href="#cb47-394" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb47-395"><a href="#cb47-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-396"><a href="#cb47-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-397"><a href="#cb47-397" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-398"><a href="#cb47-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-399"><a href="#cb47-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-400"><a href="#cb47-400" aria-hidden="true" tabindex="-1"></a><span class="fu"># Aggregation and grouping</span></span>
-<span id="cb47-401"><a href="#cb47-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-402"><a href="#cb47-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-403"><a href="#cb47-403" aria-hidden="true" tabindex="-1"></a>We can use <span class="in">`aggregate`</span> to apply a function to each level of a categorical variable. To do this we&#39;ll use R&#39;s <span class="co">[</span><span class="ot">formula syntax</span><span class="co">](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Formulae-for-statistical-models)</span>, which in general will look something like this:</span>
-<span id="cb47-404"><a href="#cb47-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-405"><a href="#cb47-405" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-406"><a href="#cb47-406" aria-hidden="true" tabindex="-1"></a><span class="in">y ~ x</span></span>
-<span id="cb47-407"><a href="#cb47-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-408"><a href="#cb47-408" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-409"><a href="#cb47-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-410"><a href="#cb47-410" aria-hidden="true" tabindex="-1"></a>The variable on the left will be the outcome measure you&#39;re aggregating, the variable on the right will be the category you&#39;re aggregating over. So, if we want to get the average level of corruption salience in each country, we can run this:</span>
-<span id="cb47-411"><a href="#cb47-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-414"><a href="#cb47-414" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-415"><a href="#cb47-415" aria-hidden="true" tabindex="-1"></a><span class="co"># x = the formula, </span></span>
-<span id="cb47-416"><a href="#cb47-416" aria-hidden="true" tabindex="-1"></a><span class="co"># FUN= should be a function you want to run for each group</span></span>
-<span id="cb47-417"><a href="#cb47-417" aria-hidden="true" tabindex="-1"></a>corruption_salience <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(<span class="at">x =</span> corrupt_salience <span class="sc">~</span> country , </span>
-<span id="cb47-418"><a href="#cb47-418" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">FUN =</span> mean, </span>
-<span id="cb47-419"><a href="#cb47-419" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">data =</span> ches )</span>
-<span id="cb47-420"><a href="#cb47-420" aria-hidden="true" tabindex="-1"></a>corruption_salience</span>
-<span id="cb47-421"><a href="#cb47-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-422"><a href="#cb47-422" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-423"><a href="#cb47-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-424"><a href="#cb47-424" aria-hidden="true" tabindex="-1"></a><span class="fu">## dplyr method:</span></span>
-<span id="cb47-425"><a href="#cb47-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-426"><a href="#cb47-426" aria-hidden="true" tabindex="-1"></a>There&#39;s also a <span class="in">`dplyr`</span> method for this, that may be a little easier to parse. Here, we just use &quot;group by&quot; to declare grouping variable, and then use &quot;summarize&quot; to summarize over members of each group.</span>
-<span id="cb47-427"><a href="#cb47-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-430"><a href="#cb47-430" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-431"><a href="#cb47-431" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># if you haven&#39;t already loaded dplyr</span></span>
-<span id="cb47-432"><a href="#cb47-432" aria-hidden="true" tabindex="-1"></a>newtable<span class="ot">&lt;-</span>ches<span class="sc">|&gt;</span></span>
-<span id="cb47-433"><a href="#cb47-433" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country)<span class="sc">|&gt;</span></span>
-<span id="cb47-434"><a href="#cb47-434" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_corruption_salience=</span> <span class="fu">mean</span>(corrupt_salience))</span>
-<span id="cb47-435"><a href="#cb47-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-436"><a href="#cb47-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-437"><a href="#cb47-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-438"><a href="#cb47-438" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-439"><a href="#cb47-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-440"><a href="#cb47-440" aria-hidden="true" tabindex="-1"></a>Going forward, we&#39;ll mostly use the <span class="in">`dplyr`</span> commands for this class, but knowing <span class="in">`aggregate`</span> can be useful for interpreting other people&#39;s code.</span>
-<span id="cb47-441"><a href="#cb47-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-442"><a href="#cb47-442" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q7</span></span>
-<span id="cb47-443"><a href="#cb47-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-444"><a href="#cb47-444" aria-hidden="true" tabindex="-1"></a>Use either the <span class="in">`dplyr`</span> commands or <span class="in">`aggregate`</span> to get each party family&#39;s average position on redistribution issues.</span>
-<span id="cb47-445"><a href="#cb47-445" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-448"><a href="#cb47-448" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-449"><a href="#cb47-449" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here....</span></span>
-<span id="cb47-450"><a href="#cb47-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-451"><a href="#cb47-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-452"><a href="#cb47-452" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-453"><a href="#cb47-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-454"><a href="#cb47-454" aria-hidden="true" tabindex="-1"></a><span class="fu"># Functions</span></span>
-<span id="cb47-455"><a href="#cb47-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-456"><a href="#cb47-456" aria-hidden="true" tabindex="-1"></a>Remember that R functions are just snippets of code that we can re-use. If I have done a calculation once, I can probably write a function to apply it to more general cases.</span>
-<span id="cb47-457"><a href="#cb47-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-458"><a href="#cb47-458" aria-hidden="true" tabindex="-1"></a>For instance, here&#39;s some code that I could use to get the top parties by vote share:</span>
-<span id="cb47-459"><a href="#cb47-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-462"><a href="#cb47-462" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-463"><a href="#cb47-463" aria-hidden="true" tabindex="-1"></a><span class="co"># this gives row number for the highest to lowest value</span></span>
-<span id="cb47-464"><a href="#cb47-464" aria-hidden="true" tabindex="-1"></a>top_n<span class="ot">&lt;-</span><span class="fu">order</span>(ches<span class="sc">$</span>vote, <span class="at">decreasing=</span>T)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] </span>
-<span id="cb47-465"><a href="#cb47-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-466"><a href="#cb47-466" aria-hidden="true" tabindex="-1"></a><span class="co"># this subsets the values of party by the index in top_n:</span></span>
-<span id="cb47-467"><a href="#cb47-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-468"><a href="#cb47-468" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>party[top_n]</span>
-<span id="cb47-469"><a href="#cb47-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-470"><a href="#cb47-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-471"><a href="#cb47-471" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-472"><a href="#cb47-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-473"><a href="#cb47-473" aria-hidden="true" tabindex="-1"></a>I could probably make this more generalized by creating a function.</span>
-<span id="cb47-474"><a href="#cb47-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-477"><a href="#cb47-477" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-478"><a href="#cb47-478" aria-hidden="true" tabindex="-1"></a>topnFunction <span class="ot">&lt;-</span> <span class="cf">function</span>(labels, values, n){ <span class="co"># the arguments </span></span>
-<span id="cb47-479"><a href="#cb47-479" aria-hidden="true" tabindex="-1"></a>  top_n <span class="ot">&lt;-</span> <span class="fu">order</span>(values, <span class="at">decreasing=</span> T)[<span class="dv">1</span><span class="sc">:</span>n] <span class="co"># the subset</span></span>
-<span id="cb47-480"><a href="#cb47-480" aria-hidden="true" tabindex="-1"></a>  result<span class="ot">&lt;-</span>labels[top_n] <span class="co"># the result  </span></span>
-<span id="cb47-481"><a href="#cb47-481" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result) <span class="co"># the return statement</span></span>
-<span id="cb47-482"><a href="#cb47-482" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-483"><a href="#cb47-483" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb47-484"><a href="#cb47-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-485"><a href="#cb47-485" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-486"><a href="#cb47-486" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-487"><a href="#cb47-487" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-488"><a href="#cb47-488" aria-hidden="true" tabindex="-1"></a>Now I can use this in a bunch of different scenarios. Maybe I want to get the top parties by seat share instead of vote share, then all I need to do is change the <span class="in">`values`</span> argument:</span>
-<span id="cb47-489"><a href="#cb47-489" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-492"><a href="#cb47-492" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-493"><a href="#cb47-493" aria-hidden="true" tabindex="-1"></a><span class="fu">topnFunction</span>(ches<span class="sc">$</span>party, ches<span class="sc">$</span>seat, <span class="at">n=</span><span class="dv">10</span>)</span>
-<span id="cb47-494"><a href="#cb47-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-495"><a href="#cb47-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-496"><a href="#cb47-496" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-497"><a href="#cb47-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-498"><a href="#cb47-498" aria-hidden="true" tabindex="-1"></a>Or I can get more observations by changing <span class="in">`n`</span></span>
-<span id="cb47-499"><a href="#cb47-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-502"><a href="#cb47-502" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-503"><a href="#cb47-503" aria-hidden="true" tabindex="-1"></a><span class="fu">topnFunction</span>(ches<span class="sc">$</span>party, ches<span class="sc">$</span>seat, <span class="at">n=</span><span class="dv">15</span>)</span>
-<span id="cb47-504"><a href="#cb47-504" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-505"><a href="#cb47-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-506"><a href="#cb47-506" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-507"><a href="#cb47-507" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-508"><a href="#cb47-508" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-509"><a href="#cb47-509" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q8</span></span>
-<span id="cb47-510"><a href="#cb47-510" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-511"><a href="#cb47-511" aria-hidden="true" tabindex="-1"></a>How could I modify the function above to return both the party names and the values themselves?</span>
-<span id="cb47-512"><a href="#cb47-512" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-515"><a href="#cb47-515" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb47-516"><a href="#cb47-516" aria-hidden="true" tabindex="-1"></a><span class="co">#...your code here</span></span>
-<span id="cb47-517"><a href="#cb47-517" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-518"><a href="#cb47-518" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-519"><a href="#cb47-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-520"><a href="#cb47-520" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb47-521"><a href="#cb47-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-522"><a href="#cb47-522" aria-hidden="true" tabindex="-1"></a></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Classwork 1: Indexing and subsetting&quot;</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co">    df-print: kable</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="co">    embed-resources: true</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>, <span class="at">warning =</span> <span class="cn">FALSE</span>, <span class="at">message =</span> <span class="cn">FALSE</span>, <span class="at">fig.align =</span> <span class="st">&quot;center&quot;</span>)</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>This document was created using <span class="co">[</span><span class="ot">Quarto</span><span class="co">](https://quarto.org/docs/get-started/hello/rstudio.html)</span> a sort of language for combining code and text. When you&#39;re following along in class, you can either copy-paste code directly from this page into an R-studio script file, or you can go over to the github site for this class, <span class="co">[</span><span class="ot">download the .qmd file for this classwork</span><span class="co">](https://github.com/Neilblund/GVPT628_Fall2026/blob/main/Week%2001/classwork.qmd)</span> and then open it in R-studio and work with it as an interactive document. </span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data and packages</span></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>You&#39;ll want to start by loading the CHES data. We can do this using the <span class="in">`read_csv`</span> function from the readr package. We *could* access this data set by downloading it from the <span class="co">[</span><span class="ot">CHES website</span><span class="co">](https://www.chesdata.eu/)</span> and then importing it from a local file, but for <span class="in">`.csv`</span> files like this one, we can actually download it by putting the web address directly in to our function in quotation marks:</span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>ches<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">&#39;https://github.com/chesdata/chesdata.github.io/releases/download/ches-europe/CHES_2024_final_v2.csv&#39;</span>)</span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>After you&#39;ve imported the data, take a second to <span class="in">`View()`</span> the data frame you just imported and see how things are coded. </span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a>Note that in the raw csv data, the party family variable is initially a set of numbers instead of a text value:</span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>family[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a> In order to convert these to text, we&#39;ll need to <span class="co">[</span><span class="ot">consult the codebook</span><span class="co">](https://static1.squarespace.com/static/5975c9bfdb29d6a05c65209b/t/6881094b92e5c57f83d73e8f/1753286987723/CHES+2024+Codebook.pdf)</span> and then convert the numeric variables to their respective text values.</span>
+<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a>R has a special built-in data type for this exact scenario called a &quot;factor variable&quot;. </span>
+<span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a>::: {.column-margin}</span>
+<span id="cb48-51"><a href="#cb48-51" aria-hidden="true" tabindex="-1"></a>R factors are often a source of confusion for new users. Under the hood, a factor variable is just a set of numbers with an extra piece of data that maps those numeric values to text labels. We could also store variables like this as regular text values, but factor variables are helpful because they can make it easier to do things like fix the ordering of survey response items when we&#39;re making a graph or table.</span>
+<span id="cb48-52"><a href="#cb48-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-53"><a href="#cb48-53" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb48-54"><a href="#cb48-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-55"><a href="#cb48-55" aria-hidden="true" tabindex="-1"></a>We&#39;ll talk more about working with factors later on, but for now it&#39;s sufficient to know that we&#39;re doing this to turn the numbers into readable text:</span>
+<span id="cb48-56"><a href="#cb48-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-59"><a href="#cb48-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-60"><a href="#cb48-60" aria-hidden="true" tabindex="-1"></a>labels<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;Radical Right&quot;</span>,</span>
+<span id="cb48-61"><a href="#cb48-61" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Conservatives&quot;</span>,</span>
+<span id="cb48-62"><a href="#cb48-62" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Liberal&quot;</span>, </span>
+<span id="cb48-63"><a href="#cb48-63" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Christian-Democratic&quot;</span>,</span>
+<span id="cb48-64"><a href="#cb48-64" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Socialist&quot;</span>,</span>
+<span id="cb48-65"><a href="#cb48-65" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Radical Left&quot;</span>,</span>
+<span id="cb48-66"><a href="#cb48-66" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Green&quot;</span>, </span>
+<span id="cb48-67"><a href="#cb48-67" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Regionalist&quot;</span>, </span>
+<span id="cb48-68"><a href="#cb48-68" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;No family&quot;</span>,</span>
+<span id="cb48-69"><a href="#cb48-69" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Confessional&quot;</span>,</span>
+<span id="cb48-70"><a href="#cb48-70" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Agrarian/Center&quot;</span>)</span>
+<span id="cb48-71"><a href="#cb48-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-72"><a href="#cb48-72" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>family<span class="ot">&lt;-</span><span class="fu">factor</span>(ches<span class="sc">$</span>family, <span class="at">labels=</span>labels)</span>
+<span id="cb48-73"><a href="#cb48-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-74"><a href="#cb48-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-75"><a href="#cb48-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-76"><a href="#cb48-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-77"><a href="#cb48-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-78"><a href="#cb48-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-79"><a href="#cb48-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-80"><a href="#cb48-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-81"><a href="#cb48-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-82"><a href="#cb48-82" aria-hidden="true" tabindex="-1"></a>We&#39;ll do the same thing for the &quot;country&quot; variable: </span>
+<span id="cb48-83"><a href="#cb48-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-86"><a href="#cb48-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-87"><a href="#cb48-87" aria-hidden="true" tabindex="-1"></a>country_levels<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">22</span>, </span>
+<span id="cb48-88"><a href="#cb48-88" aria-hidden="true" tabindex="-1"></a>          <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">25</span>, <span class="dv">26</span>, <span class="dv">27</span>, <span class="dv">28</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">34</span>, <span class="dv">35</span>, <span class="dv">36</span>, <span class="dv">37</span>, <span class="dv">38</span>, <span class="dv">40</span>, <span class="dv">45</span>)</span>
+<span id="cb48-89"><a href="#cb48-89" aria-hidden="true" tabindex="-1"></a>country_labels<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;Belgium&quot;</span>, <span class="st">&quot;Denmark&quot;</span>, <span class="st">&quot;Germany&quot;</span>, <span class="st">&quot;Greece&quot;</span>, <span class="st">&quot;Spain&quot;</span>, <span class="st">&quot;France&quot;</span>, </span>
+<span id="cb48-90"><a href="#cb48-90" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Ireland&quot;</span>, <span class="st">&quot;Italy&quot;</span>, <span class="st">&quot;Netherlands&quot;</span>,  <span class="st">&quot;United Kingdom&quot;</span>, <span class="st">&quot;Portugal&quot;</span>, </span>
+<span id="cb48-91"><a href="#cb48-91" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Austria&quot;</span>, <span class="st">&quot;Finland&quot;</span>, <span class="st">&quot;Sweden&quot;</span>, <span class="st">&quot;Bulgaria&quot;</span>, <span class="st">&quot;Czech Republic&quot;</span>,  </span>
+<span id="cb48-92"><a href="#cb48-92" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Estonia&quot;</span>, <span class="st">&quot;Hungary&quot;</span>, <span class="st">&quot;Latvia&quot;</span>, <span class="st">&quot;Lithuania&quot;</span>,<span class="st">&quot;Poland&quot;</span>, <span class="st">&quot;Romania&quot;</span>, </span>
+<span id="cb48-93"><a href="#cb48-93" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Slovakia&quot;</span>, <span class="st">&quot;Slovenia&quot;</span>, <span class="st">&quot;Croatia&quot;</span>, <span class="st">&quot;Turkey&quot;</span>, <span class="st">&quot;Norway&quot;</span>, <span class="st">&quot;Switzerland&quot;</span>, </span>
+<span id="cb48-94"><a href="#cb48-94" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Malta&quot;</span>, <span class="st">&quot;Luxembourg&quot;</span>, <span class="st">&quot;Cyprus&quot;</span>, <span class="st">&quot;Iceland&quot;</span>)</span>
+<span id="cb48-95"><a href="#cb48-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-96"><a href="#cb48-96" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>country<span class="ot">&lt;-</span><span class="fu">factor</span>(ches<span class="sc">$</span>country, <span class="at">levels=</span>country_levels, <span class="at">labels=</span>country_labels)</span>
+<span id="cb48-97"><a href="#cb48-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-98"><a href="#cb48-98" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-99"><a href="#cb48-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-100"><a href="#cb48-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-101"><a href="#cb48-101" aria-hidden="true" tabindex="-1"></a>Take a minute to <span class="in">`View()`</span> the data set and see how things are coded now.</span>
+<span id="cb48-102"><a href="#cb48-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-103"><a href="#cb48-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-104"><a href="#cb48-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-105"><a href="#cb48-105" aria-hidden="true" tabindex="-1"></a><span class="fu"># Using a pipe</span></span>
+<span id="cb48-106"><a href="#cb48-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-107"><a href="#cb48-107" aria-hidden="true" tabindex="-1"></a>A lot of code you&#39;ll see in this course will use the &quot;pipe&quot; operator. Pipes are a way of making code more readable by chaining together a set of operations so that they read from left to right. </span>
+<span id="cb48-108"><a href="#cb48-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-109"><a href="#cb48-109" aria-hidden="true" tabindex="-1"></a>Consider a script that creates 100 random numbers, exponentiates them, sorts them from highest to lowest, and then plots the result. One way to do this would be with a set of nested commands like this: </span>
+<span id="cb48-110"><a href="#cb48-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-113"><a href="#cb48-113" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-114"><a href="#cb48-114" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb48-115"><a href="#cb48-115" aria-hidden="true" tabindex="-1"></a><span class="co"># get 100 samples from a normal distribution with mean zero and sd =1 and plot them</span></span>
+<span id="cb48-116"><a href="#cb48-116" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">sort</span>(<span class="fu">exp</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>))))</span>
+<span id="cb48-117"><a href="#cb48-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-118"><a href="#cb48-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-119"><a href="#cb48-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-120"><a href="#cb48-120" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-121"><a href="#cb48-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-122"><a href="#cb48-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-123"><a href="#cb48-123" aria-hidden="true" tabindex="-1"></a>Alternatively, we could write each step on a separate line and assign the results to a new variable:</span>
+<span id="cb48-124"><a href="#cb48-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-125"><a href="#cb48-125" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.height=4, fig.width=4}</span></span>
+<span id="cb48-126"><a href="#cb48-126" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb48-127"><a href="#cb48-127" aria-hidden="true" tabindex="-1"></a><span class="co"># get 100 samples from a normal distribution with mean zero and sd =1 </span></span>
+<span id="cb48-128"><a href="#cb48-128" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb48-129"><a href="#cb48-129" aria-hidden="true" tabindex="-1"></a><span class="co"># exponentiate it</span></span>
+<span id="cb48-130"><a href="#cb48-130" aria-hidden="true" tabindex="-1"></a>exp_x<span class="ot">&lt;-</span><span class="fu">exp</span>(x)</span>
+<span id="cb48-131"><a href="#cb48-131" aria-hidden="true" tabindex="-1"></a><span class="co"># sort it </span></span>
+<span id="cb48-132"><a href="#cb48-132" aria-hidden="true" tabindex="-1"></a>sorted_x<span class="ot">&lt;-</span><span class="fu">sort</span>(exp_x)</span>
+<span id="cb48-133"><a href="#cb48-133" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the result</span></span>
+<span id="cb48-134"><a href="#cb48-134" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sorted_x)</span>
+<span id="cb48-135"><a href="#cb48-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-136"><a href="#cb48-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-137"><a href="#cb48-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-138"><a href="#cb48-138" aria-hidden="true" tabindex="-1"></a>Using the pipe operator allows us to perform this same operation without the nested parentheses or the creation of intermediate variables: </span>
+<span id="cb48-139"><a href="#cb48-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-140"><a href="#cb48-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, fig.height=4, fig.width=4}</span></span>
+<span id="cb48-141"><a href="#cb48-141" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb48-142"><a href="#cb48-142" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">100</span>)<span class="sc">|&gt;</span></span>
+<span id="cb48-143"><a href="#cb48-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>()<span class="sc">|&gt;</span></span>
+<span id="cb48-144"><a href="#cb48-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>()<span class="sc">|&gt;</span></span>
+<span id="cb48-145"><a href="#cb48-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
+<span id="cb48-146"><a href="#cb48-146" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb48-147"><a href="#cb48-147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-148"><a href="#cb48-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-149"><a href="#cb48-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-150"><a href="#cb48-150" aria-hidden="true" tabindex="-1"></a>Note that the pipe command will default to using the left-hand-side object as the first argument for the right hand side, but you can explicitly reference the left-hand-side variable using the <span class="in">`_`</span>. This is especially useful for functions that don&#39;t take &quot;data&quot; as their first argument. One example of this is the <span class="in">`lm()`</span> command:</span>
+<span id="cb48-151"><a href="#cb48-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-152"><a href="#cb48-152" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, error=TRUE}</span></span>
+<span id="cb48-153"><a href="#cb48-153" aria-hidden="true" tabindex="-1"></a><span class="co"># This gives an error:</span></span>
+<span id="cb48-154"><a href="#cb48-154" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">|&gt;</span></span>
+<span id="cb48-155"><a href="#cb48-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(eu_position <span class="sc">~</span> immigrate_policy)</span>
+<span id="cb48-156"><a href="#cb48-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-157"><a href="#cb48-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-158"><a href="#cb48-158" aria-hidden="true" tabindex="-1"></a><span class="co"># this works</span></span>
+<span id="cb48-159"><a href="#cb48-159" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">|&gt;</span></span>
+<span id="cb48-160"><a href="#cb48-160" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(eu_position <span class="sc">~</span> immigrate_policy, <span class="at">data=</span>_)</span>
+<span id="cb48-161"><a href="#cb48-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-162"><a href="#cb48-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-163"><a href="#cb48-163" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-164"><a href="#cb48-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-165"><a href="#cb48-165" aria-hidden="true" tabindex="-1"></a>The <span class="in">`%&gt;%`</span> is a version of the pipe that is associated with the <span class="in">`magrittr`</span> package. This *mostly* works just like the <span class="in">`|&gt;`</span> pipe that is part of base R, but it has some minor differences such as using <span class="in">`.`</span> instead of <span class="in">`_`</span> to reference data. (I mention it here because you might see it elsewhere, especially in code that pre-dates the introduction of a native pipe operator)</span>
+<span id="cb48-166"><a href="#cb48-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-169"><a href="#cb48-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-170"><a href="#cb48-170" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb48-171"><a href="#cb48-171" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">%&gt;%</span></span>
+<span id="cb48-172"><a href="#cb48-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(eu_position <span class="sc">~</span> immigrate_policy, <span class="at">data=</span>.)</span>
+<span id="cb48-173"><a href="#cb48-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-174"><a href="#cb48-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-175"><a href="#cb48-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-176"><a href="#cb48-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q1</span></span>
+<span id="cb48-177"><a href="#cb48-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-178"><a href="#cb48-178" aria-hidden="true" tabindex="-1"></a>Restate the following operation using a sequence of pipes</span>
+<span id="cb48-179"><a href="#cb48-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-182"><a href="#cb48-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-183"><a href="#cb48-183" aria-hidden="true" tabindex="-1"></a>chesfam<span class="ot">&lt;-</span><span class="fu">subset</span>(ches, <span class="at">select=</span>family) <span class="co"># retrieving only the families column</span></span>
+<span id="cb48-184"><a href="#cb48-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-185"><a href="#cb48-185" aria-hidden="true" tabindex="-1"></a>chesfam<span class="ot">&lt;-</span><span class="fu">table</span>(chesfam) <span class="co"># creating a frequency table</span></span>
+<span id="cb48-186"><a href="#cb48-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-187"><a href="#cb48-187" aria-hidden="true" tabindex="-1"></a>chesfam<span class="ot">&lt;-</span><span class="fu">sort</span>(chesfam) <span class="co"># sorting from lowest to highest</span></span>
+<span id="cb48-188"><a href="#cb48-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-189"><a href="#cb48-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-190"><a href="#cb48-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-191"><a href="#cb48-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-192"><a href="#cb48-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-195"><a href="#cb48-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-196"><a href="#cb48-196" aria-hidden="true" tabindex="-1"></a><span class="co"># type your code here...</span></span>
+<span id="cb48-197"><a href="#cb48-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-198"><a href="#cb48-198" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-199"><a href="#cb48-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-200"><a href="#cb48-200" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q2</span></span>
+<span id="cb48-201"><a href="#cb48-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-202"><a href="#cb48-202" aria-hidden="true" tabindex="-1"></a>Use one of the pipe operators to retrieve only the countries that are EU members (you&#39;ll want to use the <span class="in">`subset`</span> function for this)</span>
+<span id="cb48-203"><a href="#cb48-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-206"><a href="#cb48-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-207"><a href="#cb48-207" aria-hidden="true" tabindex="-1"></a><span class="co"># type your code here...</span></span>
+<span id="cb48-208"><a href="#cb48-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-209"><a href="#cb48-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-210"><a href="#cb48-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-211"><a href="#cb48-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-212"><a href="#cb48-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-213"><a href="#cb48-213" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q3</span></span>
+<span id="cb48-214"><a href="#cb48-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-215"><a href="#cb48-215" aria-hidden="true" tabindex="-1"></a>Use the pipe operator to get the square root of the variance for <span class="in">`lrecon`</span> (which measures the left-right positioning for each party)</span>
+<span id="cb48-216"><a href="#cb48-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-219"><a href="#cb48-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-220"><a href="#cb48-220" aria-hidden="true" tabindex="-1"></a><span class="co"># type your code here...</span></span>
+<span id="cb48-221"><a href="#cb48-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-222"><a href="#cb48-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-223"><a href="#cb48-223" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb48-224"><a href="#cb48-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-225"><a href="#cb48-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-226"><a href="#cb48-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-227"><a href="#cb48-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-228"><a href="#cb48-228" aria-hidden="true" tabindex="-1"></a><span class="fu"># Subsetting</span></span>
+<span id="cb48-229"><a href="#cb48-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-230"><a href="#cb48-230" aria-hidden="true" tabindex="-1"></a>Remember we have several options for sub-setting data sets. The most basic is by using a logical operator. For instance: the expression <span class="in">`ches$family==&quot;Confessional&quot;`</span> would return <span class="in">`TRUE`</span> for any element where the value of family was &quot;Confessional&quot; and <span class="in">`FALSE`</span> for any element where it didn&#39;t. Now I can use this logical vector to subset my data frame, returning all rows for confessional parties:</span>
+<span id="cb48-231"><a href="#cb48-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-234"><a href="#cb48-234" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-235"><a href="#cb48-235" aria-hidden="true" tabindex="-1"></a>confessional_parties<span class="ot">&lt;-</span>ches[ches<span class="sc">$</span>family<span class="sc">==</span><span class="st">&quot;Confessional&quot;</span>, ]</span>
+<span id="cb48-236"><a href="#cb48-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-237"><a href="#cb48-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-238"><a href="#cb48-238" aria-hidden="true" tabindex="-1"></a>confessional_parties</span>
+<span id="cb48-239"><a href="#cb48-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-240"><a href="#cb48-240" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-241"><a href="#cb48-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-242"><a href="#cb48-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-243"><a href="#cb48-243" aria-hidden="true" tabindex="-1"></a>We can also chain together multiple logical expressions to get a more specific slice of the data. For instance, maybe I only want agrarian parties whose position on economic issues is greater than or equal to 5. I could get by combining two logical comparisons with an ampersand: </span>
+<span id="cb48-244"><a href="#cb48-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-247"><a href="#cb48-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-248"><a href="#cb48-248" aria-hidden="true" tabindex="-1"></a>right_agrarians<span class="ot">&lt;-</span>ches[ches<span class="sc">$</span>family <span class="sc">==</span> <span class="st">&quot;Agrarian/Center&quot;</span> <span class="sc">&amp;</span> ches<span class="sc">$</span>lrecon<span class="sc">&gt;=</span><span class="dv">5</span>,]</span>
+<span id="cb48-249"><a href="#cb48-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-250"><a href="#cb48-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-251"><a href="#cb48-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-252"><a href="#cb48-252" aria-hidden="true" tabindex="-1"></a>right_agrarians</span>
+<span id="cb48-253"><a href="#cb48-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-254"><a href="#cb48-254" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-255"><a href="#cb48-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-256"><a href="#cb48-256" aria-hidden="true" tabindex="-1"></a>We can also use the <span class="in">`subset`</span> function to do the same operation above. Note that this function expects a data set as its first argument, and, once we&#39;ve specified that, we can reference columns within that data set without needing to use the <span class="in">`$`</span> notation:</span>
+<span id="cb48-257"><a href="#cb48-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-260"><a href="#cb48-260" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-261"><a href="#cb48-261" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(ches, family <span class="sc">==</span> <span class="st">&quot;Confessional&quot;</span>)</span>
+<span id="cb48-262"><a href="#cb48-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-263"><a href="#cb48-263" aria-hidden="true" tabindex="-1"></a><span class="co"># OR:</span></span>
+<span id="cb48-264"><a href="#cb48-264" aria-hidden="true" tabindex="-1"></a><span class="co"># ches |&gt; subset(family==&quot;Confessional&quot;)</span></span>
+<span id="cb48-265"><a href="#cb48-265" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-266"><a href="#cb48-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-267"><a href="#cb48-267" aria-hidden="true" tabindex="-1"></a>Another option we&#39;ll explore more in the future is the <span class="in">`filter`</span> argument from the dplyr library. The syntax for this is almost identical to the syntax for <span class="in">`subset`</span>, and it also takes a dataset as its first argument:</span>
+<span id="cb48-268"><a href="#cb48-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-271"><a href="#cb48-271" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-272"><a href="#cb48-272" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb48-273"><a href="#cb48-273" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">|&gt;</span><span class="fu">filter</span>(family<span class="sc">==</span><span class="st">&quot;Confessional&quot;</span>)</span>
+<span id="cb48-274"><a href="#cb48-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-275"><a href="#cb48-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-276"><a href="#cb48-276" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-277"><a href="#cb48-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-278"><a href="#cb48-278" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q4</span></span>
+<span id="cb48-279"><a href="#cb48-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-280"><a href="#cb48-280" aria-hidden="true" tabindex="-1"></a>Use one of the sub-setting operations above to create a subset of the CHES data that only includes parties that received at least 10% of the vote in the last election:</span>
+<span id="cb48-281"><a href="#cb48-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-284"><a href="#cb48-284" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-285"><a href="#cb48-285" aria-hidden="true" tabindex="-1"></a><span class="co"># type your code here...</span></span>
+<span id="cb48-286"><a href="#cb48-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-287"><a href="#cb48-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-288"><a href="#cb48-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-289"><a href="#cb48-289" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-290"><a href="#cb48-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-291"><a href="#cb48-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-292"><a href="#cb48-292" aria-hidden="true" tabindex="-1"></a><span class="fu"># Frequency tables</span></span>
+<span id="cb48-293"><a href="#cb48-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-294"><a href="#cb48-294" aria-hidden="true" tabindex="-1"></a>R&#39;s <span class="in">`table`</span> command will generate either one or two-dimensional frequency tables.</span>
+<span id="cb48-295"><a href="#cb48-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-298"><a href="#cb48-298" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-299"><a href="#cb48-299" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ches<span class="sc">$</span>family)</span>
+<span id="cb48-300"><a href="#cb48-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-301"><a href="#cb48-301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-302"><a href="#cb48-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-303"><a href="#cb48-303" aria-hidden="true" tabindex="-1"></a>In some cases, it may be more useful to examine the percentages in each group, rather than the raw frequencies. You can use the <span class="in">`prop.table`</span> function to generate proportions from an existing table object.</span>
+<span id="cb48-304"><a href="#cb48-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-307"><a href="#cb48-307" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-308"><a href="#cb48-308" aria-hidden="true" tabindex="-1"></a>table_of_families<span class="ot">&lt;-</span><span class="fu">table</span>(ches<span class="sc">$</span>family)</span>
+<span id="cb48-309"><a href="#cb48-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-310"><a href="#cb48-310" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(table_of_families)</span>
+<span id="cb48-311"><a href="#cb48-311" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-312"><a href="#cb48-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-313"><a href="#cb48-313" aria-hidden="true" tabindex="-1"></a><span class="fu"># Crosstabs</span></span>
+<span id="cb48-314"><a href="#cb48-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-315"><a href="#cb48-315" aria-hidden="true" tabindex="-1"></a>Adding a second categorical variable to the table function will generate a cross tab. The first group will be presented in the rows, and the second group in the columns. In this example, I&#39;m creating a new variable called <span class="in">`radical_right`</span> that is TRUE if a given party is part of the radical right family. Then I&#39;m creating a cross tab that allows me to see how many radical right parties held seats based on the year in which the election occurred: </span>
+<span id="cb48-316"><a href="#cb48-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-317"><a href="#cb48-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-320"><a href="#cb48-320" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-321"><a href="#cb48-321" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>radical_right <span class="ot">&lt;-</span>  ches<span class="sc">$</span>family <span class="sc">==</span> <span class="st">&quot;Radical Right&quot;</span></span>
+<span id="cb48-322"><a href="#cb48-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-323"><a href="#cb48-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-324"><a href="#cb48-324" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ches<span class="sc">$</span>electionyear, ches<span class="sc">$</span>radical_right)</span>
+<span id="cb48-325"><a href="#cb48-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-326"><a href="#cb48-326" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-327"><a href="#cb48-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-328"><a href="#cb48-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-329"><a href="#cb48-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-330"><a href="#cb48-330" aria-hidden="true" tabindex="-1"></a>In many cases, I&#39;m  interested in getting percentages rather than just raw frequencies. I can use the <span class="in">`prop.table`</span> function to get proportions from a frequency table. By default, <span class="in">`prop.table`</span> will just give the cell percentages:</span>
+<span id="cb48-331"><a href="#cb48-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-334"><a href="#cb48-334" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-335"><a href="#cb48-335" aria-hidden="true" tabindex="-1"></a>rr_table<span class="ot">&lt;-</span><span class="fu">table</span>(ches<span class="sc">$</span>electionyear, ches<span class="sc">$</span>radical_right)</span>
+<span id="cb48-336"><a href="#cb48-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-337"><a href="#cb48-337" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(rr_table)</span>
+<span id="cb48-338"><a href="#cb48-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-339"><a href="#cb48-339" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-340"><a href="#cb48-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-341"><a href="#cb48-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-342"><a href="#cb48-342" aria-hidden="true" tabindex="-1"></a>...But this isn&#39;t always a useful metric. More often, we&#39;ll want to use a cross tab to answer a question like &quot;what percentage of people in group X have characteristic Y?&quot; For instance: &quot;what percentage of parties in a countries parliament were from the radical right family&quot; To answer this question, I&#39;ll need to calculate:</span>
+<span id="cb48-343"><a href="#cb48-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-344"><a href="#cb48-344" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb48-345"><a href="#cb48-345" aria-hidden="true" tabindex="-1"></a>\frac{\text{Number of rad right wing parties in the data for year i}}{\text{Total number of parties in year i}}</span>
+<span id="cb48-346"><a href="#cb48-346" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb48-347"><a href="#cb48-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-348"><a href="#cb48-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-349"><a href="#cb48-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-350"><a href="#cb48-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-351"><a href="#cb48-351" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q5</span></span>
+<span id="cb48-352"><a href="#cb48-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-353"><a href="#cb48-353" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`table`</span> and <span class="in">`prop.table`</span> function to calculate the proportion of radical right parties in each country&#39;s parliament. You&#39;ll want to look at the <span class="in">`help`</span> file for the function to figure out how to do this.</span>
+<span id="cb48-354"><a href="#cb48-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-357"><a href="#cb48-357" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-358"><a href="#cb48-358" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter your code here</span></span>
+<span id="cb48-359"><a href="#cb48-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-360"><a href="#cb48-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-361"><a href="#cb48-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-362"><a href="#cb48-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-363"><a href="#cb48-363" aria-hidden="true" tabindex="-1"></a><span class="fu"># The Janitor package</span></span>
+<span id="cb48-364"><a href="#cb48-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-365"><a href="#cb48-365" aria-hidden="true" tabindex="-1"></a>There are a number of packages that (ostensibly) help you make nicer looking cross tabs that can be easily exported to a report. Its worth exploring these to see which ones are most useful for you, but one I want to highlight is <span class="co">[</span><span class="ot">the janitor package</span><span class="co">](https://cran.r-project.org/web/packages/janitor/vignettes/tabyls.html)</span>, which allows you to use the <span class="in">`tabyl`</span> command to create tables:</span>
+<span id="cb48-366"><a href="#cb48-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-367"><a href="#cb48-367" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, message=FALSE}</span></span>
+<span id="cb48-368"><a href="#cb48-368" aria-hidden="true" tabindex="-1"></a><span class="co">#| collapse: true</span></span>
+<span id="cb48-369"><a href="#cb48-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-370"><a href="#cb48-370" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb48-371"><a href="#cb48-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-372"><a href="#cb48-372" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">tabyl</span>(<span class="at">dat=</span>ches, <span class="at">var1=</span>electionyear, <span class="at">var2=</span>radical_right)</span>
+<span id="cb48-373"><a href="#cb48-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-374"><a href="#cb48-374" aria-hidden="true" tabindex="-1"></a>t1</span>
+<span id="cb48-375"><a href="#cb48-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-376"><a href="#cb48-376" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-377"><a href="#cb48-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-378"><a href="#cb48-378" aria-hidden="true" tabindex="-1"></a>On its own, this isn&#39;t much to write home about, but it provides a lot of nice options for <span class="in">`adorning`</span> the table with additional statistics:</span>
+<span id="cb48-379"><a href="#cb48-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-382"><a href="#cb48-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-383"><a href="#cb48-383" aria-hidden="true" tabindex="-1"></a><span class="co">#| collapse: true</span></span>
+<span id="cb48-384"><a href="#cb48-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-385"><a href="#cb48-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-386"><a href="#cb48-386" aria-hidden="true" tabindex="-1"></a>t1<span class="sc">|&gt;</span></span>
+<span id="cb48-387"><a href="#cb48-387" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="st">&quot;row&quot;</span>)<span class="sc">|&gt;</span> <span class="co"># add totals</span></span>
+<span id="cb48-388"><a href="#cb48-388" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>)<span class="sc">|&gt;</span> <span class="co"># calculate percentages</span></span>
+<span id="cb48-389"><a href="#cb48-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>() <span class="co"># format percentages</span></span>
+<span id="cb48-390"><a href="#cb48-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-391"><a href="#cb48-391" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-392"><a href="#cb48-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-393"><a href="#cb48-393" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb48-394"><a href="#cb48-394" aria-hidden="true" tabindex="-1"></a><span class="fu">### R-Packages for presentation-ready tables</span></span>
+<span id="cb48-395"><a href="#cb48-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-396"><a href="#cb48-396" aria-hidden="true" tabindex="-1"></a>The janitor package has the advantage of having relatively simple syntax, which makes it great for exploring a data set. However, if you&#39;re looking to include cross tabs in a report or presentation you may want to consider one of the R packages that can create more aesthetically pleasing tables. For this you might want to consider <span class="co">[</span><span class="ot">`gt`</span><span class="co">](https://gt.rstudio.com/)</span>, <span class="co">[</span><span class="ot">`kableExtra`</span><span class="co">](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html)</span>, or the <span class="co">[</span><span class="ot">`modelsummary`</span><span class="co">](https://modelsummary.com/)</span> package.</span>
+<span id="cb48-397"><a href="#cb48-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-398"><a href="#cb48-398" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb48-399"><a href="#cb48-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-400"><a href="#cb48-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-401"><a href="#cb48-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-402"><a href="#cb48-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-403"><a href="#cb48-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-404"><a href="#cb48-404" aria-hidden="true" tabindex="-1"></a><span class="fu"># Aggregation and grouping</span></span>
+<span id="cb48-405"><a href="#cb48-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-406"><a href="#cb48-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-407"><a href="#cb48-407" aria-hidden="true" tabindex="-1"></a>We can use <span class="in">`aggregate`</span> to apply a function to each level of a categorical variable. To do this we&#39;ll use R&#39;s <span class="co">[</span><span class="ot">formula syntax</span><span class="co">](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Formulae-for-statistical-models)</span>, which in general will look something like this:</span>
+<span id="cb48-408"><a href="#cb48-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-409"><a href="#cb48-409" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-410"><a href="#cb48-410" aria-hidden="true" tabindex="-1"></a><span class="in">y ~ x</span></span>
+<span id="cb48-411"><a href="#cb48-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-412"><a href="#cb48-412" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-413"><a href="#cb48-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-414"><a href="#cb48-414" aria-hidden="true" tabindex="-1"></a>The variable on the left will be the outcome measure you&#39;re aggregating, the variable on the right will be the category you&#39;re aggregating over. So, if we want to get the average level of corruption salience in each country, we can run this:</span>
+<span id="cb48-415"><a href="#cb48-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-418"><a href="#cb48-418" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-419"><a href="#cb48-419" aria-hidden="true" tabindex="-1"></a><span class="co"># x = the formula, </span></span>
+<span id="cb48-420"><a href="#cb48-420" aria-hidden="true" tabindex="-1"></a><span class="co"># FUN= should be a function you want to run for each group</span></span>
+<span id="cb48-421"><a href="#cb48-421" aria-hidden="true" tabindex="-1"></a>corruption_salience <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(<span class="at">x =</span> corrupt_salience <span class="sc">~</span> country , </span>
+<span id="cb48-422"><a href="#cb48-422" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">FUN =</span> mean, </span>
+<span id="cb48-423"><a href="#cb48-423" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">data =</span> ches )</span>
+<span id="cb48-424"><a href="#cb48-424" aria-hidden="true" tabindex="-1"></a>corruption_salience</span>
+<span id="cb48-425"><a href="#cb48-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-426"><a href="#cb48-426" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-427"><a href="#cb48-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-428"><a href="#cb48-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## dplyr method:</span></span>
+<span id="cb48-429"><a href="#cb48-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-430"><a href="#cb48-430" aria-hidden="true" tabindex="-1"></a>There&#39;s also a <span class="in">`dplyr`</span> method for this, that may be a little easier to parse. Here, we just use &quot;group by&quot; to declare grouping variable, and then use &quot;summarize&quot; to summarize over members of each group.</span>
+<span id="cb48-431"><a href="#cb48-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-434"><a href="#cb48-434" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-435"><a href="#cb48-435" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># if you haven&#39;t already loaded dplyr</span></span>
+<span id="cb48-436"><a href="#cb48-436" aria-hidden="true" tabindex="-1"></a>newtable<span class="ot">&lt;-</span>ches<span class="sc">|&gt;</span></span>
+<span id="cb48-437"><a href="#cb48-437" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country)<span class="sc">|&gt;</span></span>
+<span id="cb48-438"><a href="#cb48-438" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_corruption_salience=</span> <span class="fu">mean</span>(corrupt_salience))</span>
+<span id="cb48-439"><a href="#cb48-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-440"><a href="#cb48-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-441"><a href="#cb48-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-442"><a href="#cb48-442" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-443"><a href="#cb48-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-444"><a href="#cb48-444" aria-hidden="true" tabindex="-1"></a>Going forward, we&#39;ll mostly use the <span class="in">`dplyr`</span> commands for this class, but knowing <span class="in">`aggregate`</span> can be useful for interpreting other people&#39;s code.</span>
+<span id="cb48-445"><a href="#cb48-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-446"><a href="#cb48-446" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q6</span></span>
+<span id="cb48-447"><a href="#cb48-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-448"><a href="#cb48-448" aria-hidden="true" tabindex="-1"></a>Use either the <span class="in">`dplyr`</span> commands or <span class="in">`aggregate`</span> to get each party family&#39;s average position on redistribution issues.</span>
+<span id="cb48-449"><a href="#cb48-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-452"><a href="#cb48-452" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-453"><a href="#cb48-453" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here....</span></span>
+<span id="cb48-454"><a href="#cb48-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-455"><a href="#cb48-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-456"><a href="#cb48-456" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-457"><a href="#cb48-457" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-458"><a href="#cb48-458" aria-hidden="true" tabindex="-1"></a><span class="fu"># Functions</span></span>
+<span id="cb48-459"><a href="#cb48-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-460"><a href="#cb48-460" aria-hidden="true" tabindex="-1"></a>Remember that R functions are just snippets of code that we can re-use. If I have done a calculation once, I can probably write a function to apply it to more general cases.</span>
+<span id="cb48-461"><a href="#cb48-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-462"><a href="#cb48-462" aria-hidden="true" tabindex="-1"></a>For instance, here&#39;s some code that I could use to get the top parties by vote share:</span>
+<span id="cb48-463"><a href="#cb48-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-466"><a href="#cb48-466" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-467"><a href="#cb48-467" aria-hidden="true" tabindex="-1"></a><span class="co"># this gives row number for the highest to lowest value</span></span>
+<span id="cb48-468"><a href="#cb48-468" aria-hidden="true" tabindex="-1"></a>top_n<span class="ot">&lt;-</span><span class="fu">order</span>(ches<span class="sc">$</span>vote, <span class="at">decreasing=</span>T)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] </span>
+<span id="cb48-469"><a href="#cb48-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-470"><a href="#cb48-470" aria-hidden="true" tabindex="-1"></a><span class="co"># this subsets the values of party by the index in top_n:</span></span>
+<span id="cb48-471"><a href="#cb48-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-472"><a href="#cb48-472" aria-hidden="true" tabindex="-1"></a>ches<span class="sc">$</span>party[top_n]</span>
+<span id="cb48-473"><a href="#cb48-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-474"><a href="#cb48-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-475"><a href="#cb48-475" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-476"><a href="#cb48-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-477"><a href="#cb48-477" aria-hidden="true" tabindex="-1"></a>I could probably make this more generalized by creating a function.</span>
+<span id="cb48-478"><a href="#cb48-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-481"><a href="#cb48-481" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-482"><a href="#cb48-482" aria-hidden="true" tabindex="-1"></a>topnFunction <span class="ot">&lt;-</span> <span class="cf">function</span>(labels, values, n){ <span class="co"># the arguments </span></span>
+<span id="cb48-483"><a href="#cb48-483" aria-hidden="true" tabindex="-1"></a>  top_n <span class="ot">&lt;-</span> <span class="fu">order</span>(values, <span class="at">decreasing=</span> T)[<span class="dv">1</span><span class="sc">:</span>n] <span class="co"># the subset</span></span>
+<span id="cb48-484"><a href="#cb48-484" aria-hidden="true" tabindex="-1"></a>  result<span class="ot">&lt;-</span>labels[top_n] <span class="co"># the result  </span></span>
+<span id="cb48-485"><a href="#cb48-485" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result) <span class="co"># the return statement</span></span>
+<span id="cb48-486"><a href="#cb48-486" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb48-487"><a href="#cb48-487" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb48-488"><a href="#cb48-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-489"><a href="#cb48-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-490"><a href="#cb48-490" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-491"><a href="#cb48-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-492"><a href="#cb48-492" aria-hidden="true" tabindex="-1"></a>Now I can use this in a bunch of different scenarios. Maybe I want to get the top parties by seat share instead of vote share, then all I need to do is change the <span class="in">`values`</span> argument:</span>
+<span id="cb48-493"><a href="#cb48-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-496"><a href="#cb48-496" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-497"><a href="#cb48-497" aria-hidden="true" tabindex="-1"></a><span class="fu">topnFunction</span>(ches<span class="sc">$</span>party, ches<span class="sc">$</span>seat, <span class="at">n=</span><span class="dv">10</span>)</span>
+<span id="cb48-498"><a href="#cb48-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-499"><a href="#cb48-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-500"><a href="#cb48-500" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-501"><a href="#cb48-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-502"><a href="#cb48-502" aria-hidden="true" tabindex="-1"></a>Or I can get more observations by changing <span class="in">`n`</span></span>
+<span id="cb48-503"><a href="#cb48-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-506"><a href="#cb48-506" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-507"><a href="#cb48-507" aria-hidden="true" tabindex="-1"></a><span class="fu">topnFunction</span>(ches<span class="sc">$</span>party, ches<span class="sc">$</span>seat, <span class="at">n=</span><span class="dv">15</span>)</span>
+<span id="cb48-508"><a href="#cb48-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-509"><a href="#cb48-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-510"><a href="#cb48-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-511"><a href="#cb48-511" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-512"><a href="#cb48-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-513"><a href="#cb48-513" aria-hidden="true" tabindex="-1"></a><span class="fu">## Q7</span></span>
+<span id="cb48-514"><a href="#cb48-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-515"><a href="#cb48-515" aria-hidden="true" tabindex="-1"></a>How could I modify the function above to return both the party names and the values themselves?</span>
+<span id="cb48-516"><a href="#cb48-516" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-519"><a href="#cb48-519" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb48-520"><a href="#cb48-520" aria-hidden="true" tabindex="-1"></a><span class="co">#...your code here</span></span>
+<span id="cb48-521"><a href="#cb48-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-522"><a href="#cb48-522" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-523"><a href="#cb48-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-524"><a href="#cb48-524" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb48-525"><a href="#cb48-525" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-526"><a href="#cb48-526" aria-hidden="true" tabindex="-1"></a></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
