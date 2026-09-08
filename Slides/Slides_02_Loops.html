@@ -2423,7 +2423,7 @@ text-align: left;
 <section id="pseudo-code-1" class="title-slide slide level2 center">
 <h2>Pseudo-code</h2>
 <p>What would this code do?</p>
-<div class="pseudocode-container quarto-float" data-indent-lines="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-line-number-punc=":" data-line-number="true" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-line-number="true" data-comment-delimiter="//" data-no-end="false" data-indent-lines="false" data-pseudocode-number="1" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \begin{algorithmic} \STATE v = $\text{a single numeric value}$ \IF {$v \geq 0$} \STATE $v$ \ELSE \STATE $-1\times v$ \ENDIF \end{algorithmic} \end{algorithm}
 </div>
@@ -2447,7 +2447,7 @@ text-align: left;
 <section id="pseudo-code-2" class="title-slide slide level2 center">
 <h2>Pseudo-code</h2>
 <p>What would this code do?</p>
-<div class="pseudocode-container quarto-float" data-indent-lines="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-line-number-punc=":" data-line-number="true" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-line-number="true" data-comment-delimiter="//" data-no-end="false" data-indent-lines="false" data-pseudocode-number="1" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \begin{algorithmic} \STATE $X = \text{[a vector of numbers]}$ \STATE $S = 0$ \FOR{$\text{each value } i \text{ in } X$} \STATE S = S + i \ENDFOR \end{algorithmic} \end{algorithm}
 </div>
@@ -2503,7 +2503,8 @@ text-align: left;
 <section id="function-scoping" class="slide level3">
 <h3>Function Scoping</h3>
 <ul>
-<li>R functions are evaluated “locally”, which means that they generally won’t make permanent changes to the other things in your global environment unless you explicitly reassign something.</li>
+<li><p>R functions are evaluated “locally”: they’re evaluated in their own environment, which is created and then destroyed after execution.</p></li>
+<li><p>This means that functions “clean up after themselves” and they won’t alter data in your global environment unless you explicitly force them to do so.</p></li>
 </ul>
 </section>
 <section id="function-scoping-1" class="slide level3">
@@ -2617,7 +2618,7 @@ text-align: left;
 <ul>
 <li><p>Since functions are evaluated locally, variables created in them are typically temporary.</p></li>
 <li><p>However, we can assign the output of a function to a new variable to store the results.</p></li>
-<li><p>In general, functions only return a single R object.</p></li>
+<li><p>In general, functions only return a single object (but keep in mind that a single object can hold lots of data)</p></li>
 </ul>
 </section>
 <section id="function-returns-1" class="slide level3">
@@ -2789,7 +2790,7 @@ text-align: left;
 <section id="problem-in-pseudo-code" class="slide level3">
 <h3>Problem: in pseudo-code</h3>
 <p>In general terms, I want something that does this:</p>
-<div class="pseudocode-container quarto-float" data-indent-lines="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-line-number-punc=":" data-line-number="true" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-line-number="true" data-comment-delimiter="//" data-no-end="false" data-indent-lines="false" data-pseudocode-number="1" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \begin{algorithmic} \State $url = \text{a link to a .zip file}$ \State $\text{filename} = \text{a filename}$ \State $\text{datafolder} = \text{a folder to store unzipped data}$ \If{$\text{filename doesn&#39;t exist}$} \State \Call{download.file}{$\text{url}, \text{filename}$} \EndIf \State \Call{unzip.file}{$\text{filename}, \text{datafolder}$} \end{algorithmic} \end{algorithm}
 </div>
@@ -2953,7 +2954,7 @@ text-align: left;
 </section>
 <section id="the-problem-in-pseudo-code" class="slide level3">
 <h3>The problem in pseudo-code:</h3>
-<div class="pseudocode-container quarto-float" data-indent-lines="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-line-number-punc=":" data-line-number="true" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-line-number="true" data-comment-delimiter="//" data-no-end="false" data-indent-lines="false" data-pseudocode-number="1" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \begin{algorithmic} \State $files = \text{a dataframe with filenames and URLs}$ \STATE $\text{datafolder} = \text{a folder to store unzipped data}$ \FOR{$\text{each row } i \text{ in } files$} \STATE $\text{url} = \text{files}[i, \text{url}]$ \STATE $\text{filename} = \text{files}[i, \text{file}]$ \If{$\text{filename doesn&#39;t exist}$} \State \Call{download.file}{$\text{url}, \text{filename}$} \EndIf \State \Call{unzip.file}{$\text{filename}, \text{datafolder}$} \ENDFOR \end{algorithmic} \end{algorithm}
 </div>
