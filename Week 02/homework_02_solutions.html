@@ -2616,58 +2616,55 @@ Sending a request to https://aspe.hhs.gov/topics/poverty-economic-mobility/pover
 <p>The <code>&lt;&lt;-</code> operator is called a “super assignment” operator. This operator overrides R’s default lexical scoping to create/update a variable in the current function’s parent environment. In other words, this inner function actually updates the <code>thresholds</code> variable that is created in the first line of <code>fplChecker</code>.</p>
 <p>This setup allows the <code>thresholds</code> variable to persist across multiple function calls. This is useful because it means we can run the same function on a new data set and it will only send API requests if the <code>thresholds</code> variable doesn’t already contain the information we’re looking for.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#1. create URLs for every row of data using paste0, then identify only the unique </span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># URL values and get FPL data for each one. </span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>fplChecker <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  thresholds<span class="ot">&lt;-</span><span class="fu">numeric</span>()</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  checkFPL <span class="ot">&lt;-</span> <span class="cf">function</span>(years,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                       household_sizes,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                       incomes,</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">states =</span> <span class="st">&#39;US&#39;</span>) {</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    hh_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> years,</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">household_size =</span> household_sizes,</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">income =</span> incomes,</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">poverty_threshold =</span> <span class="cn">NA</span>,</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">poverty_indicator =</span> <span class="cn">NA</span></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    base_url <span class="ot">&lt;-</span> <span class="st">&#39;https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api&#39;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fplChecker <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  thresholds<span class="ot">&lt;-</span><span class="fu">numeric</span>() <span class="co"># thresholds variable created in the outer function!</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  checkFPL <span class="ot">&lt;-</span> <span class="cf">function</span>(years,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                       household_sizes,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                       incomes,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">states =</span> <span class="st">&#39;US&#39;</span>) {</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    hh_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> years,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">household_size =</span> household_sizes,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">income =</span> incomes,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">poverty_threshold =</span> <span class="cn">NA</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">poverty_indicator =</span> <span class="cn">NA</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    base_url <span class="ot">&lt;-</span> <span class="st">&#39;https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api&#39;</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>completed_url<span class="ot">&lt;-</span><span class="fu">paste0</span>(base_url, <span class="st">&quot;/&quot;</span>, years, <span class="st">&#39;/&#39;</span>, states, <span class="st">&#39;/&#39;</span>, household_sizes)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    unique_urls<span class="ot">&lt;-</span><span class="fu">unique</span>(hh_data<span class="sc">$</span>completed_url)</span>
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>completed_url<span class="ot">&lt;-</span><span class="fu">paste0</span>(base_url, <span class="st">&quot;/&quot;</span>, years, <span class="st">&#39;/&#39;</span>, states, <span class="st">&#39;/&#39;</span>, household_sizes)</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    unique_urls<span class="ot">&lt;-</span><span class="fu">unique</span>(hh_data<span class="sc">$</span>completed_url)</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># loop through the unique URLs and retrieve data</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> unique_urls) {</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span>i <span class="sc">%in%</span> <span class="fu">names</span>(thresholds)) {</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Sending a request to&quot;</span>, i, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>        response <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(i)</span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        thresholds[i] <span class="ot">&lt;&lt;-</span> <span class="fu">as.numeric</span>(response<span class="sc">$</span>data<span class="sc">$</span>income)</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>     </span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>poverty_threshold <span class="ot">&lt;-</span> <span class="fu">unname</span>(thresholds[hh_data<span class="sc">$</span>completed_url])</span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in each row, just check to see whether the household income is above the</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># poverty threshold in that row</span></span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>poverty_indicator<span class="ot">&lt;-</span>hh_data<span class="sc">$</span>income <span class="sc">&lt;</span> hh_data<span class="sc">$</span>poverty_threshold</span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(hh_data)</span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># loop through the unique URLs and retrieve data</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> unique_urls) {</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span>i <span class="sc">%in%</span> <span class="fu">names</span>(thresholds)) {</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Sending a request to&quot;</span>, i, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        response <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(i)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        thresholds[i] <span class="ot">&lt;&lt;-</span> <span class="fu">as.numeric</span>(response<span class="sc">$</span>data<span class="sc">$</span>income) <span class="co"># &lt;&lt;- updates in the outer function</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>poverty_threshold <span class="ot">&lt;-</span> <span class="fu">unname</span>(thresholds[hh_data<span class="sc">$</span>completed_url])</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in each row, just check to see whether the household income is above the</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># poverty threshold in that row</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>poverty_indicator<span class="ot">&lt;-</span>hh_data<span class="sc">$</span>income <span class="sc">&lt;</span> hh_data<span class="sc">$</span>poverty_threshold</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(hh_data)</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new fplChecker function - note that this returns another function we&#39;re called &quot;fpl&quot;</span></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>fpl<span class="ot">&lt;-</span><span class="fu">fplChecker</span>()</span>
 <span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new fplChecker function - note that this returns another function we&#39;re called &quot;fpl&quot;</span></span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>fpl<span class="ot">&lt;-</span><span class="fu">fplChecker</span>()</span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the fpl() function</span></span>
-<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>household_income_data <span class="ot">&lt;-</span> <span class="fu">fpl</span>(</span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> households<span class="sc">$</span>year,</span>
-<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">household_sizes =</span> households<span class="sc">$</span>household_size,</span>
-<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">incomes =</span> households<span class="sc">$</span>income</span>
-<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the fpl() function</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>household_income_data <span class="ot">&lt;-</span> <span class="fu">fpl</span>(</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> households<span class="sc">$</span>year,</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">household_sizes =</span> households<span class="sc">$</span>household_size,</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>  <span class="at">incomes =</span> households<span class="sc">$</span>income</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sending a request to https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api/2025/US/10 
 Sending a request to https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api/2025/US/4 
@@ -2708,7 +2705,7 @@ Sending a request to https://aspe.hhs.gov/topics/poverty-economic-mobility/pover
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>x_resampled<span class="ot">&lt;-</span><span class="fu">sample</span>(x, <span class="at">size=</span><span class="fu">length</span>(x), <span class="at">replace=</span>T)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>x_resampled</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4 1 2 4 6 6</code></pre>
+<pre><code>[1] 6 4 2 1 3 5</code></pre>
 </div>
 </div>
 <p>You can calculate the nth percentile of a vector using the <code>quantile</code> function:</p>
@@ -3561,196 +3558,195 @@ $ci
 <span id="cb33-317"><a href="#cb33-317" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-318"><a href="#cb33-318" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, cache=TRUE}</span></span>
 <span id="cb33-319"><a href="#cb33-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-320"><a href="#cb33-320" aria-hidden="true" tabindex="-1"></a><span class="co">#1. create URLs for every row of data using paste0, then identify only the unique </span></span>
-<span id="cb33-321"><a href="#cb33-321" aria-hidden="true" tabindex="-1"></a><span class="co"># URL values and get FPL data for each one. </span></span>
-<span id="cb33-322"><a href="#cb33-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-323"><a href="#cb33-323" aria-hidden="true" tabindex="-1"></a>fplChecker <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb33-324"><a href="#cb33-324" aria-hidden="true" tabindex="-1"></a>  thresholds<span class="ot">&lt;-</span><span class="fu">numeric</span>()</span>
-<span id="cb33-325"><a href="#cb33-325" aria-hidden="true" tabindex="-1"></a>  checkFPL <span class="ot">&lt;-</span> <span class="cf">function</span>(years,</span>
-<span id="cb33-326"><a href="#cb33-326" aria-hidden="true" tabindex="-1"></a>                       household_sizes,</span>
-<span id="cb33-327"><a href="#cb33-327" aria-hidden="true" tabindex="-1"></a>                       incomes,</span>
-<span id="cb33-328"><a href="#cb33-328" aria-hidden="true" tabindex="-1"></a>                       <span class="at">states =</span> <span class="st">&#39;US&#39;</span>) {</span>
-<span id="cb33-329"><a href="#cb33-329" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-330"><a href="#cb33-330" aria-hidden="true" tabindex="-1"></a>    hh_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb33-331"><a href="#cb33-331" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> years,</span>
-<span id="cb33-332"><a href="#cb33-332" aria-hidden="true" tabindex="-1"></a>      <span class="at">household_size =</span> household_sizes,</span>
-<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a>      <span class="at">income =</span> incomes,</span>
-<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a>      <span class="at">poverty_threshold =</span> <span class="cn">NA</span>,</span>
-<span id="cb33-335"><a href="#cb33-335" aria-hidden="true" tabindex="-1"></a>      <span class="at">poverty_indicator =</span> <span class="cn">NA</span></span>
-<span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-338"><a href="#cb33-338" aria-hidden="true" tabindex="-1"></a>    base_url <span class="ot">&lt;-</span> <span class="st">&#39;https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api&#39;</span></span>
-<span id="cb33-339"><a href="#cb33-339" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-340"><a href="#cb33-340" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>completed_url<span class="ot">&lt;-</span><span class="fu">paste0</span>(base_url, <span class="st">&quot;/&quot;</span>, years, <span class="st">&#39;/&#39;</span>, states, <span class="st">&#39;/&#39;</span>, household_sizes)</span>
-<span id="cb33-341"><a href="#cb33-341" aria-hidden="true" tabindex="-1"></a>    unique_urls<span class="ot">&lt;-</span><span class="fu">unique</span>(hh_data<span class="sc">$</span>completed_url)</span>
+<span id="cb33-320"><a href="#cb33-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-321"><a href="#cb33-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-322"><a href="#cb33-322" aria-hidden="true" tabindex="-1"></a>fplChecker <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb33-323"><a href="#cb33-323" aria-hidden="true" tabindex="-1"></a>  thresholds<span class="ot">&lt;-</span><span class="fu">numeric</span>() <span class="co"># thresholds variable created in the outer function!</span></span>
+<span id="cb33-324"><a href="#cb33-324" aria-hidden="true" tabindex="-1"></a>  checkFPL <span class="ot">&lt;-</span> <span class="cf">function</span>(years,</span>
+<span id="cb33-325"><a href="#cb33-325" aria-hidden="true" tabindex="-1"></a>                       household_sizes,</span>
+<span id="cb33-326"><a href="#cb33-326" aria-hidden="true" tabindex="-1"></a>                       incomes,</span>
+<span id="cb33-327"><a href="#cb33-327" aria-hidden="true" tabindex="-1"></a>                       <span class="at">states =</span> <span class="st">&#39;US&#39;</span>) {</span>
+<span id="cb33-328"><a href="#cb33-328" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-329"><a href="#cb33-329" aria-hidden="true" tabindex="-1"></a>    hh_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb33-330"><a href="#cb33-330" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> years,</span>
+<span id="cb33-331"><a href="#cb33-331" aria-hidden="true" tabindex="-1"></a>      <span class="at">household_size =</span> household_sizes,</span>
+<span id="cb33-332"><a href="#cb33-332" aria-hidden="true" tabindex="-1"></a>      <span class="at">income =</span> incomes,</span>
+<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a>      <span class="at">poverty_threshold =</span> <span class="cn">NA</span>,</span>
+<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a>      <span class="at">poverty_indicator =</span> <span class="cn">NA</span></span>
+<span id="cb33-335"><a href="#cb33-335" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a>    base_url <span class="ot">&lt;-</span> <span class="st">&#39;https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/api&#39;</span></span>
+<span id="cb33-338"><a href="#cb33-338" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-339"><a href="#cb33-339" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>completed_url<span class="ot">&lt;-</span><span class="fu">paste0</span>(base_url, <span class="st">&quot;/&quot;</span>, years, <span class="st">&#39;/&#39;</span>, states, <span class="st">&#39;/&#39;</span>, household_sizes)</span>
+<span id="cb33-340"><a href="#cb33-340" aria-hidden="true" tabindex="-1"></a>    unique_urls<span class="ot">&lt;-</span><span class="fu">unique</span>(hh_data<span class="sc">$</span>completed_url)</span>
+<span id="cb33-341"><a href="#cb33-341" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb33-342"><a href="#cb33-342" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-343"><a href="#cb33-343" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-344"><a href="#cb33-344" aria-hidden="true" tabindex="-1"></a>    <span class="co"># loop through the unique URLs and retrieve data</span></span>
-<span id="cb33-345"><a href="#cb33-345" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> unique_urls) {</span>
-<span id="cb33-346"><a href="#cb33-346" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span>i <span class="sc">%in%</span> <span class="fu">names</span>(thresholds)) {</span>
-<span id="cb33-347"><a href="#cb33-347" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Sending a request to&quot;</span>, i, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb33-348"><a href="#cb33-348" aria-hidden="true" tabindex="-1"></a>        response <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(i)</span>
-<span id="cb33-349"><a href="#cb33-349" aria-hidden="true" tabindex="-1"></a>        thresholds[i] <span class="ot">&lt;&lt;-</span> <span class="fu">as.numeric</span>(response<span class="sc">$</span>data<span class="sc">$</span>income)</span>
-<span id="cb33-350"><a href="#cb33-350" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb33-351"><a href="#cb33-351" aria-hidden="true" tabindex="-1"></a>     </span>
-<span id="cb33-352"><a href="#cb33-352" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb33-353"><a href="#cb33-353" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>poverty_threshold <span class="ot">&lt;-</span> <span class="fu">unname</span>(thresholds[hh_data<span class="sc">$</span>completed_url])</span>
-<span id="cb33-354"><a href="#cb33-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-355"><a href="#cb33-355" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in each row, just check to see whether the household income is above the</span></span>
-<span id="cb33-356"><a href="#cb33-356" aria-hidden="true" tabindex="-1"></a>    <span class="co"># poverty threshold in that row</span></span>
-<span id="cb33-357"><a href="#cb33-357" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>poverty_indicator<span class="ot">&lt;-</span>hh_data<span class="sc">$</span>income <span class="sc">&lt;</span> hh_data<span class="sc">$</span>poverty_threshold</span>
-<span id="cb33-358"><a href="#cb33-358" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-359"><a href="#cb33-359" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(hh_data)</span>
-<span id="cb33-360"><a href="#cb33-360" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb33-361"><a href="#cb33-361" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb33-362"><a href="#cb33-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-363"><a href="#cb33-363" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new fplChecker function - note that this returns another function we&#39;re called &quot;fpl&quot;</span></span>
-<span id="cb33-364"><a href="#cb33-364" aria-hidden="true" tabindex="-1"></a>fpl<span class="ot">&lt;-</span><span class="fu">fplChecker</span>()</span>
-<span id="cb33-365"><a href="#cb33-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-366"><a href="#cb33-366" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the fpl() function</span></span>
-<span id="cb33-367"><a href="#cb33-367" aria-hidden="true" tabindex="-1"></a>household_income_data <span class="ot">&lt;-</span> <span class="fu">fpl</span>(</span>
-<span id="cb33-368"><a href="#cb33-368" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> households<span class="sc">$</span>year,</span>
-<span id="cb33-369"><a href="#cb33-369" aria-hidden="true" tabindex="-1"></a>  <span class="at">household_sizes =</span> households<span class="sc">$</span>household_size,</span>
-<span id="cb33-370"><a href="#cb33-370" aria-hidden="true" tabindex="-1"></a>  <span class="at">incomes =</span> households<span class="sc">$</span>income</span>
-<span id="cb33-371"><a href="#cb33-371" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-343"><a href="#cb33-343" aria-hidden="true" tabindex="-1"></a>    <span class="co"># loop through the unique URLs and retrieve data</span></span>
+<span id="cb33-344"><a href="#cb33-344" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> unique_urls) {</span>
+<span id="cb33-345"><a href="#cb33-345" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span>i <span class="sc">%in%</span> <span class="fu">names</span>(thresholds)) {</span>
+<span id="cb33-346"><a href="#cb33-346" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cat</span>(<span class="st">&quot;Sending a request to&quot;</span>, i, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb33-347"><a href="#cb33-347" aria-hidden="true" tabindex="-1"></a>        response <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(i)</span>
+<span id="cb33-348"><a href="#cb33-348" aria-hidden="true" tabindex="-1"></a>        thresholds[i] <span class="ot">&lt;&lt;-</span> <span class="fu">as.numeric</span>(response<span class="sc">$</span>data<span class="sc">$</span>income) <span class="co"># &lt;&lt;- updates in the outer function</span></span>
+<span id="cb33-349"><a href="#cb33-349" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb33-350"><a href="#cb33-350" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb33-351"><a href="#cb33-351" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb33-352"><a href="#cb33-352" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>poverty_threshold <span class="ot">&lt;-</span> <span class="fu">unname</span>(thresholds[hh_data<span class="sc">$</span>completed_url])</span>
+<span id="cb33-353"><a href="#cb33-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-354"><a href="#cb33-354" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in each row, just check to see whether the household income is above the</span></span>
+<span id="cb33-355"><a href="#cb33-355" aria-hidden="true" tabindex="-1"></a>    <span class="co"># poverty threshold in that row</span></span>
+<span id="cb33-356"><a href="#cb33-356" aria-hidden="true" tabindex="-1"></a>    hh_data<span class="sc">$</span>poverty_indicator<span class="ot">&lt;-</span>hh_data<span class="sc">$</span>income <span class="sc">&lt;</span> hh_data<span class="sc">$</span>poverty_threshold</span>
+<span id="cb33-357"><a href="#cb33-357" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-358"><a href="#cb33-358" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(hh_data)</span>
+<span id="cb33-359"><a href="#cb33-359" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-360"><a href="#cb33-360" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-361"><a href="#cb33-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-362"><a href="#cb33-362" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new fplChecker function - note that this returns another function we&#39;re called &quot;fpl&quot;</span></span>
+<span id="cb33-363"><a href="#cb33-363" aria-hidden="true" tabindex="-1"></a>fpl<span class="ot">&lt;-</span><span class="fu">fplChecker</span>()</span>
+<span id="cb33-364"><a href="#cb33-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-365"><a href="#cb33-365" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the fpl() function</span></span>
+<span id="cb33-366"><a href="#cb33-366" aria-hidden="true" tabindex="-1"></a>household_income_data <span class="ot">&lt;-</span> <span class="fu">fpl</span>(</span>
+<span id="cb33-367"><a href="#cb33-367" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> households<span class="sc">$</span>year,</span>
+<span id="cb33-368"><a href="#cb33-368" aria-hidden="true" tabindex="-1"></a>  <span class="at">household_sizes =</span> households<span class="sc">$</span>household_size,</span>
+<span id="cb33-369"><a href="#cb33-369" aria-hidden="true" tabindex="-1"></a>  <span class="at">incomes =</span> households<span class="sc">$</span>income</span>
+<span id="cb33-370"><a href="#cb33-370" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-371"><a href="#cb33-371" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-372"><a href="#cb33-372" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-373"><a href="#cb33-373" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-374"><a href="#cb33-374" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-375"><a href="#cb33-375" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-376"><a href="#cb33-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-378"><a href="#cb33-378" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-378"><a href="#cb33-378" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-379"><a href="#cb33-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-380"><a href="#cb33-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-381"><a href="#cb33-381" aria-hidden="true" tabindex="-1"></a>If we run this same bit of code a second time, you&#39;ll notice that it returns the same data, but it doesn&#39;t send any new requests:</span>
-<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
-<span id="cb33-384"><a href="#cb33-384" aria-hidden="true" tabindex="-1"></a>household_income_data <span class="ot">&lt;-</span> <span class="fu">fpl</span>(</span>
-<span id="cb33-385"><a href="#cb33-385" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> households<span class="sc">$</span>year,</span>
-<span id="cb33-386"><a href="#cb33-386" aria-hidden="true" tabindex="-1"></a>  <span class="at">household_sizes =</span> households<span class="sc">$</span>household_size,</span>
-<span id="cb33-387"><a href="#cb33-387" aria-hidden="true" tabindex="-1"></a>  <span class="at">incomes =</span> households<span class="sc">$</span>income</span>
-<span id="cb33-388"><a href="#cb33-388" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-380"><a href="#cb33-380" aria-hidden="true" tabindex="-1"></a>If we run this same bit of code a second time, you&#39;ll notice that it returns the same data, but it doesn&#39;t send any new requests:</span>
+<span id="cb33-381"><a href="#cb33-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval=FALSE}</span></span>
+<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a>household_income_data <span class="ot">&lt;-</span> <span class="fu">fpl</span>(</span>
+<span id="cb33-384"><a href="#cb33-384" aria-hidden="true" tabindex="-1"></a>  <span class="at">years =</span> households<span class="sc">$</span>year,</span>
+<span id="cb33-385"><a href="#cb33-385" aria-hidden="true" tabindex="-1"></a>  <span class="at">household_sizes =</span> households<span class="sc">$</span>household_size,</span>
+<span id="cb33-386"><a href="#cb33-386" aria-hidden="true" tabindex="-1"></a>  <span class="at">incomes =</span> households<span class="sc">$</span>income</span>
+<span id="cb33-387"><a href="#cb33-387" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-388"><a href="#cb33-388" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-389"><a href="#cb33-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-390"><a href="#cb33-390" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-391"><a href="#cb33-391" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-393"><a href="#cb33-393" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-395"><a href="#cb33-395" aria-hidden="true" tabindex="-1"></a><span class="fu">### Question 5B</span></span>
-<span id="cb33-396"><a href="#cb33-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-397"><a href="#cb33-397" aria-hidden="true" tabindex="-1"></a>In class work 2, we used the jackknife method to calculate the standard error for a median. Bootstrapping is a closely related method for calculating the standard error of an estimator with an unknown sampling distribution that relies on randomly sampling from our original data with replacement to create multiple simulated data sets.</span>
-<span id="cb33-398"><a href="#cb33-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-399"><a href="#cb33-399" aria-hidden="true" tabindex="-1"></a>::: column-margin</span>
-<span id="cb33-400"><a href="#cb33-400" aria-hidden="true" tabindex="-1"></a>Resampling with replacement means that we could sample some observations more than once. Think of it like drawing a card at random from a deck, recording the suit and number and then placing that card back into the deck and re-shuffling. Repeating the process of drawing, replacing, and re-shuffling 52 times to create a new &quot;simulated&quot; deck of cards. In some cases, you might get a draw the queen of hearts three times, and in some cases you might draw no queens at all, so your simulated decks will all be slightly different from one another.</span>
-<span id="cb33-401"><a href="#cb33-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-402"><a href="#cb33-402" aria-hidden="true" tabindex="-1"></a>In bootstrapping, re-sampling with replacement ensures that we get simulated data sets with a small amount of variability. Moreover, the variation in our bootstrapped replicates will be proportional to the amount of variation in our sample itself and, by extension, they&#39;ll simulate the sampling variability in the target population.</span>
-<span id="cb33-403"><a href="#cb33-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-404"><a href="#cb33-404" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb33-390"><a href="#cb33-390" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-391"><a href="#cb33-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb33-393"><a href="#cb33-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a><span class="fu">### Question 5B</span></span>
+<span id="cb33-395"><a href="#cb33-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-396"><a href="#cb33-396" aria-hidden="true" tabindex="-1"></a>In class work 2, we used the jackknife method to calculate the standard error for a median. Bootstrapping is a closely related method for calculating the standard error of an estimator with an unknown sampling distribution that relies on randomly sampling from our original data with replacement to create multiple simulated data sets.</span>
+<span id="cb33-397"><a href="#cb33-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-398"><a href="#cb33-398" aria-hidden="true" tabindex="-1"></a>::: column-margin</span>
+<span id="cb33-399"><a href="#cb33-399" aria-hidden="true" tabindex="-1"></a>Resampling with replacement means that we could sample some observations more than once. Think of it like drawing a card at random from a deck, recording the suit and number and then placing that card back into the deck and re-shuffling. Repeating the process of drawing, replacing, and re-shuffling 52 times to create a new &quot;simulated&quot; deck of cards. In some cases, you might get a draw the queen of hearts three times, and in some cases you might draw no queens at all, so your simulated decks will all be slightly different from one another.</span>
+<span id="cb33-400"><a href="#cb33-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-401"><a href="#cb33-401" aria-hidden="true" tabindex="-1"></a>In bootstrapping, re-sampling with replacement ensures that we get simulated data sets with a small amount of variability. Moreover, the variation in our bootstrapped replicates will be proportional to the amount of variation in our sample itself and, by extension, they&#39;ll simulate the sampling variability in the target population.</span>
+<span id="cb33-402"><a href="#cb33-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-403"><a href="#cb33-403" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb33-404"><a href="#cb33-404" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-405"><a href="#cb33-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-406"><a href="#cb33-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/bootstrap_algo.png)</span></span>
-<span id="cb33-408"><a href="#cb33-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-409"><a href="#cb33-409" aria-hidden="true" tabindex="-1"></a>You can re-sample a vector with replacement by using the <span class="in">`sample`</span> function along with a couple of optional commands. Here&#39;s an example of resampling &quot;X&quot; with replacement:</span>
-<span id="cb33-410"><a href="#cb33-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-413"><a href="#cb33-413" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-414"><a href="#cb33-414" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span>
-<span id="cb33-415"><a href="#cb33-415" aria-hidden="true" tabindex="-1"></a>x_resampled<span class="ot">&lt;-</span><span class="fu">sample</span>(x, <span class="at">size=</span><span class="fu">length</span>(x), <span class="at">replace=</span>T)</span>
-<span id="cb33-416"><a href="#cb33-416" aria-hidden="true" tabindex="-1"></a>x_resampled</span>
+<span id="cb33-406"><a href="#cb33-406" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/bootstrap_algo.png)</span></span>
+<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-408"><a href="#cb33-408" aria-hidden="true" tabindex="-1"></a>You can re-sample a vector with replacement by using the <span class="in">`sample`</span> function along with a couple of optional commands. Here&#39;s an example of resampling &quot;X&quot; with replacement:</span>
+<span id="cb33-409"><a href="#cb33-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-412"><a href="#cb33-412" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-413"><a href="#cb33-413" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span>
+<span id="cb33-414"><a href="#cb33-414" aria-hidden="true" tabindex="-1"></a>x_resampled<span class="ot">&lt;-</span><span class="fu">sample</span>(x, <span class="at">size=</span><span class="fu">length</span>(x), <span class="at">replace=</span>T)</span>
+<span id="cb33-415"><a href="#cb33-415" aria-hidden="true" tabindex="-1"></a>x_resampled</span>
+<span id="cb33-416"><a href="#cb33-416" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-417"><a href="#cb33-417" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-418"><a href="#cb33-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-419"><a href="#cb33-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-420"><a href="#cb33-420" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-421"><a href="#cb33-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-422"><a href="#cb33-422" aria-hidden="true" tabindex="-1"></a>You can calculate the nth percentile of a vector using the <span class="in">`quantile`</span> function:</span>
-<span id="cb33-423"><a href="#cb33-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-426"><a href="#cb33-426" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-427"><a href="#cb33-427" aria-hidden="true" tabindex="-1"></a><span class="co"># a vector of values:</span></span>
-<span id="cb33-428"><a href="#cb33-428" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">2</span>, .<span class="dv">5</span>, .<span class="dv">6</span>, .<span class="dv">7</span>,.<span class="dv">9</span>)</span>
-<span id="cb33-429"><a href="#cb33-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-430"><a href="#cb33-430" aria-hidden="true" tabindex="-1"></a><span class="co"># the 2.5th and 97.5th percentiles of v:</span></span>
-<span id="cb33-431"><a href="#cb33-431" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(v, <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span>
+<span id="cb33-419"><a href="#cb33-419" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-420"><a href="#cb33-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-421"><a href="#cb33-421" aria-hidden="true" tabindex="-1"></a>You can calculate the nth percentile of a vector using the <span class="in">`quantile`</span> function:</span>
+<span id="cb33-422"><a href="#cb33-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-425"><a href="#cb33-425" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-426"><a href="#cb33-426" aria-hidden="true" tabindex="-1"></a><span class="co"># a vector of values:</span></span>
+<span id="cb33-427"><a href="#cb33-427" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">2</span>, .<span class="dv">5</span>, .<span class="dv">6</span>, .<span class="dv">7</span>,.<span class="dv">9</span>)</span>
+<span id="cb33-428"><a href="#cb33-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-429"><a href="#cb33-429" aria-hidden="true" tabindex="-1"></a><span class="co"># the 2.5th and 97.5th percentiles of v:</span></span>
+<span id="cb33-430"><a href="#cb33-430" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(v, <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span>
+<span id="cb33-431"><a href="#cb33-431" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-432"><a href="#cb33-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-433"><a href="#cb33-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-434"><a href="#cb33-434" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-433"><a href="#cb33-433" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-434"><a href="#cb33-434" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-435"><a href="#cb33-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-436"><a href="#cb33-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-437"><a href="#cb33-437" aria-hidden="true" tabindex="-1"></a>Calculate a bootstrapped 95% confidence interval for the median of the <span class="in">`people_vs_elite`</span> measure from the <span class="in">`party_data`</span> data frame created by this code:</span>
-<span id="cb33-438"><a href="#cb33-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-439"><a href="#cb33-439" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, message=FALSE}</span></span>
+<span id="cb33-436"><a href="#cb33-436" aria-hidden="true" tabindex="-1"></a>Calculate a bootstrapped 95% confidence interval for the median of the <span class="in">`people_vs_elite`</span> measure from the <span class="in">`party_data`</span> data frame created by this code:</span>
+<span id="cb33-437"><a href="#cb33-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-438"><a href="#cb33-438" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, message=FALSE}</span></span>
+<span id="cb33-439"><a href="#cb33-439" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-440"><a href="#cb33-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-441"><a href="#cb33-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-442"><a href="#cb33-442" aria-hidden="true" tabindex="-1"></a>ches_experts<span class="ot">&lt;-</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://github.com/chesdata/chesdata.github.io/releases/download/ches-europe/CHES2019_experts.csv&#39;</span>)</span>
+<span id="cb33-441"><a href="#cb33-441" aria-hidden="true" tabindex="-1"></a>ches_experts<span class="ot">&lt;-</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://github.com/chesdata/chesdata.github.io/releases/download/ches-europe/CHES2019_experts.csv&#39;</span>)</span>
+<span id="cb33-442"><a href="#cb33-442" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-443"><a href="#cb33-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-445"><a href="#cb33-445" aria-hidden="true" tabindex="-1"></a>party_data<span class="ot">&lt;-</span><span class="fu">subset</span>(ches_experts, party_id <span class="sc">==</span><span class="st">&#39;2114&#39;</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(people_vs_elite), </span>
-<span id="cb33-446"><a href="#cb33-446" aria-hidden="true" tabindex="-1"></a>                   <span class="at">select=</span><span class="fu">c</span>(id, party_name, people_vs_elite))</span>
-<span id="cb33-447"><a href="#cb33-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-448"><a href="#cb33-448" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(party_data<span class="sc">$</span>people_vs_elite)</span>
-<span id="cb33-449"><a href="#cb33-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-450"><a href="#cb33-450" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a>party_data<span class="ot">&lt;-</span><span class="fu">subset</span>(ches_experts, party_id <span class="sc">==</span><span class="st">&#39;2114&#39;</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(people_vs_elite), </span>
+<span id="cb33-445"><a href="#cb33-445" aria-hidden="true" tabindex="-1"></a>                   <span class="at">select=</span><span class="fu">c</span>(id, party_name, people_vs_elite))</span>
+<span id="cb33-446"><a href="#cb33-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-447"><a href="#cb33-447" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(party_data<span class="sc">$</span>people_vs_elite)</span>
+<span id="cb33-448"><a href="#cb33-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-449"><a href="#cb33-449" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-450"><a href="#cb33-450" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-451"><a href="#cb33-451" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-452"><a href="#cb33-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-453"><a href="#cb33-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-454"><a href="#cb33-454" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Q5B. Answer</span></span>
-<span id="cb33-455"><a href="#cb33-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-456"><a href="#cb33-456" aria-hidden="true" tabindex="-1"></a>Here&#39;s one version that should work. </span>
-<span id="cb33-457"><a href="#cb33-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-458"><a href="#cb33-458" aria-hidden="true" tabindex="-1"></a>One function that we didn&#39;t discuss here is <span class="in">`set.seed`</span>. This function controls the initial state for R&#39;s random number generating processes. When we&#39;re dealing with functions like <span class="in">`sample`</span>, or <span class="in">`rnorm`</span> that generate random data, the <span class="in">`set.seed`</span> function will ensure that these &quot;random&quot; processes still generate replicable data.</span>
-<span id="cb33-459"><a href="#cb33-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-462"><a href="#cb33-462" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-463"><a href="#cb33-463" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">999</span>)</span>
-<span id="cb33-464"><a href="#cb33-464" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-465"><a href="#cb33-465" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
-<span id="cb33-466"><a href="#cb33-466" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="at">length =</span> n)</span>
-<span id="cb33-467"><a href="#cb33-467" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">300</span></span>
-<span id="cb33-468"><a href="#cb33-468" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>r){</span>
-<span id="cb33-469"><a href="#cb33-469" aria-hidden="true" tabindex="-1"></a>  x_boot<span class="ot">&lt;-</span><span class="fu">sample</span>(x, <span class="at">size=</span>n, <span class="at">replace=</span>T)</span>
-<span id="cb33-470"><a href="#cb33-470" aria-hidden="true" tabindex="-1"></a>  v[i] <span class="ot">&lt;-</span> <span class="fu">median</span>(x_boot, <span class="at">na.rm=</span>T)</span>
-<span id="cb33-471"><a href="#cb33-471" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb33-472"><a href="#cb33-472" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-473"><a href="#cb33-473" aria-hidden="true" tabindex="-1"></a>  v_ci <span class="ot">=</span> <span class="fu">quantile</span>(v, <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span>
+<span id="cb33-453"><a href="#cb33-453" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Q5B. Answer</span></span>
+<span id="cb33-454"><a href="#cb33-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-455"><a href="#cb33-455" aria-hidden="true" tabindex="-1"></a>Here&#39;s one version that should work. </span>
+<span id="cb33-456"><a href="#cb33-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-457"><a href="#cb33-457" aria-hidden="true" tabindex="-1"></a>One function that we didn&#39;t discuss here is <span class="in">`set.seed`</span>. This function controls the initial state for R&#39;s random number generating processes. When we&#39;re dealing with functions like <span class="in">`sample`</span>, or <span class="in">`rnorm`</span> that generate random data, the <span class="in">`set.seed`</span> function will ensure that these &quot;random&quot; processes still generate replicable data.</span>
+<span id="cb33-458"><a href="#cb33-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-461"><a href="#cb33-461" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-462"><a href="#cb33-462" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">999</span>)</span>
+<span id="cb33-463"><a href="#cb33-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-464"><a href="#cb33-464" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb33-465"><a href="#cb33-465" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="at">length =</span> n)</span>
+<span id="cb33-466"><a href="#cb33-466" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">300</span></span>
+<span id="cb33-467"><a href="#cb33-467" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>r){</span>
+<span id="cb33-468"><a href="#cb33-468" aria-hidden="true" tabindex="-1"></a>  x_boot<span class="ot">&lt;-</span><span class="fu">sample</span>(x, <span class="at">size=</span>n, <span class="at">replace=</span>T)</span>
+<span id="cb33-469"><a href="#cb33-469" aria-hidden="true" tabindex="-1"></a>  v[i] <span class="ot">&lt;-</span> <span class="fu">median</span>(x_boot, <span class="at">na.rm=</span>T)</span>
+<span id="cb33-470"><a href="#cb33-470" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-471"><a href="#cb33-471" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-472"><a href="#cb33-472" aria-hidden="true" tabindex="-1"></a>  v_ci <span class="ot">=</span> <span class="fu">quantile</span>(v, <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">975</span>))</span>
+<span id="cb33-473"><a href="#cb33-473" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-474"><a href="#cb33-474" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-475"><a href="#cb33-475" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-476"><a href="#cb33-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-477"><a href="#cb33-477" aria-hidden="true" tabindex="-1"></a>v_ci</span>
+<span id="cb33-476"><a href="#cb33-476" aria-hidden="true" tabindex="-1"></a>v_ci</span>
+<span id="cb33-477"><a href="#cb33-477" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-478"><a href="#cb33-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-479"><a href="#cb33-479" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-480"><a href="#cb33-480" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-481"><a href="#cb33-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-482"><a href="#cb33-482" aria-hidden="true" tabindex="-1"></a>Once we&#39;ve got that nailed down, its reasonably easy to make something like this in to a reuseable function. We can actually pass functions as arguments to other functions, so we can make a generic bootstrapping function that will perform this operation for statistics other than the median:</span>
-<span id="cb33-483"><a href="#cb33-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-486"><a href="#cb33-486" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-487"><a href="#cb33-487" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;theta&quot; here would be the name of any R function that takes a numeric vector</span></span>
-<span id="cb33-488"><a href="#cb33-488" aria-hidden="true" tabindex="-1"></a><span class="co"># and outputs a single numeric value. </span></span>
-<span id="cb33-489"><a href="#cb33-489" aria-hidden="true" tabindex="-1"></a>bootFunction<span class="ot">&lt;-</span><span class="cf">function</span>(x,theta, <span class="at">r =</span> <span class="dv">1000</span>, <span class="at">ci =</span> .<span class="dv">95</span>, <span class="at">seed=</span><span class="cn">NULL</span>){</span>
-<span id="cb33-490"><a href="#cb33-490" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(seed)){</span>
-<span id="cb33-491"><a href="#cb33-491" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">999</span>)</span>
-<span id="cb33-492"><a href="#cb33-492" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb33-493"><a href="#cb33-493" aria-hidden="true" tabindex="-1"></a>  n<span class="ot">&lt;-</span><span class="fu">length</span>(x)</span>
-<span id="cb33-494"><a href="#cb33-494" aria-hidden="true" tabindex="-1"></a>  v<span class="ot">&lt;-</span><span class="fu">numeric</span>(<span class="at">length =</span> n)</span>
-<span id="cb33-495"><a href="#cb33-495" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>r){</span>
-<span id="cb33-496"><a href="#cb33-496" aria-hidden="true" tabindex="-1"></a>    x_boot<span class="ot">&lt;-</span><span class="fu">sample</span>(x, <span class="at">size=</span>n, <span class="at">replace=</span>T)</span>
-<span id="cb33-497"><a href="#cb33-497" aria-hidden="true" tabindex="-1"></a>    v[i] <span class="ot">&lt;-</span> <span class="fu">theta</span>(x_boot)</span>
-<span id="cb33-498"><a href="#cb33-498" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb33-499"><a href="#cb33-499" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-500"><a href="#cb33-500" aria-hidden="true" tabindex="-1"></a>  lb<span class="ot">&lt;-</span>(<span class="dv">1</span> <span class="sc">-</span> ci)<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb33-501"><a href="#cb33-501" aria-hidden="true" tabindex="-1"></a>  ub<span class="ot">&lt;-</span><span class="dv">1</span> <span class="sc">-</span> lb</span>
-<span id="cb33-502"><a href="#cb33-502" aria-hidden="true" tabindex="-1"></a>  v_ci <span class="ot">=</span> <span class="fu">quantile</span>(v, <span class="fu">c</span>(lb, ub))</span>
-<span id="cb33-503"><a href="#cb33-503" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">&quot;sample_theta&quot;</span> <span class="ot">=</span><span class="fu">theta</span>(x), <span class="st">&quot;ci&quot;</span><span class="ot">=</span> v_ci))</span>
-<span id="cb33-504"><a href="#cb33-504" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-479"><a href="#cb33-479" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-480"><a href="#cb33-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-481"><a href="#cb33-481" aria-hidden="true" tabindex="-1"></a>Once we&#39;ve got that nailed down, its reasonably easy to make something like this in to a reuseable function. We can actually pass functions as arguments to other functions, so we can make a generic bootstrapping function that will perform this operation for statistics other than the median:</span>
+<span id="cb33-482"><a href="#cb33-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-485"><a href="#cb33-485" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-486"><a href="#cb33-486" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;theta&quot; here would be the name of any R function that takes a numeric vector</span></span>
+<span id="cb33-487"><a href="#cb33-487" aria-hidden="true" tabindex="-1"></a><span class="co"># and outputs a single numeric value. </span></span>
+<span id="cb33-488"><a href="#cb33-488" aria-hidden="true" tabindex="-1"></a>bootFunction<span class="ot">&lt;-</span><span class="cf">function</span>(x,theta, <span class="at">r =</span> <span class="dv">1000</span>, <span class="at">ci =</span> .<span class="dv">95</span>, <span class="at">seed=</span><span class="cn">NULL</span>){</span>
+<span id="cb33-489"><a href="#cb33-489" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(seed)){</span>
+<span id="cb33-490"><a href="#cb33-490" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">999</span>)</span>
+<span id="cb33-491"><a href="#cb33-491" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-492"><a href="#cb33-492" aria-hidden="true" tabindex="-1"></a>  n<span class="ot">&lt;-</span><span class="fu">length</span>(x)</span>
+<span id="cb33-493"><a href="#cb33-493" aria-hidden="true" tabindex="-1"></a>  v<span class="ot">&lt;-</span><span class="fu">numeric</span>(<span class="at">length =</span> n)</span>
+<span id="cb33-494"><a href="#cb33-494" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>r){</span>
+<span id="cb33-495"><a href="#cb33-495" aria-hidden="true" tabindex="-1"></a>    x_boot<span class="ot">&lt;-</span><span class="fu">sample</span>(x, <span class="at">size=</span>n, <span class="at">replace=</span>T)</span>
+<span id="cb33-496"><a href="#cb33-496" aria-hidden="true" tabindex="-1"></a>    v[i] <span class="ot">&lt;-</span> <span class="fu">theta</span>(x_boot)</span>
+<span id="cb33-497"><a href="#cb33-497" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-498"><a href="#cb33-498" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb33-499"><a href="#cb33-499" aria-hidden="true" tabindex="-1"></a>  lb<span class="ot">&lt;-</span>(<span class="dv">1</span> <span class="sc">-</span> ci)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb33-500"><a href="#cb33-500" aria-hidden="true" tabindex="-1"></a>  ub<span class="ot">&lt;-</span><span class="dv">1</span> <span class="sc">-</span> lb</span>
+<span id="cb33-501"><a href="#cb33-501" aria-hidden="true" tabindex="-1"></a>  v_ci <span class="ot">=</span> <span class="fu">quantile</span>(v, <span class="fu">c</span>(lb, ub))</span>
+<span id="cb33-502"><a href="#cb33-502" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">&quot;sample_theta&quot;</span> <span class="ot">=</span><span class="fu">theta</span>(x), <span class="st">&quot;ci&quot;</span><span class="ot">=</span> v_ci))</span>
+<span id="cb33-503"><a href="#cb33-503" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-504"><a href="#cb33-504" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-505"><a href="#cb33-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-506"><a href="#cb33-506" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-507"><a href="#cb33-507" aria-hidden="true" tabindex="-1"></a><span class="co"># example of getting a 95% ci around the interquartile range from a sample:</span></span>
-<span id="cb33-508"><a href="#cb33-508" aria-hidden="true" tabindex="-1"></a><span class="fu">bootFunction</span>(party_data<span class="sc">$</span>people_vs_elite, </span>
-<span id="cb33-509"><a href="#cb33-509" aria-hidden="true" tabindex="-1"></a>             <span class="at">r =</span> <span class="dv">300</span>,</span>
-<span id="cb33-510"><a href="#cb33-510" aria-hidden="true" tabindex="-1"></a>             <span class="at">theta =</span> IQR,</span>
-<span id="cb33-511"><a href="#cb33-511" aria-hidden="true" tabindex="-1"></a>             <span class="at">seed =</span> <span class="dv">999</span>)</span>
-<span id="cb33-512"><a href="#cb33-512" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-513"><a href="#cb33-513" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-506"><a href="#cb33-506" aria-hidden="true" tabindex="-1"></a><span class="co"># example of getting a 95% ci around the interquartile range from a sample:</span></span>
+<span id="cb33-507"><a href="#cb33-507" aria-hidden="true" tabindex="-1"></a><span class="fu">bootFunction</span>(party_data<span class="sc">$</span>people_vs_elite, </span>
+<span id="cb33-508"><a href="#cb33-508" aria-hidden="true" tabindex="-1"></a>             <span class="at">r =</span> <span class="dv">300</span>,</span>
+<span id="cb33-509"><a href="#cb33-509" aria-hidden="true" tabindex="-1"></a>             <span class="at">theta =</span> IQR,</span>
+<span id="cb33-510"><a href="#cb33-510" aria-hidden="true" tabindex="-1"></a>             <span class="at">seed =</span> <span class="dv">999</span>)</span>
+<span id="cb33-511"><a href="#cb33-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-512"><a href="#cb33-512" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-513"><a href="#cb33-513" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-514"><a href="#cb33-514" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-515"><a href="#cb33-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-516"><a href="#cb33-516" aria-hidden="true" tabindex="-1"></a>There are several R packages that provide more flexible (and potentially much faster) versions of the bootstrap function above. The <span class="co">[</span><span class="ot">boot</span><span class="co">](https://cran.r-project.org/web/packages/boot/index.html)</span> package, and the tidyverse friendly <span class="co">[</span><span class="ot">rsample</span><span class="co">](https://rsample.tidymodels.org/index.html)</span> are both worth considering for more practical applications.</span>
-<span id="cb33-517"><a href="#cb33-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-515"><a href="#cb33-515" aria-hidden="true" tabindex="-1"></a>There are several R packages that provide more flexible (and potentially much faster) versions of the bootstrap function above. The <span class="co">[</span><span class="ot">boot</span><span class="co">](https://cran.r-project.org/web/packages/boot/index.html)</span> package, and the tidyverse friendly <span class="co">[</span><span class="ot">rsample</span><span class="co">](https://rsample.tidymodels.org/index.html)</span> are both worth considering for more practical applications.</span>
+<span id="cb33-516"><a href="#cb33-516" aria-hidden="true" tabindex="-1"></a></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
