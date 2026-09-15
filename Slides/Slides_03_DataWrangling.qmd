@@ -1,0 +1,2285 @@
+---
+title: "Data Wrangling"
+format:
+  revealjs:
+    include-in-header:
+      - text: |
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    theme: [default, clean]
+    df-print: paged
+    smaller: true
+    slide-number: true
+    header: 
+    header-logo: images/informal_seal_transparent.webp
+    self-contained: true
+code-annotations: select
+slide-level: 3
+---
+
+```{css}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .function-box {
+            background: white;
+            border: 2px solid #2c5aa0;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .function-header {
+            background: linear-gradient(135deg, #2c5aa0, #1e3d6f);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        
+        .function-name {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+        }
+        
+        .function-syntax {
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+        
+        .function-body {
+            padding: 20px;
+        }
+        
+        .description {
+            margin-bottom: clamp(12px, 2.5vw, 20px);
+            color: #444;
+            line-height: 1.5;
+            font-size: clamp(12px, 2.2vw, 16px);
+        }
+        
+        .arguments-title {
+            font-size: clamp(14px, 3vw, 20px);
+            font-weight: bold;
+            margin-bottom: clamp(8px, 2vw, 15px);
+            color: #2c5aa0;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        
+        .argument {
+            margin-bottom: clamp(8px, 2vw, 15px);
+            padding: clamp(8px, 2vw, 15px);
+            background: #f8f9fa;
+            border-left: 4px solid #2c5aa0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .arg-name {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #c7254e;
+            font-size: clamp(12px, 2.5vw, 18px);
+        }
+        
+        .arg-description {
+            margin-top: clamp(3px, 1vw, 8px);
+            color: #555;
+            line-height: 1.4;
+            font-size: clamp(10px, 2vw, 14px);
+        }
+        
+        .arg-type {
+            font-style: italic;
+            color: #666;
+            font-size: clamp(9px, 1.8vw, 13px);
+            margin-top: clamp(2px, 0.5vw, 6px);
+        }
+        
+        .example-section {
+            margin-top: clamp(15px, 3vw, 25px);
+            padding-top: clamp(12px, 2.5vw, 20px);
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .example-title {
+            font-size: clamp(12px, 2.5vw, 18px);
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: clamp(6px, 1.5vw, 12px);
+        }
+        
+        .example-code {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: clamp(8px, 2vw, 15px);
+            font-family: 'Courier New', monospace;
+            font-size: clamp(9px, 1.8vw, 14px);
+            color: #333;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+      .pagedtable table {
+        width: auto; /* Adjust table width as needed */
+      }
+      .pagedtable th, .pagedtable td {
+        width: 60px; /* Set width for the first column */
+      }
+      /* Add more CSS rules for specific columns as needed */
+```
+
+### Data wrangling:
+
+
+-   Split-Apply-Combine operations
+
+-   Long and Wide data
+
+-   Joins
+
+-   Quick-and-dirty tables and plots
+
+-   Recoding
+
+
+### Tidyverse conventions {.smaller}
+
+We'll make extensive use of `tidyverse` packages for these sections.
+
+Some genre conventions of tidy code
+
+::::: columns
+::: {.column width="40%"}
+1.  Most functions take a `.data =` argument. Which means so they work well with `|>` and you'll rarely see `$` notation.
+
+2.  A preference for `tidy` data, where each row represents a single case or observation, each column is a variable, and each cell contains a single value.
+
+3.  Some stylistic regularities: like related functions having a `prefix_suffix` naming style. Ex: `str_split`, `str_replace`, and `str_extract`
+:::
+
+::: {.column width="60%"}
+```{r, eval=FALSE}
+
+library(tidyverse)
+
+url<-'https://www.chesdata.eu/s/CHES_2024_final_v2-c32x.dta'
+ches<-haven::read_dta(url)|>
+  haven::as_factor()|>
+  group_by(country)|>
+  
+  mutate(seat_share  = seat/sum(seat,na.rm=T),
+         vote_share = vote/sum(vote, na.rm=T)
+         )|>
+  summarise(gallagher = sqrt(.5 * sum((vote_share -seat_share)^2)))|>
+  ungroup()|>
+  select(country, gallagher)|>
+  arrange(-gallagher)|>
+  slice_head(n=5)
+
+ches
+
+
+
+```
+:::
+:::::
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(tidycensus)
+
+# good default settings for homeworks (suppress warning messages but always show code and output)
+knitr::opts_chunk$set(echo = TRUE, 
+                      max.print=20,
+                      rows.print=10,
+                      warning =FALSE,
+                      message=FALSE)
+
+
+
+```
+
+### Problem {.smaller}
+
+I'm interesting in tracking the annual number of civilians killed by country in the first 6 months of 2025
+
+. . .
+
+I've got a collection of "candidate events" from the UCDP. Here's an example of the formatting:
+
+:::::: columns
+:::: {.column width="30%"}
+::: incremental
+-   My raw data is measured at the event level
+
+-   But I want to aggregate data by country
+:::
+::::
+
+::: {.column width="70%"}
+```{r, echo=FALSE, paged.print=FALSE}
+
+
+url<-'https://ucdp.uu.se/downloads/candidateged/GEDEvent_v25_01_25_06.csv'
+
+ged<-read_csv(url)
+
+set.seed(400)
+ged|>
+  filter(deaths_civilians>0)|>
+  select(country, conflict_name,date_start, source_headline,  deaths_civilians)|>
+  mutate(source_headline = paste(source_headline))|>
+  slice_sample(n=5)|>
+  knitr::kable(table.attr = 'data-quarto-disable-processing="true"')|>
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = FALSE)
+
+
+```
+:::
+::::::
+
+### Split-Apply-Combine operations
+
+-   Many analyses will require some variation on this basic pattern:
+
+::: incremental
+-   **Split** data into meaningful groups
+
+-   **Apply** some statistical calculation for each group (average, range, variance, etc.)
+
+-   **Combine** the results into a new summary table
+
+-   while these sorts of operations could be performed in a loop, or using base functions like `aggregate`, we'll use the `dplyr` package here
+:::
+
+### Split-Apply-Combine
+
+```{dot}
+//| fig-cap: "Example of split-apply-combine process for a group-wise average"
+
+digraph SplitApplyCombine {
+    rankdir=LR;
+    node [shape=box];
+    "Original Data" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR>
+                <TD>Group</TD>
+                <TD>Value</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">3</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">3</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">5</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">7</TD>
+            </TR>
+           <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">2</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">9</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700" >2</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700" >C</TD>
+                <TD bgcolor="#FFD700">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">1</TD>
+            </TR>
+            <TR><TD COLSPAN="2">...</TD></TR>
+
+        </TABLE>
+    >]
+    
+    "Final Result" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR>
+                <TD >Group</TD>
+                <TD >Value</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">4.5</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">3.25</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">1.33</TD>
+            </TR>
+        </TABLE>
+    >]
+    
+    "Group A"[shape=box, style=filled, fillcolor=white];
+    "Group B"[shape=box, style=filled, fillcolor="#89F336"];
+    "Group C"[shape=box, style=filled, fillcolor="#FFD700"];
+    "Result A"[shape=box, style=filled, fillcolor=white];
+    "Result B"[shape=box, style=filled, fillcolor="#89F336"];
+    "Result C"[shape=box, style=filled, fillcolor="#FFD700"];
+    
+
+    // Initial data node
+    //"Original Data" [shape=cylinder, label="Original Data\n(e.g., DataFrame)"];
+
+    // The Split phase represented by a subgraph
+    subgraph cluster_split {
+        label="1. Split";
+        style=filled;
+        color=lightgrey;
+        node [shape=box, style=filled, fillcolor=white];
+        
+        "Original Data" -> "Group A";
+        "Original Data" -> "Group B";
+        "Original Data" -> "Group C";
+    }
+
+    // The Apply phase represented by a subgraph
+    subgraph cluster_apply {
+        label="2. Apply";
+        style=filled;
+        color=lightgrey;
+        node [shape=note, style=filled, fillcolor=white];
+        
+        "Group A" -> "Result A" [label="  mean(Value)"];
+        "Group B" -> "Result B" [label="  mean(Value)"];
+        "Group C" -> "Result C" [label="  mean(Value)"];
+    }
+
+    // The Combine phase represented by a subgraph
+    subgraph cluster_combine {
+        label="3. Combine";
+        style=filled;
+        color=lightgrey;
+        node [shape=cylinder, style=filled, fillcolor=white];
+        
+        "Result A" -> "Final Result";
+        "Result B" -> "Final Result";
+        "Result C" -> "Final Result";
+    }
+}
+
+```
+
+### dplyr: group_by
+
+::::: columns
+::: {.column width="50%"}
+
+`group_by(.data, ...)`
+
+:   Turns `.data` into a grouped table where each group is defined by the variables listed in `...`
+
+-   This doesn't do much on its own, but subsequent dplyr functions will be performed on the groups you've created. You can think of this as the "split" step.
+:::
+
+::: {.column width="50%"}
+```{r, paged.print=FALSE}
+library(dplyr)
+df<-data.frame(group = c("A", "A", "A", "A", 
+                         "B", "B",  "B", "B",
+                         "C", "C", "C"),
+               value = c(3, 3, 5, 7, 2, 1, 1,9, 2, 1, 1)
+               )
+
+df_grouped<-df|>
+  group_by(group)
+
+
+# data looks the same after this step:
+df_grouped
+
+```
+:::
+:::::
+
+## dplyr summarize
+
+::::: columns
+::: {.column width="50%"}
+
+`summarize(.data, ...)`
+
+:   applies one or more functions defined by `...` to each group in `.data` and then combines the results in to a single data frame.
+
+-   You can think of this as performing both the "apply" and "combine" steps.
+:::
+
+::: {.column width="50%"}
+```{r}
+
+df_grouped<-df|>
+  group_by(group)|>
+  summarize(mean_value = mean(value),
+            sd_value = sd(value)
+            
+            )
+
+df_grouped
+
+
+```
+:::
+:::::
+
+## dplyr group_by + summarize
+
+```{dot}
+//| fig-cap: "Example of group_by and summarize"
+
+digraph SplitApplyCombine {
+    rankdir=LR;
+    node [shape=box];
+    "Original Data" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR>
+                <TD>group</TD>
+                <TD>value</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">3</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">3</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">5</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">7</TD>
+            </TR>
+           <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">2</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">9</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700" >2</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700" >C</TD>
+                <TD bgcolor="#FFD700">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">1</TD>
+            </TR>
+            <TR><TD COLSPAN="2">...</TD></TR>
+
+        </TABLE>
+    >]
+    
+    "Final Result" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR>
+                <TD >group</TD>
+                <TD >mean_value</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">4.5</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">3.25</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">1.33</TD>
+            </TR>
+        </TABLE>
+    >]
+    
+    "Group A"[shape=box, style=filled, fillcolor=white];
+    "Group B"[shape=box, style=filled, fillcolor="#89F336"];
+    "Group C"[shape=box, style=filled, fillcolor="#FFD700"];
+    "Result A"[shape=box, style=filled, fillcolor=white];
+    "Result B"[shape=box, style=filled, fillcolor="#89F336"];
+    "Result C"[shape=box, style=filled, fillcolor="#FFD700"];
+    
+
+    // Initial data node
+    //"Original Data" [shape=cylinder, label="Original Data\n(e.g., DataFrame)"];
+
+    // The Split phase represented by a subgraph
+    subgraph cluster_split {
+        label="group_by(group)";
+        style=filled;
+        color=lightgrey;
+        node [shape=box, style=filled, fillcolor=white];
+        
+        "Original Data" -> "Group A";
+        "Original Data" -> "Group B";
+        "Original Data" -> "Group C";
+    }
+
+    // The Apply phase represented by a subgraph
+    subgraph cluster_apply {
+        label="summarize(mean_value = mean(value))";
+        style=filled;
+        color=lightgrey;
+        node [shape=note, style=filled, fillcolor=white];
+        
+        "Group A" -> "Result A" [label="  "];
+        "Group B" -> "Result B" [label=" "];
+        "Group C" -> "Result C" [label="  "];
+            // The Combine phase represented by a subgraph
+    subgraph cluster_combine {
+        label="";
+        style=filled;
+        color=lightgrey;
+        node [shape=cylinder, style=filled, fillcolor=white];
+        
+        "Result A" -> "Final Result";
+        "Result B" -> "Final Result";
+        "Result C" -> "Final Result";
+    }
+    }
+
+
+}
+
+```
+
+## dplyr group_by + mutate
+
+An alternative to `summarize` is `mutate`. Mutate works almost the same way, but the final result is then joined to the original data.
+
+```{dot}
+
+digraph SplitApplyCombine {
+    rankdir=LR;
+    node [shape=box];
+    "Original Data" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR>
+                <TD>group</TD>
+                <TD>value</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">3</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">3</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">5</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">7</TD>
+            </TR>
+           <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">2</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">9</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700" >2</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700" >C</TD>
+                <TD bgcolor="#FFD700">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">1</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">5</TD>
+            </TR>
+            <TR><TD COLSPAN="2">...</TD></TR>
+
+        </TABLE>
+    >]
+    
+    "Mutated Data" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR>
+                <TD>group</TD>
+                <TD>value</TD>
+                <TD>mean_value</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">3</TD>
+                <TD bgcolor="#FFFFFF">4.5</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">3</TD>
+                <TD bgcolor="#FFFFFF">4.5</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">5</TD>
+                <TD bgcolor="#FFFFFF">4.5</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">7</TD>
+                <TD bgcolor="#FFFFFF">4.5</TD>
+            </TR>
+           <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">2</TD>
+                <TD bgcolor="#89F336">3.25</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">1</TD>
+                <TD bgcolor="#89F336">3.25</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">1</TD>
+                <TD bgcolor="#89F336">3.25</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">9</TD>
+                <TD bgcolor="#89F336">3.25</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700" >2</TD>
+                <TD bgcolor="#FFD700">2.25</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700" >C</TD>
+                <TD bgcolor="#FFD700">1</TD>
+                <TD bgcolor="#FFD700">2.25</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">1</TD>
+                <TD bgcolor="#FFD700">2.25</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">5</TD>
+                <TD bgcolor="#FFD700">2.25</TD>
+            </TR>
+            <TR><TD COLSPAN="3">...</TD></TR>
+
+        </TABLE>
+    >]
+    
+    "Final Result" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR>
+                <TD >group</TD>
+                <TD >mean_value</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">A</TD>
+                <TD bgcolor="#FFFFFF">4.5</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#89F336">B</TD>
+                <TD bgcolor="#89F336">3.25</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFD700">C</TD>
+                <TD bgcolor="#FFD700">2.25</TD>
+            </TR>
+        </TABLE>
+    >]
+    
+    "Group A"[shape=box, style=filled, fillcolor=white];
+    "Group B"[shape=box, style=filled, fillcolor="#89F336"];
+    "Group C"[shape=box, style=filled, fillcolor="#FFD700"];
+    "Result A"[shape=box, style=filled, fillcolor=white];
+    "Result B"[shape=box, style=filled, fillcolor="#89F336"];
+    "Result C"[shape=box, style=filled, fillcolor="#FFD700"];
+    
+
+    // Initial data node
+    //"Original Data" [shape=cylinder, label="Original Data\n(e.g., DataFrame)"];
+
+    // The Split phase represented by a subgraph
+    subgraph cluster_split {
+        label="groupby(group)";
+        style=filled;
+        color=lightgrey;
+        node [shape=box, style=filled, fillcolor=white];
+        
+        "Original Data" -> "Group A";
+        "Original Data" -> "Group B";
+        "Original Data" -> "Group C";
+    }
+
+    // The Apply phase represented by a subgraph
+    subgraph cluster_apply {
+        label="mutate(mean_value = mean(value))";
+        style=filled;
+        color=lightgrey;
+        node [shape=note, style=filled, fillcolor=white];
+        
+        "Group A" -> "Result A" [label="mean"];
+        "Group B" -> "Result B" [label="mean"];
+        "Group C" -> "Result C" [label="mean"];
+            // The Combine phase represented by a subgraph
+    subgraph cluster_combine {
+        label="";
+        style=filled;
+        color=lightgrey;
+        node [shape=cylinder, style=filled, fillcolor=white];
+        
+        "Result A" -> "Final Result";
+        "Result B" -> "Final Result";
+        "Result C" -> "Final Result";
+    }
+    subgraph cluster_combine {
+        label="";
+        style=filled;
+        color=lightgrey;
+        node [shape=cylinder, style=filled, fillcolor=white];
+        
+        "Final Result" -> "Mutated Data"
+        "Original Data" -> "Mutated Data" [label = "Joining group summaries with original data"]
+    }
+    }
+
+
+}
+
+
+```
+
+## dplyr mutate vs. summarize
+
+Mutate will be most useful when we need to do something like mean-centering or calculating a running-sum for each group in a data set. (We'll also sometimes use `mutate` without `group_by` to just add a new column to a dataframe)
+
+::::: columns
+::: {.column width="50%"}
+```{r}
+df_summarized<-df|>
+  group_by(group)|>
+  summarize(mean_value = mean(value),
+            sd_value = sd(value)
+            
+            )
+
+df_summarized
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+
+df_mutated<-df|>
+  group_by(group)|>
+  mutate(mean_value = mean(value),
+            sd_value = sd(value)
+            
+            )|>
+  # good rule to always run `ungroup` after mutate:
+
+  ungroup()
+
+df_mutated
+
+
+
+```
+:::
+:::::
+
+## Back to the problem
+
+::: incremental
+-   Back to the original problem: how do we turn event-level data into data with a total number of civilian deaths for each country?
+:::
+
+. . .
+
+::::: columns
+::: {.column width="50%"}
+-   **Split** by country
+
+-   **Apply** a sum the civilian death toll column in each group
+
+-   **combine** the results into a single data frame
+:::
+
+::: {.column width="50%"}
+```{r}
+
+url<-'https://ucdp.uu.se/downloads/candidateged/GEDEvent_v25_0_7.csv'
+
+ged<-read_csv(url)
+
+```
+
+```{r, eval=FALSE}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+ged|>
+  group_by(country)|>
+  summarise(civilian_deaths = sum(deaths_civilians))
+
+```
+:::
+:::::
+
+## Some other common dplyr operations
+
+These functions also respect the grouping context, so be careful about how you use them after calling `group_by` because they can give very different results for a grouped data frame:
+
+-   `select`: selects certain columns from a tbl (with a more flexible syntax compared to base R)
+
+-   `filter`: removes rows based on a logical condition
+
+-   `slice_head`/`slice_tail/slice_sample`: take the top rows, bottom rows, or a random sample of rows.
+
+-   `arrange`: sort by one or more values
+
+-   `count`: count the number of rows in the grouping context.
+
+## Some other common dplyr operations
+
+Here's an example of using some other `dplyr` functions:
+
+. . .
+
+::::: columns
+::: {.column width="40%"}
+-   line 4. remove cases with 0 deaths
+
+-   line 5-6. get the worst single incident for each conflict
+
+-   line 7. select specific some specific columns
+
+-   line 8. sort by civilian deaths in decreasing order
+
+-   line 9. ungroup the result
+:::
+
+::: {.column width="60%"}
+```{r, paged.print=FALSE}
+#| code-line-numbers: true
+#| df-print: kable
+
+
+url<-'https://ucdp.uu.se/downloads/candidateged/GEDEvent_v25_0_7.csv'
+ged<-read_csv(url)
+ged|>
+  filter(deaths_civilians>0)|>
+  group_by(conflict_name)|>
+  filter(deaths_civilians == max(deaths_civilians))|>
+  select(date_start, conflict_name, deaths_civilians)|>
+  arrange(-deaths_civilians)|>
+  ungroup()
+
+
+
+```
+:::
+:::::
+
+## Problem
+
+The UCDP distinguishes between state based, non-state, and one-sided forms of violence. I'm interested in tracking total deaths by country and violence type.
+
+. . .
+
+We can think of a single "record" of data as looking something like this:
+
+```{dot}
+
+digraph G {
+
+          node [shape=box];
+     "Record 1" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ='2'>Single record: one for each country/violence type</TD></TR>
+
+            
+            <TR><TD> Country </TD><TD>Ex: Burkina Faso, Mexico, Ukraine, ... </TD></TR>
+            <TR><TD> Conflict Type </TD><TD>Ex: non-state, state, one-sided</TD></TR>
+            <TR><TD> Est. Deaths </TD><TD>Ex: 296, 376, 6870 </TD></TR>
+
+        
+            </TABLE>
+            >
+            
+            ]
+}
+
+```
+
+. . .
+
+How should I arrange my data for analysis?
+
+## Complex data and long vs. wide format
+
+This is another common complication: how do we represent complex data 2-dimensional matrix?
+
+A classic example would be panel data, where multiple cases are tracked across multiple years:
+
+-   Country-year data on economic growth
+
+-   Tracking student GPAs across terms
+
+-   Public opinion surveys for the same set of respondents during an entire election
+
+. . .
+
+## Long Data
+
+Putting the records in **long format** would mean putting each case in a row and using repetition to identify related cases:
+
+```{dot}
+
+digraph G {
+    rankdir=TB;
+
+    node [shape=box];
+
+          node [shape=box];
+     "Record 1" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ='2'>Single record: one for each country/violence type</TD></TR>
+
+            
+            <TR><TD> Country </TD><TD>Ex: Burkina Faso, Mexico, Ukraine, ... </TD></TR>
+            <TR><TD> Conflict Type </TD><TD>Ex: state-based, non-state, one-sided</TD></TR>
+            <TR><TD> Est. Deaths </TD><TD>Ex: 296, 376, 6870 </TD></TR>
+
+        
+            </TABLE>
+            >
+            
+            ]
+   "Long Format" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4"> Long Format </TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Conflict Type</TD>
+                <TD>Est. Deaths</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">state-based</TD>
+                <TD bgcolor="#FFFFFF">296</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">non-state</TD>
+                <TD bgcolor="#FFFFFF">6</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">one-sided</TD>
+                <TD bgcolor="#FFFFFF">58</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">state-based</TD>
+                <TD bgcolor="#FFFFFF">8</TD>
+            </TR>
+           <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">non-state</TD>
+                <TD bgcolor="#FFFFFF">376</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">one-sided</TD>
+                <TD bgcolor="#FFFFFF">22</TD>
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+
+        subgraph cluster_split {
+        label="";
+        style=filled;
+        color=white;
+        node [shape=box, style=filled, fillcolor=white];
+
+       "Record 1" ->"Long Format"
+
+
+     }
+
+
+   
+}
+
+
+```
+
+## Wide Format
+
+Putting records in *wide format* means using additional columns for each group (either one column per country or per violence type, in the current example)
+
+```{dot}
+
+
+digraph G {
+    rankdir=TB;
+
+    node [shape=box];
+
+          node [shape=box];
+     "Record 1" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ='2'>Single record: one for each country/violence type</TD></TR>
+
+            
+            <TR><TD> Country </TD><TD>Ex: Burkina Faso, Mexico, Ukraine, ... </TD></TR>
+            <TR><TD> Conflict Type </TD><TD>Ex: state-based, non-state, one-sided</TD></TR>
+            <TR><TD> Est. Deaths </TD><TD>Ex: 296, 376, 6870 </TD></TR>
+
+        
+            </TABLE>
+            >
+            
+            ]
+   "Long Format" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4"> Long Format </TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Conflict Type</TD>
+                <TD>Est. Deaths</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">state-based</TD>
+                <TD bgcolor="#FFFFFF">296</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">non-state</TD>
+                <TD bgcolor="#FFFFFF">6</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">one-sided</TD>
+                <TD bgcolor="#FFFFFF">58</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">state-based</TD>
+                <TD bgcolor="#FFFFFF">8</TD>
+            </TR>
+           <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">non-state</TD>
+                <TD bgcolor="#FFFFFF">376</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">one-sided</TD>
+                <TD bgcolor="#FFFFFF">22</TD>
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+    
+       "Wide Format" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4"> Wide Format </TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>state-based</TD>
+                <TD>non-state</TD>
+                <TD>one-sided</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+
+                <TD bgcolor="#FFFFFF">296</TD>
+                <TD bgcolor="#FFFFFF">6</TD>
+                <TD bgcolor="#FFFFFF">58</TD>
+
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">8</TD>
+                <TD bgcolor="#FFFFFF">376</TD>
+                <TD bgcolor="#FFFFFF">22</TD>
+
+
+
+            </TR>
+
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+        </TABLE>
+    >]
+
+        subgraph cluster_split {
+        label="";
+        style=filled;
+        color=white;
+        node [shape=box, style=filled, fillcolor=white];
+
+       "Record 1" ->"Long Format"
+
+
+     }
+
+       "Record 1" ->"Wide Format"
+
+   
+}
+
+```
+
+## Long vs. Wide
+
+:::::: columns
+:::: {.column width="50%"}
+::: incremental
+-   Wide format data is generally easier on the eyeballs, especially when you want people to make comparisons across groups/periods.
+-   It's much easier to calculate totals by row or column.
+-   But it's less flexible: what if I want to track civilian and non-civilian deaths separately? I need a whole new table.
+:::
+::::
+
+::: {.column width="50%"}
+```{dot}
+//| fig-width: 5
+
+digraph G {
+    rankdir=TB;
+
+    node [shape=box];
+
+"Wide Format" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4"> Wide Format </TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>state-based</TD>
+                <TD>non-state</TD>
+                <TD>one-sided</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+
+                <TD bgcolor="#FFFFFF">296</TD>
+                <TD bgcolor="#FFFFFF">6</TD>
+                <TD bgcolor="#FFFFFF">58</TD>
+
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">8</TD>
+                <TD bgcolor="#FFFFFF">376</TD>
+                <TD bgcolor="#FFFFFF">22</TD>
+
+
+
+            </TR>
+
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+        </TABLE>
+    >]
+
+}
+
+
+```
+:::
+::::::
+
+## Long vs. Wide
+
+:::::: columns
+:::: {.column width="50%"}
+::: incremental
+-   Long format may be inefficient for storage and transfer because information is repeated.
+
+-   But it's far more flexible: adding combatant death tolls is as simple as adding a new column.
+
+-   Each row is a discrete observation as opposed to a collection of observations.
+
+-   In general, R functions (especially code related to the tidyverse) will work better with long data.
+:::
+::::
+
+::: {.column width="50%"}
+```{dot}
+//| fig-width: 5
+
+digraph G {
+    rankdir=TB;
+
+    node [shape=box];
+
+ "Long Format" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4"> Long Format </TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Conflict Type</TD>
+                <TD>Est. Deaths</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">state-based</TD>
+                <TD bgcolor="#FFFFFF">296</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">non-state</TD>
+                <TD bgcolor="#FFFFFF">6</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Burkina Faso</TD>
+                <TD bgcolor="#FFFFFF">one-sided</TD>
+                <TD bgcolor="#FFFFFF">58</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">state-based</TD>
+                <TD bgcolor="#FFFFFF">8</TD>
+            </TR>
+           <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">non-state</TD>
+                <TD bgcolor="#FFFFFF">376</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Mexico</TD>
+                <TD bgcolor="#FFFFFF">one-sided</TD>
+                <TD bgcolor="#FFFFFF">22</TD>
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+    
+}
+
+
+```
+:::
+::::::
+
+## Long to wide in dplyr
+
+::::::: columns
+::: {.column width="50%"}
+
+`pivot_wider(.data, names_from, values_from)`
+
+:   Makes data wider. `names_from` will identify the new column names. `values_from` will identify the values in each cell.
+:::
+
+::::: {.column width="50%"}
+::: fragment
+```{r, paged.print=FALSE}
+
+df<-data.frame(group = c("A", "A", "A",
+                         "B", "B",  "B"),
+               period = c("First", "Second", "Third", 
+                          "First", "Second", "Third"),
+               value = c(3, 3, 5, 7, 2, 1)
+               )
+df
+
+
+```
+:::
+
+::: fragment
+```{r, paged.print=FALSE}
+
+df|>
+  pivot_wider(names_from = group, values_from = value)
+
+```
+:::
+:::::
+:::::::
+
+## Wide-to-long in dplyr
+
+::::::: columns
+::: {.column width="50%"}
+
+`pivot_longer(.data, cols)`
+
+:   Makes data longer. Data in `cols` will form new rows.
+:::
+
+::::: {.column width="50%"}
+::: fragment
+```{r, paged.print=FALSE}
+
+df<-data.frame(period = c("First", "Second", "Third"),
+               `A` = c(3, 3, 5),
+               `B` = c(7, 2, 1)
+               )
+df
+
+
+```
+:::
+
+::: fragment
+```{r, paged.print=FALSE}
+
+df|>
+  pivot_longer(cols=c(A,B))
+
+```
+:::
+:::::
+:::::::
+
+## Back to the problem
+
+How should I arrange my data for analysis?
+
+```{r, paged.print=FALSE}
+
+url<-'https://ucdp.uu.se/downloads/candidateged/GEDEvent_v25_0_7.csv'
+ged<-read_csv(url)
+ged_by_type=ged|>
+  mutate(
+    type_of_violence = factor(
+    type_of_violence,
+    levels = c(1, 2, 3),
+    labels = c("State-based", "Non-state", "One-sided")
+  ))|>
+  group_by(country, type_of_violence)|>
+  summarise(est_deaths  = sum(best))
+
+ged_by_type
+
+
+
+
+```
+
+## Back to the problem
+
+Try pivoting this to wide format and then back again.
+
+::::: columns
+::: {.column width="50%"}
+Pivoting the data from long to wide with one column for each conflict type.
+
+```{r, paged.print=FALSE}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+ged_wide<-ged_by_type|>
+  pivot_wider(names_from = type_of_violence, 
+              values_from = est_deaths)
+  
+ged_wide
+
+
+```
+:::
+
+::: {.column width="50%"}
+Putting the wide data back in its original format:
+
+```{r, paged.print=FALSE}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+ged_long <- ged_wide|>
+  pivot_longer(cols = c(`State-based`, `Non-state`, `One-sided`),
+               names_to ='violence_type', #  name the new columns
+               values_to ='est_deaths'
+               )
+  
+  
+ged_long
+
+```
+:::
+:::::
+
+## Long vs. Wide
+
+-   A general rule: prefer long data while you're processing stuff. You can use wide formats for your "finished products" (the stuff that someone else might need to look at)
+
+-   Keep in mind: Wide and long aren't necessarily discrete categories. There are long-er and wide-er versions of most real-world data, so it's really more of a relative concept.
+
+### Problem
+
+I want to explore the relationship between "rugged terrain" and civil wars since 1945, but doing so requires me to combine data from two different data sets.
+
+:::::: columns
+::: {.column width="50%"}
+My first source is a list of all countries that had a civil war since 1989.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# downloading battle deaths data
+if(!file.exists('ucdp_datasets/BattleDeaths_v25_1.csv')){
+  download.file('https://ucdp.uu.se/downloads/brd/ucdp-brd-dyadic-251-csv.zip',
+                dest = 'battle_deaths.zip'
+                )
+  
+    unzip('battle_deaths.zip',
+        exdir = 'ucdp_datasets')
+}
+
+
+# getting data on civil wars
+civil_wars<-read_csv('ucdp_datasets/BattleDeaths_v25_1.csv')|>
+  filter(type_of_conflict=='3')|>
+  group_by(gwno_a)|>
+  summarise(deaths = sum(bd_best))|>
+  filter(deaths>1000)|>
+  ungroup()|>
+  mutate(gwno_a = as.numeric(gwno_a))|>
+  mutate(country = countrycode::countrycode(gwno_a, origin='gwn', 
+                                            dest='country.name'))|>
+  relocate(country)|>
+  arrange(country)
+
+
+civil_wars
+
+```
+:::
+
+:::: {.column width="50%"}
+::: fragment
+My second data source measures the logged % of mountainous terrain in a country:
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+rugged<-peacesciencer::rugged|>
+  filter(!is.na(gwcode))|>
+  mutate(country = countrycode::countrycode(gwcode, origin='gwn', 
+                                            dest='country.name'),
+         country = ifelse(gwcode == 816, "Vietnam", country))|>
+  relocate(country)|>
+  select(-ccode, -rugged)|>
+  arrange(country)|> 
+  rename(rough = newlmtnest)
+
+
+rugged
+
+```
+:::
+::::
+::::::
+
+## Joins
+
+This will require some kind of join, where two tables are combined based on a matching value in each called the **key.** But there's more than one way to do this, especially when the tables don't have perfectly matching keys.
+
+```{dot}
+digraph G {
+    rankdir=LR;
+
+    node [shape=box];
+
+
+   "civil_wars" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Civil Wars</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Est. Deaths</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">54753</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">18488</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">23088</TD>
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+    
+       "rugged" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Terrain</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Log % Rough Terrain</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">4.2</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Albania</TD>
+                <TD bgcolor="#FFFFFF">339</TD>
+                <TD bgcolor="#FFFFFF">2.3</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">2.8</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">2.4</TD>
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+    
+        "Combined Data" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+
+
+        </TABLE>
+    >]
+
+        subgraph cluster_split {
+        label="";
+        style=filled;
+        color=white;
+        node [shape=box, style=filled, fillcolor=white];
+
+
+
+     }
+
+
+
+    
+    rugged -> "Combined Data"
+    
+    civil_wars -> "Combined Data"
+
+   
+}
+
+```
+
+## Join types
+
+-   Inner joins preserve only keys that are present in **both** data sets. (Rows with multiple matches are duplicated)
+
+```{dot}
+
+digraph G {
+    rankdir=LR;
+
+    node [shape=box];
+
+
+   "civil_wars" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Civil Wars</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Est. Deaths</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">54753</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">18488</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">23088</TD>
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+    
+       "rugged" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Terrain</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Log % Rough Terrain</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">4.2</TD>
+
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Albania</TD>
+                <TD bgcolor="#FFFFFF">339</TD>
+                <TD bgcolor="#FFFFFF">2.3</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">2.8</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">2.4</TD>
+
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+    
+        "joined" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Combined</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Log % Rough Terrain</TD>
+                <TD>Est. Deaths</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">4.2</TD>
+                <TD bgcolor="#FFFFFF">54753</TD>
+
+                
+            </TR>
+            <TR>
+              <TD colspan ="4">Albania dropped!</TD>
+
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">2.8</TD>
+                <TD bgcolor="#FFFFFF">18488</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">2.4</TD>
+                <TD bgcolor="#FFFFFF">23088</TD>
+
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+
+        subgraph cluster_split {
+        label="";
+        style=filled;
+        color=white;
+        node [shape=box, style=filled, fillcolor=white];
+
+
+
+     }
+
+
+
+    
+    rugged -> joined
+    
+    civil_wars -> joined
+
+   
+}
+
+```
+
+
+
+## Left/Right join
+
+-   A `left_join` will take all data from the left hand side and all matching data on the left. A `right_join` will do the reverse. ("left" vs. "right" is entirely a matter of which table you reference first in the join command)
+
+
+```{dot}
+
+digraph G {
+    rankdir=TD;
+
+    node [shape=box];
+
+ "rugged" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Terrain (RHS)</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Log % Rough Terrain</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">4.2</TD>
+
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Albania</TD>
+                <TD bgcolor="#FFFFFF">339</TD>
+                <TD bgcolor="#FFFFFF">2.3</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">2.8</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">2.4</TD>
+
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+
+   "civil_wars" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Civil Wars (LHS)</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Est. Deaths</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">54753</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">18488</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">23088</TD>
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+    
+      
+    
+    
+        "joined" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Terrain</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Log % Rough Terrain</TD>
+                <TD>Est. Deaths</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">4.2</TD>
+                <TD bgcolor="#FFFFFF">54753</TD>
+
+                
+            </TR>
+            <TR>
+                <TD colspan ="4">Albania dropped!</TD>
+
+
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">2.8</TD>
+                <TD bgcolor="#FFFFFF">18488</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">2.4</TD>
+                <TD bgcolor="#FFFFFF">23088</TD>
+
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+
+        subgraph cluster_split {
+        label="";
+        style=filled;
+        color=white;
+        node [shape=box, style=filled, fillcolor=white];
+        rank=same;
+        civil_wars
+        rugged 
+        
+
+     }
+
+
+
+    
+    
+    civil_wars -> joined
+    
+    rugged -> joined
+
+   
+}
+
+```
+
+
+## Full Join
+
+Full joins will preserve all keys in both data sets. (so Albania is kept, but with an NA in the deaths column)
+
+
+```{dot}
+
+digraph G {
+    rankdir=TD;
+
+    node [shape=box];
+
+ "rugged" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Terrain (LHS)</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Log % Rough Terrain</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">4.2</TD>
+
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Albania</TD>
+                <TD bgcolor="#FFFFFF">339</TD>
+                <TD bgcolor="#FFFFFF">2.3</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">2.8</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">2.4</TD>
+
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+
+   "civil_wars" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Civil Wars (RHS)</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Est. Deaths</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">54753</TD>
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">18488</TD>
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">23088</TD>
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+    
+      
+    
+    
+        "joined" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="4">Combined Data</TD></TR>
+
+            <TR>
+                <TD>Country</TD>
+                <TD>Country ID</TD>
+                <TD>Log % Rough Terrain</TD>
+                <TD>Est. Deaths</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Afghanistan</TD>
+                <TD bgcolor="#FFFFFF">700</TD>
+                <TD bgcolor="#FFFFFF">4.2</TD>
+                <TD bgcolor="#FFFFFF">54753</TD>
+
+                
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Albania</TD>
+                <TD bgcolor="#FFFFFF">339</TD>
+                <TD bgcolor="#FFFFFF">2.3</TD>
+                <TD bgcolor="#FFFFFF">NA</TD>
+
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Algeria</TD>
+                <TD bgcolor="#FFFFFF">615</TD>
+                <TD bgcolor="#FFFFFF">2.8</TD>
+                <TD bgcolor="#FFFFFF">18488</TD>
+
+            </TR>
+            <TR>
+                <TD bgcolor="#FFFFFF">Angola</TD>
+                <TD bgcolor="#FFFFFF">540</TD>
+                <TD bgcolor="#FFFFFF">2.4</TD>
+                <TD bgcolor="#FFFFFF">23088</TD>
+
+            </TR>
+            <TR><TD colspan ="4"> ...more rows</TD></TR>
+
+
+        </TABLE>
+    >]
+
+        subgraph cluster_split {
+        label="";
+        style=filled;
+        color=white;
+        node [shape=box, style=filled, fillcolor=white];
+        rank=same;
+
+        rugged 
+        civil_wars
+
+     }
+
+
+
+    
+    rugged -> joined
+    
+    civil_wars -> joined
+
+   
+}
+
+
+```
+
+## Joins in dplyr
+
+`left_join(left_table, right_table, by = join_by(left_key == right_key))`
+
+
+## Back to the original problem
+
+
+:::::: columns
+:::: {.column width="40%"}
+
+::: incremental
+
+- put the terrain data first and use a `left_join`
+
+- join on the Gleditsch Ward country ID. (country names are not very reliable!)
+
+- We'll want to fill `NA` values in `deaths` with "0" because these states had no civil war deaths.
+
+:::
+
+:::
+
+
+:::: {.column width="60%"}
+
+```{r, eval=TRUE}
+
+
+joined_data<-left_join(rugged, 
+                       civil_wars, 
+                       by=join_by(gwcode ==gwno_a))
+
+joined_data
+
+```
+
+
+:::
+
+:::::
+
+
+
+## Back to the original problem
+
+
+
+:::::: columns
+:::: {.column width="40%"}
+
+- We can use `replace_na` to replace NA values with 0s
+
+- And we'll just create an indicator that's `TRUE` if a country had 0 civil wars
+
+
+::::
+
+
+
+:::: {.column width="60%"}
+
+```{r, eval=TRUE}
+
+
+joined_data<-left_join(rugged,
+                       civil_wars, 
+                       by=join_by(gwcode ==gwno_a))|>
+  mutate(deaths = replace_na(deaths, 0),
+         any_civil_war = deaths>0
+         )
+
+joined_data
+
+```
+
+
+::::
+
+:::::
+
+
+## Back to the original problem
+
+
+:::::: columns
+::: {.column width="40%"}
+
+
+```{r}
+
+lm(any_civil_war ~ rough, data = joined_data)|>
+  broom::tidy()
+
+```
+
+:::
+
+::: {.column width="40%"}
+
+
+```{r}
+
+
+
+
+ggplot(joined_data, aes(x=any_civil_war, y=rough)) + 
+  geom_boxplot() +
+  theme_bw() +
+  ylab("natural log of % mountainous terrain") +
+  xlab("Any civil wars after 1989?")
+
+
+
+
+```
+
+:::
+
+:::::
+
+
+## Other joins
+
+-   `inner_join` will drop any rows that don't have a match in either data set
+
+-   `full_join` will avoid dropping any rows from either dataset.
+
+-   `anti_join` will find rows in the right hand side without a match on the left. (you can use this to find discrepancies between groups)
+
+-   `fuzzy_join` (part of a separate package called `fuzzyjoin`) will allow imperfect matches like slight misspellings.
+
