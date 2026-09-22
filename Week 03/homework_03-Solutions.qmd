@@ -6,6 +6,7 @@ format:
     df-print: kable
     code-tools: true
     embed-resources: true
+lightbox: true
 ---
 
 Use the [FiveThirtyEight elections data](https://github.com/fivethirtyeight/election-results) to answer the following questions about the 2024 election results.
@@ -176,7 +177,7 @@ voteshare_diff|>
   mutate(senator = paste0(senator,", ", state))|>
   ggplot(aes(x=voteshare_pres, y=voteshare_senate, color=party, label=senator)) +
   geom_abline(intercept=0, slope=1, lty=2, col='black') +
-  geom_text_repel() +
+  geom_text_repel( show.legend = FALSE) +
   geom_point()+
   theme_bw() +
   labs(title = "Senate vs. Presidential Share of two-party vote in the 2024 election",
