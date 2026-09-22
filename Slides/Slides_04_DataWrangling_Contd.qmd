@@ -1,0 +1,1225 @@
+---
+title: "Data Wrangling Pt. II"
+format:
+  revealjs:
+    theme: [default, clean]
+    df-print: kable
+    smaller: true
+    slide-number: true
+    self-contained: true
+code-annotations: select
+slide-level: 3
+---
+
+
+```{css, echo=FALSE}
+
+.reveal {
+  background-image: linear-gradient(45deg, #faf0e6, #e4d5b7)
+  /* background-color: #faf0e6;  Replace with your desired color code */
+
+}
+
+
+```
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+
+```
+
+
+
+
+# What we'll cover
+
+-   Fancier joins
+
+-   Working with text and dates
+
+-   Basic plots with ggplot
+
+## Data
+
+```{r}
+
+ccc<-read_csv('https://dataverse.harvard.edu/api/access/datafile/12027896')
+
+
+
+
+```
+
+# Fancy joins {.section-colored-background}
+
+![](images/dandy.webp){fig-align="center"}
+
+### Anti-join
+
+
+
+::::: columns
+::: {.column width="50%"}
+
+An `anti_join`: returns all elements of LHS that are NOT IN the RHS. For instance:
+
+
+```{r}
+
+library(countrycode)
+
+
+
+
+
+```
+:::
+
+::: {.column width="50%"}
+
+
+![](images/dandy.webp){fig-align="center"}
+
+:::
+:::::
+
+### Cross joins
+
+
+::::: columns
+::: {.column width="50%"}
+
+Also known as a cartesian join. A `cross_join`: creates a row for each row in the LHS and RHS table:
+
+```{r, echo=TRUE}
+
+lhs<-tibble(letter = c("A", "B", "C"))
+rhs<-tibble(number = c(1, 2) )
+combined<-cross_join(lhs, rhs)
+
+combined
+
+
+```
+:::
+
+::: {.column width="50%"}
+
+
+![](images/dandy.webp){fig-align="center"}
+
+
+:::
+:::::
+
+
+
+
+<!--
+
+## Working with factors
+
+![](images/simmons-bread-20.webp){fig-align="center"}
+
+
+
+
+### Problem: missing factor labels
+
+
+```{r}
+
+
+```
+
+-->
+
+## Nesting and unnesting
+
+
+![](images/nesting.webp){fig-align="center"}
+
+
+
+
+### Problem: nested data event data
+
+Since events often include multiple behaviors and claims, CCC variables allow "nested" data, where each value is separated by a semi-colon:
+
+
+```{r}
+
+ccc|>
+  count(issue_tags_summary)|>
+  arrange(-n)|>
+  slice_head(n=5)
+
+
+```
+
+How do we (non-destructively) get rid of the nesting from this to get something into the "tidy" format we want for analysis?
+
+
+### Splitting and unnesting
+
+Once we split up the data, we've got three main options that can retain our tabular structure without losing any data: long, wide, or dummied (also known as "one-hot" encoding)
+
+
+. . .
+
+
+```{dot}
+digraph G {
+    rankdir=TB;
+
+    node [shape=box];
+
+          node [shape=box];
+     "Record 1" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ='2'>Original Records</TD></TR>
+
+            
+            <TR><TD> Event ID </TD><TD>Issues</TD></TR>
+            <TR><TD> 1 </TD><TD>(corruption, healthcare, immigration)</TD></TR>
+            <TR><TD> 2 </TD><TD>healthcare</TD></TR>
+            <TR><TD> 3 </TD><TD>(immigration, covid-19)</TD></TR>
+            <TR><TD> 4 </TD><TD>israel-palestine</TD></TR>
+
+
+        
+            </TABLE>
+            >
+            
+            ]
+   "Long Format" [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ="2"> Long Format </TD></TR>
+           <TR><TD> Event ID </TD><TD>Issues</TD></TR>
+            <TR><TD> 1 </TD><TD>corruption</TD></TR>
+            <TR><TD> 1 </TD><TD>healthcare</TD></TR>
+            <TR><TD> 1 </TD><TD>immigration</TD></TR>
+            <TR><TD> 2 </TD><TD>healthcare</TD></TR>
+            <TR><TD> 3 </TD><TD>immigration</TD></TR>
+            <TR><TD> 3 </TD><TD>covid-19</TD></TR>
+            <TR><TD> 4 </TD><TD>israel-palestine</TD></TR>
+
+
+        </TABLE>
+    >]
+    
+
+   "Wide Format" [label=<
+       <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ='4'>Wide Format</TD></TR>
+
+            
+            <TR><TD> Event ID </TD><TD>Issues 1</TD><TD>Issues 2</TD><TD>Issues 3</TD></TR>
+            <TR><TD> 1 </TD><TD>corruption</TD><TD>healthcare</TD><TD>immigration</TD></TR>
+            <TR><TD> 2 </TD><TD>healthcare</TD><TD></TD><TD></TD></TR>
+            <TR><TD> 3 </TD><TD>immigration</TD><TD>covid-19</TD><TD></TD></TR>
+            <TR><TD> 4 </TD><TD>israel-palestine</TD><TD></TD><TD></TD></TR>
+
+
+        
+            </TABLE>
+            >]
+   "Dummy Format" [label=<
+       <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD colspan ='6'>Dummy Format</TD></TR>
+
+            
+            <TR><TD> Event ID </TD><TD>corruption</TD><TD>healthcare</TD><TD>immigration</TD><TD>israel-palestine</TD></TR>
+            <TR><TD> 1 </TD><TD>1</TD><TD>1</TD><TD>1</TD><TD>0</TD></TR>
+            <TR><TD> 2 </TD><TD>0</TD><TD>1</TD><TD>0</TD><TD>0</TD></TR>
+            <TR><TD> 3 </TD><TD>0</TD><TD>0</TD><TD>1</TD><TD>0</TD></TR>
+            <TR><TD> 4 </TD><TD>0</TD><TD>0</TD><TD>0</TD><TD>1</TD></TR>
+
+
+        
+            </TABLE>
+            >]            
+        subgraph cluster_split {
+        label="";
+        style=filled;
+        color=white;
+        node [shape=box, style=filled, fillcolor=white];
+
+       "Record 1" ->"Long Format"
+       "Record 1" ->"Wide Format"
+       "Record 1" ->"Dummy Format"
+
+
+
+     }
+
+
+   
+}
+
+
+```
+
+
+
+
+### Wide, long, and dummified
+
+
+::: {.panel-tabset}
+
+
+#### Wide
+
+Wide format really only works here if the nested list has an ordering (otherwise, the decision to place a value in "issue1" vs. "issue2" is arbitrary)
+
+```{r}
+
+
+ccc|>
+  select(issue_tags_summary)|>
+  mutate(issue_tags_summary = str_split(issue_tags_summary, ";"))|>
+  unnest_wider(issue_tags_summary, names_sep='_')|>
+  slice_head(n=5)
+  
+
+```
+
+
+
+#### Long
+
+Long format works well with many of our R functions, but *we want to be careful about how we calculate/interpret proportions and counts because multi-issue events would receive more weight than single issue events.*
+
+```{r}
+#| output-location: column
+
+ccc|>
+  select(issue_tags_summary)|>
+  mutate(
+    event_id = row_number(),
+    issue_tags_summary = str_split(issue_tags_summary, ";"))|>
+  unnest_longer(issue_tags_summary)|>
+  mutate(issue_tags_summary = str_squish(issue_tags_summary))|>
+  slice_head(n=5)
+  
+
+```
+
+
+#### Dummified
+
+Making dummies takes a little more legwork, but it preserves the 1 row per event structure of the original data.
+
+```{r}
+
+ccc|>
+  select(issue_tags_summary)|>
+  mutate(
+    event_id = row_number(),
+    issue_tags_summary = str_split(issue_tags_summary, ";"),
+    value = 1
+    )|>
+  unnest_longer(issue_tags_summary)|>
+  mutate(issue_tags_summary = str_squish(issue_tags_summary))|>
+  pivot_wider(names_from = issue_tags_summary, values_from =value, values_fill = 0
+              )|>
+  slice_head(n=5)
+  
+  
+
+```
+
+
+:::
+
+
+### Wide, long, and dummified: notes
+
+- All of this can be memory intensive for long strings or big data sets. For those scenarios, we can use methods and packages specifically designed for doing text analysis.
+
+- Nesting is often preferable for storage, transfer, and data entry because it's compact with minimal repetition. So we typically don't need to worry about this until we're at the analysis stage.
+
+- [There's a set of (currently experimental) tidyr functions](https://tidyr.tidyverse.org/reference/index.html#character-vectors) that combine the split-unnest process into a single command.
+
+
+
+
+
+
+
+## Messy strings
+
+![](images/strings.webp){fig-align="center"}
+
+
+### Problem: spelling errors
+
+Some variations on "demonstration" in the CCC data for 2025:
+
+```{r}
+#| output-location: column
+
+demos<-ccc|>
+  filter(str_detect(event_type, ";|,") ==FALSE)|>
+  filter(str_detect(tolower(event_type), "demo"))
+
+demos|>
+  count(event_type)|>
+  arrange(-n)|>
+  slice_tail(n=20)|>
+  kableExtra::kbl()|>
+  kableExtra::kable_classic()
+
+
+```
+:::
+:::::
+
+### "Manual" spelling correction
+
+A labor-intensive - but precise - fix would be to use an exhaustive list of mis-spellings and then a logical expression:
+
+```{r, echo=TRUE}
+#| output-location: column
+
+
+spellings<-c("demonstrations", 
+             "demonsatration", 
+             'demosntration', 
+             'demomstration', 
+             'Demonstration',
+             'demonstration and sit-in',
+             'demonstarion',
+             'Demonstartion',
+             'demonstation',
+             'demonstratino',
+             'pdemonstration',
+             'demonstraiton',
+             'demonstratiion',
+             'demontration',
+             'demostration',
+             'demonstration'
+             )
+
+demos|>
+  mutate(is_demonstration = event_type %in% spellings)|>
+  count(is_demonstration)
+  
+  
+
+
+
+```
+
+### Regular Expressions
+
+Instead of typing every possibility, we could use a regular expression to catch values.
+
+-   A regular expression is a way to match text patterns. It's sort of like a wild-card search, but far more flexible.
+
+-   Most mature programming languages will have support for using regular expressions (they're really indespensible for this kind of problem!)
+
+Some examples of regex operators:
+
+| Pattern | Match                                |
+|---------|--------------------------------------|
+| a\|b    | 'a' or 'b'                           |
+| a+      | 'a' one or more times                |
+| a\*     | 'a' zero or more times               |
+| a?      | 'a' zero or one time                 |
+| a{1, 4} | 'a' between 1 to 5 times             |
+| \^a     | 'a' at the start of a string         |
+| a\$     | 'a' at the end of a string           |
+| (a)     | Assigns 'a' to a "capture" group     |
+| [^a-c]  | Anything except 'a', 'b', or 'c'     |
+
+
+### Regular Expressions
+
+
+Here's a regular expression you might use to match "demonstrations"
+
+$$ 
+\text{\b[d|D]emo\S+ons*\b}
+$$
+
+- `\b` denotes a word boundary (start of a string, a space, punctuation mark, or newline)
+
+- `[D|d]` matches either upper case D or lower case D. 
+
+- `\S+` will match any non-whitespace character between one and infinite times.
+
+- `ons*\b` means that the word must end with the letters `on` followed by either an `s` or nothing.
+
+(Note that in R you need to escape backslashes, so `\b` will be `\\b`)
+
+. . .
+
+
+I recommend using a graphical interface [this one](https://regex101.com/) to develop and test complex expressions. Then just paste your results into an R command.
+
+### Regular Expressions
+
+
+::::: columns
+::: {.column width="50%"}
+
+
+`stringr` functions:
+
+- `str_detect` returns `TRUE` if there's a match *anywhere in the string*
+
+- `str_replace` will replace the first instance of a matching string with something else. 
+
+- `str_extract` will extract first instance of the string that matches your regular expression.
+
+- `str_extract_all` and `str_replace_all` will do this for all matches in a string, instead of just the first.
+
+
+
+
+:::
+
+
+::: {.column width="50%"}
+
+
+
+```{r}
+
+demos|>
+  distinct(event_type)|>
+  mutate(detect = str_detect(event_type, "\\b[d|D]emo\\S+ons*\\b"),
+         replace = str_replace(event_type, "\\b[d|D]emo\\S+ons*\\b", "demonstration"),
+         extract = str_extract(event_type, "\\b[d|D]emo\\S+ons*\\b")
+         )
+
+```
+
+
+
+:::
+
+
+:::::
+
+
+
+### Regular Expressions: Notes
+
+- If you just need a simple string match, it might be better to use `str_detect(coll(x), "string_to_match")` to do literal matching. 
+- Any kind of wild card matching comes with some risk of errors, so be careful about using this in high-stakes scenarios.
+
+- Regular expressions can be computationally expensive because they require multiple passes through a string.
+
+
+### Regular Expressions: Notes
+
+This:
+
+![](images/cloudflare_2019_outage.png)
+
+... Was ultimately caused by this regular expression:
+
+```
+
+(?:(?:\"|'|\]|\}|\\|\d|(?:nan|infinity|true|false|null|undefined|symbol|math)|\`|\-|\+)+[)]*;?((?:\s|-|~|!|{}|\|\||\+)*.*(?:.*=.*)))
+
+```
+
+
+
+
+
+### Making a dictionary with fuzzy matching
+
+
+Finally, we might try to use some fuzzy matching to facilitate creating a dictionary.
+
+1. Make a list of valid strings and a list of all strings that occur in the data.
+
+2. Quantify the difference between each string.
+
+3. Join any rows where the distance is below some threshold. (typically setting this requires some manual inspection)
+
+### Making a dictionary with fuzzy matching
+
+String Distance:
+
+
+::: incremental
+
+- There are lots of ways to calculate the "distance" between strings. 
+
+- The default for the R package "stringdist" is the restricted Damerau-Levenshtein distance, which counts the number of operations need to transform one string into another.
+
+- A single operation could be:
+
+  - transposing  "s" and "n" in "demosntration"
+  - removing the "s" "demonstrations" or adding an "n" to "demostration"
+  - substituting "m" for "n" in "demomstration"
+
+
+:::
+
+### Making a dictionary with fuzzy matching
+
+
+(note: if there's a really large amount of text, then the `expand.grid` function below might eat up all your memory. So you would probably want to do this using a loop or just use an existing package for text analysis.)
+
+```{r, echo=TRUE}
+#| output-location: column
+#| fig-height: 7
+library(stringdist)
+
+valid_event_types = c("demonstration", 
+                      "rally", 
+                      "march",
+                      "protest", 
+                      "civil disobedience",
+                      "counter-protest")
+all_event_types<-ccc|>
+  pluck('event_type')|>
+  str_split(";")|>
+  unlist()|>
+  str_to_lower()|>
+  str_squish()|>
+  na.omit()|>
+  unique()
+
+
+
+distances<-expand.grid("valid" = valid_event_types, 
+                       "all"  = all_event_types)|>
+  mutate(distance = stringdist(valid, all, method='osa'))|>
+  arrange(valid, distance)
+
+
+distances|>
+  filter(valid == "demonstration")|>
+  ggplot(aes(x=distance, y=reorder(all, distance))) + 
+  geom_bar(stat='identity') +
+  ylab("Term") +
+  xlab("Damerau-Levenshtein distance from \"demonstration\"") +
+  theme_bw()
+
+
+
+```
+
+
+### Making a dictionary with fuzzy matching
+
+After some inspection, I decided a distance of around 4 should be the maximum. 
+
+
+```{r, echo=TRUE}
+#| output-location: column
+
+
+
+dictionary<-distances|>
+  group_by(all)|>
+  filter(distance < 4)|>
+  slice_min(n=1, order_by=distance, with_ties=FALSE)
+
+
+# viewing the distances for unmatched results:
+anti_join(distances, dictionary, by=join_by(all == all))|>
+  pivot_wider(names_from = valid, values_from =distance)|>
+  kableExtra::kbl(caption='string distances for unmatched strings')|>
+  kableExtra::kable_classic()
+
+
+  
+
+
+```
+
+
+
+
+### Making a dictionary with fuzzy matching
+
+Here's how we might apply this dictionary to get the proportion of events featuring each "type" of activity across all events in the data:
+
+
+```{r}
+
+ccc$event_id <- 1:nrow(ccc)
+
+ccc_events<-ccc|>
+  mutate(
+    event_split = str_split(str_to_lower(event_type), ";"))|>
+  select(event_id, event_split)|>
+  unnest_longer(event_split)|>
+  mutate(event_split = str_squish(event_split))|>
+  left_join(dictionary, by =join_by(event_split == all))|>
+  select(event_id, valid)|>
+  mutate(one = 1)|>
+  pivot_wider(names_from = valid, values_from = one, values_fill = 0)
+
+
+colMeans(ccc_events[,2:ncol(ccc_events)])
+
+
+
+
+```
+
+. . .
+
+(Alternatively, you might just use a left join to add these values back on to the original CCC data)
+
+
+
+## Times and dates
+
+Times and dates are complex
+
+- Different date formats: Aug 19, 2025; 2025-19-08; 19 August, 2025...
+
+- Time zones, leap years, and daylight savings
+
+- Calendar/clock math, periods, and intervals
+
+### Times and dates
+
+Base R uses specialized date and time classes to help with these complexities, but you'll encounter issues if the dates aren't formatted correctly:
+
+```{r, error=TRUE}
+
+as.Date("01/01/1970")              # everything is wrong here
+
+as.Date("July 1, 2024")            # unable to recognize text
+
+as.Date("2025-09-20 13:40:13 EDT") # time is dropped here
+
+
+as.Date(-1003)                     # this is fine for some reason
+
+as.POSIXct("2025-09-30")
+
+as.POSIXlt("2025-09-30")
+
+
+```
+
+### Times and dates
+
+
+The lubridate package provides a series of date conversion functions that can handle a lot of common date formats:
+
+```{r}
+library(lubridate)
+
+```
+
+```{r}
+
+mdy('August 9, 2012')
+dmy('9 Aug, 2012')
+ymd('2012 8 9')
+
+
+```
+
+However, when this fails you can also use the `format` option of `as.Date()` to convert date strings as long as you supply a string that clarifies what each element represents:
+
+
+```{r}
+
+as.Date('August 9, 2012', format = "%B %d, %Y")
+
+
+
+```
+
+
+
+### Filling empty data
+
+I want a weekly count of online events, but there's a problem when I try to aggregate the data like this:
+
+```{r}
+#| output-location: column-fragment
+weekly_events<-ccc|>
+  filter(online==1)|>
+  mutate(week = floor_date(date, unit='week'))|>
+  count(week)
+
+weekly_events
+```
+
+
+### Filling empty data
+
+There are gaps here where no events occurred, but these rows aren't reflected in our data set.
+
+::::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE}
+weekly_events<-ccc|>
+  filter(online==1)|>
+  mutate(week = floor_date(date, unit='week'))|>
+  count(week)
+
+library(paletteer) # package for alternate color palettes
+
+ggplot(data = weekly_events, aes(x=week, y=n)) +
+    geom_line(lwd=.7) + 
+  geom_point(size=3) +
+  theme_minimal() + 
+  labs(x = "Date", 
+       y='Number of events', 
+       title='Monthly event counts through August 2025',
+       caption = "Data source: Crowd Counting Consortium"
+      )+
+scale_x_date(date_breaks = "1 month", date_labels = "%B") +
+scale_color_paletteer_d("nationalparkcolors::Acadia") 
+
+```
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| output-location: column-fragment
+weekly_events<-ccc|>
+  filter(online==1)|>
+  mutate(week = floor_date(date, unit='week'))|>
+  count(week)
+
+weekly_events
+```
+:::
+:::::
+
+
+### Filling empty data
+
+This *could* be solved with a kind of join on a data set I create with the full sequence of dates:
+
+```{r}
+#| output-location: column-fragment
+
+all_weeks <- tibble(week = seq.Date(
+  from = min(weekly_events$week),
+  to = max(weekly_events$week),
+  by = 'week'
+))
+
+all_weeks|>
+  left_join(weekly_events, by='week')|>
+  replace_na(list(n=0))
+
+```
+
+### Filling empty data
+
+Alternatively, dplyr has a `complete` function that provides a bit more flexibility (for instance, it will perform this operation within a group)
+
+
+```{r}
+#| output-location: column-fragment
+
+weekly_events<-ccc|>
+  filter(online==1)|>
+  mutate(week = floor_date(date, unit='week'))|>
+  count(week)|>
+  complete( week = seq.Date(from = min(week),
+                            to = max(week), by='week'), 
+            fill=list(n=0) )
+
+weekly_events
+
+
+```
+
+
+### Filling empty data
+
+Now the zeros are easily observed in the data:
+
+::::: {.columns}
+::: {.column width="50%"}
+```{r, echo=FALSE}
+
+weekly_events<-ccc|>
+  filter(online==1)|>
+  mutate(week = floor_date(date, unit='week'))|>
+  count(week)
+
+library(paletteer) # package for alternate color palettes
+
+ggplot(data = weekly_events, aes(x=week, y=n)) +
+    geom_line(lwd=.7) + 
+  geom_point(size=3) +
+  theme_minimal() + 
+  labs(x = "Date", 
+       y='Number of events', 
+       title='Monthly event counts through August 2025',
+       caption = "Data source: Crowd Counting Consortium"
+      )+
+scale_x_date(date_breaks = "1 month", date_labels = "%B") +
+scale_color_paletteer_d("nationalparkcolors::Acadia") 
+
+
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+weekly_events<-ccc|>
+  filter(online==1)|>
+  mutate(week = floor_date(date, unit='week'))|>
+  count(week)|>
+  complete( week = seq.Date(from = min(week),
+                            to = max(week), by='week'), 
+            fill=list(n=0) )
+
+library(paletteer) # package for alternate color palettes
+
+ggplot(data = weekly_events, aes(x=week, y=n)) +
+    geom_line(lwd=.7) + 
+  geom_point(size=3) +
+  theme_minimal() + 
+  labs(x = "Date", 
+       y='Number of events', 
+       title='Monthly event counts through August 2025 (with zeros)',
+       caption = "Data source: Crowd Counting Consortium"
+      )+
+scale_x_date(date_breaks = "1 month", date_labels = "%B") +
+scale_color_paletteer_d("nationalparkcolors::Acadia") 
+```
+:::
+:::::
+
+### Filling empty data
+
+Here's an example that would fill in 0s for all weeks for protests with and without arrests:
+
+
+```{r}
+#| output-location: column-fragment
+
+weekly_events<-ccc|>
+  
+  mutate(week = floor_date(date, unit='week'))|>
+  count(arrests_any,week)|>
+  complete( week = seq.Date(from = min(week),
+                            to = max(week), by='week'), 
+            fill=list(n=0), 
+            arrests_any )
+
+weekly_events
+
+
+```
+
+
+### Filling empty data
+
+
+::::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: false
+
+weekly_events<-ccc|>
+  
+  mutate(week = floor_date(date, unit='week'))|>
+  count(arrests_any,week)|>
+  complete( week = seq.Date(from = min(week),
+                            to = max(week), by='week'), 
+            fill=list(n=0), 
+            arrests_any )
+
+weekly_events
+
+
+```
+:::
+::: {.column width="50%"}
+```{r, echo=FALSE}
+
+
+library(paletteer) # package for alternate color palettes
+
+weekly_events$arrests_any<-factor(weekly_events$arrests_any, 
+                                  levels=c(0, 1),
+                                  labels=c("No", "Yes")
+                                  
+                                  )
+ggplot(data = weekly_events, aes(x=week, y=n, color=arrests_any)) +
+    geom_line(lwd=.7) + 
+  geom_point(aes(shape =arrests_any), size=3) +
+  theme_minimal() + 
+  labs(x = "Date", 
+       y='Number of events', 
+       title='Monthly event counts through August 2025',
+       caption = "Data source: Crowd Counting Consortium",
+       color = 'Any Arrests?',
+       shape = 'Any Arrests?'
+      )+
+scale_x_date(date_breaks = "1 month", date_labels = "%B") +
+scale_color_paletteer_d("nationalparkcolors::Acadia") 
+
+```
+:::
+:::::
+
+
+
+
+
+
+
+## Visualization for exploratory analysis
+
+
+![](images/edit-1864_Johnsons_World_Mountains_and_Rivers_Map_or_Chart_-_Geographicus_-_MtsRvrs-johnson-1864-1.webp){fig-align="center"}
+
+
+
+
+
+### Data
+
+We've got some monthly counts of events organized by whether they were right or left wing. 
+
+```{r}
+#| output-location: column
+
+event_counts<-ccc|>
+  mutate(month = floor_date(date, unit='month'),
+         valence = factor(valence, levels=c(0, 1, 2), 
+                          labels=c("other/neither",
+                                   'left-wing', 
+                                   'right-wing'))
+         )|>
+  count(month, valence)|>
+  complete(month = seq.Date(from= min(month), 
+                            to=max(month), 
+                            by='month'), 
+           fill=list(n=0))|>
+  drop_na()
+
+
+event_counts
+
+```
+
+
+
+### Parts of a plot
+
+
+::::: columns
+::: {.column width="50%"}
+
+Required components:
+
+
+::: incremental
+
+1. Data and mapping: We need to choose what elements we'll be visualizing and how they map onto different parts of the plot (what goes on the x and y axis? If we're color coding, what variables determine colors? Or shapes?)
+
+2. Layers: the visible representations of the data. The most important being geometries (bar, point, line etc.)
+
+3. Scales: the mapping from data units to distances, colors, etc.
+
+4. The remaining elements can be modified, but they're often left at default values (ggplot assumes you want carteesian coordinates unless you say otherwise, for instance)
+
+
+:::
+
+:::
+
+::: {.column width="50%"}
+
+
+![](images/ggplot_parts.png)
+
+
+
+
+
+:::
+
+:::::
+
+### Dimensionality
+
+
+
+
+- Data is multi-dimensional, but visuals are 2D.
+
+- A core challenge for good visualization is elegantly handling this dimensional mismatch by:
+  - simplifying data
+  - color/shape/symbol encoding
+  - faceting
+
+
+
+
+### ggplot
+
+You'll always start with a call to ggplot 
+
+
+
+::::: columns
+::: {.column width="50%"}
+
+On it's own, this just makes empty space.
+
+```{r}
+
+ggplot()
+
+```
+
+:::
+
+::: {.column width="50%"}
+
+
+::: fragment
+
+Once we've got an aesthetic mapping, we start to get something more concrete:
+
+```{r}
+
+base <- ggplot(data = event_counts, aes(x=n))
+
+base
+
+```
+
+
+:::
+
+:::
+
+:::::
+
+
+### ggplot geometry
+
+
+
+
+We can use the `+` to add more layers to a ggplot object, and we can add more than one kind of geometry to a single visualization.
+
+```{r}
+base + geom_histogram()
+base + geom_density() + geom_rug()
+
+```
+
+
+### ggplot scales
+
+
+We can also change the x or y scaling from the default using `scale_` functions
+
+```{r}
+
+
+
+base + geom_density()
+
+base + geom_histogram() + scale_x_log10()
+
+
+```
+
+### ggplot with multiple variables
+
+
+The previous examples were all univariate plots, but we have a lot more to work with.
+
+```{r}
+#| output-location: column
+
+library(paletteer) # package for alternate color palettes
+ 
+
+
+ggplot(event_counts, aes(x = month, y = n, color = valence)) +
+  geom_line(lwd=.7) + 
+  geom_point(aes(shape =valence), size=3) +
+  theme_minimal() + 
+  labs(x = "Date", 
+       y='Number of events', 
+       title='Monthly event counts through August 2025',
+       caption = "Data source: Crowd Counting Consortium"
+      )+
+scale_x_date(date_breaks = "1 month", date_labels = "%B") +
+scale_color_paletteer_d("nationalparkcolors::Acadia") 
+
+
+
+
+
+```
+
+
+### Facets and small multiples
+
+Big differences in the scales can make it difficult to identify relative changes within each group. One way to deal with this is by using a facet to draw multiple version of the same plot. 
+
+In this example, the x-axis is fixed, but the y-axis is re-scaled for each group - making relative changes within groups more apparent (albeit at the cost of distorting absolute values)
+
+```{r, eval=FALSE}
+#| output-location: column
+
+
+event_counts|>
+  mutate(valence = fct_relevel(valence, "left-wing", 
+                                         "other/neither", 
+                                         "right-wing"))|>
+  ggplot(aes(x = month, y = n, color = valence)) +
+  geom_line(lwd=.7) + 
+  geom_point(aes(shape =valence), size=3) +
+  theme_minimal() + 
+  labs(x = "Date", 
+       y='Number of events', 
+       title='Monthly event counts through August 2025',
+       caption = "Data source: Crowd Counting Consortium"
+      ) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%B") +
+  scale_color_paletteer_d("nationalparkcolors::Acadia")  +
+  facet_wrap(~valence, ncol=1, scales='free_y') +
+  # legend no longer needed here since the facets are already labeled
+  theme(legend.position = "none")
+
+
+
+
+
+```
+
+
+
+
+
+
+
+### General tips on data visualization
+
+- The best way to learn is through replication: find an example and adapt it. [here's a great place to start](https://r-graph-gallery.com/)
+
+- Care.
+
+
+- Consider resolution and audience: slide decks should have big plots with minimal detail, written reports can tolerate more subtlety. 
+
+- Almost all "3d" plots are pointless.

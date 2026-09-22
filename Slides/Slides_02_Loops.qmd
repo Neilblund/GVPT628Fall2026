@@ -1,0 +1,934 @@
+---
+title: "Loops and Functions"
+format:
+  revealjs:
+    theme: [clean, custom_styles]
+    df-print: paged
+    slide-number: true
+    self-contained: true
+    include-in-header:
+      text: |
+        <script>
+        MathJax = {
+          loader: {
+            load: ['[tex]/boldsymbol']
+          },
+          tex: {
+            tags: "all",
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\\[','\\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            packages: {
+              '[+]': ['boldsymbol']
+            }
+          }
+        };
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+filters:
+  - pseudocode
+code-annotations: select
+slide-level: 3
+execute:
+  echo: true
+---
+
+
+## What we'll cover
+
+-   We'll be talking about how to use things like loops, conditions, and functions to make more flexible code.
+    -   `function`s allow us to create re-usable bits of code that take a set of inputs and return some data
+    -   `if` statements allow us to make code that only runs when a specified condition evaluates as `TRUE`
+    -   `for`, `while` and `repeat` allow us to apply the same code to each element of a vector, or repeat a chunk of code until some condition is met.
+
+## Pseudo-code
+
+-   Pseudo-code is an informal way of writing generic code that explains the steps without worrying about precise syntax. Its a useful way plan complex processes without having to think about the specifics of writing code.
+
+-   There are some conventions to pseudo-code (especially for mathematical operations), but no hard rules. The goal is just to create an outline of the intended process that's not specific to any particular programming language.
+
+## Pseudo-code
+
+What would this code do?
+
+```pseudocode
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+
+
+\begin{algorithm}
+\begin{algorithmic}
+\STATE v = $\text{a single numeric value}$
+    \IF {$v \geq 0$}
+        \STATE $v$
+    \ELSE
+        \STATE $-1\times v$
+    \ENDIF
+\end{algorithmic}
+\end{algorithm}
+```
+
+. . .
+
+```{r}
+v = -4
+
+if(v >= 0){
+  v
+}else{
+  v * -1
+}
+
+```
+
+## Pseudo-code
+
+What would this code do?
+
+``` pseudocode
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+
+
+\begin{algorithm}
+\begin{algorithmic}
+  \STATE $X = \text{[a vector of numbers]}$
+  \STATE $S = 0$
+  \FOR{$\text{each value } i \text{ in } X$}
+    \STATE S = S + i
+  \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+```
+
+. . .
+
+```{r}
+x<-c(1, 2, 3, 4, 5)
+s<-0
+
+for(i in x){
+  s<-s+i
+}
+
+s
+
+```
+
+## Pseudo-code
+
+- How would you write pseudo-code for a process that returns the maximum value from a set of numbers?
+
+
+# Functions
+
+
+
+
+
+
+
+## Functions
+
+R functions are just a chunk of code you can easily repeat. To create a function, you can just run something like: `function_name <- function(arguments){code}`
+
+Running the code below will create `my_function` in your R environment.
+
+```{r}
+
+my_function<-function(x){
+  print(sprintf("you entered %s", x))
+}
+
+
+```
+
+. . .
+
+Then you can run your function like this:
+
+```{r}
+
+my_function(x=5)
+
+```
+
+### Function Scoping
+
+- R functions are evaluated "locally": they're evaluated in their own environment, which is created and then destroyed after execution.
+
+- This means that functions "clean up after themselves" and they won't alter data in your global environment unless you explicitly force them to do so.
+
+
+
+### Function Scoping
+
+What will happen if I run the code below?
+
+```{r, eval=FALSE}
+my_function<-function(x){
+  x
+  print(sprintf("you entered %s", x))
+}
+
+
+x <- 30
+
+my_function(x=90)
+
+```
+
+
+### Function Scoping
+
+R's lexical scoping rules ensure that it will look for `x` to be defined inside the function call, rather than the global environment.
+
+```{r}
+my_function<-function(x){
+  x
+  print(sprintf("you entered %s", x))
+}
+
+
+x <- 30
+
+my_function(x=90)
+
+```
+
+
+### Function Scoping
+
+What do you expect will happen here?
+
+```{r, eval=FALSE}
+my_function<-function(){
+  x
+  print(sprintf("you entered %s", x))
+}
+
+
+x <- 30
+
+my_function()
+
+```
+
+
+### Function Scoping
+
+If a variable is not a formal argument and isn't defined inside the function environment, then R will search the parent environment of the function for the variable.
+
+```{r, eval=FALSE}
+my_function<-function(){
+  x
+  print(sprintf("you entered %s", x))
+}
+
+
+x <- 30
+
+my_function()
+
+```
+
+### Function Scoping
+
+What will happen if I call "x" again after executing the function below?
+
+```{r, eval=FALSE}
+x <- 30
+
+
+my_function<-function(){
+  x <- 20
+  print(sprintf("you entered %s", x))
+}
+
+
+
+my_function()
+
+x
+
+```
+
+### Function Scoping
+
+Changes made inside the function don't impact variables outside the function (usually...)
+
+```{r}
+x <- 30
+
+
+my_function<-function(){
+  x <- 20
+  print(sprintf("you entered %s", x))
+}
+
+
+
+my_function()
+
+x
+
+```
+
+### Function Returns
+
+- Since functions are evaluated locally, variables created in them are typically temporary.
+
+- However, we can assign the output of a function to a new variable to store the results.
+
+- In general, functions only return a single object (but keep in mind that a single object can hold lots of data)
+
+
+### Function Returns
+
+You can use the the `return` statement to control what data is returned by your function:
+
+```{r}
+my_sample<- c(1, 2, 3, 4, 5)
+x_sd<-function(x){
+  xmu <- mean(x)
+  xvar <-  sum((x - xmu)^2)/(length(x)-1)
+  xsd <- sqrt(xvar)
+  return(xsd)
+}
+
+result<-x_sd(my_sample)
+result
+```
+
+### Function Returns
+
+Note that the function executes successfully, but `xvar`, `xmu` and `xsd` no longer exist once the function is finished running:
+
+```{r,  eval=FALSE}
+
+my_sample<- c(1, 2, 3, 4, 5)
+x_sd<-function(x){
+  xmu <- mean(x)
+  xvar <-  sum((x - xmu)^2)/(length(x)-1)
+  xsd <- sqrt(xvar)
+  return(xsd)
+}
+
+
+result<-x_sd(my_sample)
+xvar
+
+```
+
+### Function Returns
+
+Use the code below, but replace `return(xsd)` with `return(xvar)`. What happens?
+
+```{r}
+
+my_sample<- c(1, 2, 3, 4, 5)
+x_sd<-function(x){
+  xmu <- x/length(x)
+  xvar <-  sum((x - xmu)^2)/(length(x)-1)
+  xsd <- sqrt(xvar)
+  return(xsd)
+}
+result<-x_sd(my_sample)
+result
+
+```
+
+
+
+### Function Defaults
+
+
+- The formal arguments (specified in parentheses) are typically required for a function to run.
+
+```{r, eval=FALSE}
+x_sd<-function(x){
+  xmu <- x/length(x)
+  xvar <-  sum((x - xmu)^2)/(length(x)-1)
+  xsd <- sqrt(xvar)
+  return(xsd)
+}
+
+x_sd()
+
+```
+
+
+### Function Defaults
+
+However, you can set a default value for an argument that will be assigned unless the user enters a different value:
+
+```{r, error=TRUE}
+x_sd<-function(x = 10){
+  xmu <- x/length(x)
+  xvar <-  sum((x - xmu)^2)/(length(x)-1)
+  xsd <- sqrt(xvar)
+  return(xsd)
+}
+
+x_sd()
+
+```
+
+### Function Defaults
+
+`na.rm` is an example of an argument that often has a default value for functions like `mean`, `sum` etc.
+
+```{r}
+my_sample<- c(1, 2, 3, 4, NA)
+x_sd<-function(x, na.rm=TRUE){
+  if(na.rm==TRUE){
+    x<-x[!is.na(x)]
+  }
+  xmu <- sum(x)/length(x)
+  xvar <-  sum((x - xmu)^2)/(length(x)-1)
+  xsd <- sqrt(xvar)
+  return(xsd)
+}
+
+x_sd(my_sample)
+x_sd(my_sample, na.rm=FALSE)
+
+
+```
+
+
+
+
+
+### Try it out
+
+One method for measuring polarization is to calculate the standard deviation of party positions on an issue, weighted by each party's share of the votes or seats in the last election.
+
+Here are the left-right positions and seat shares for UK parties in 2024:
+
+```{r, message=FALSE, warning=FALSE}
+
+
+positions<-c(7.67, 3.81, 3.86, 3.32, 3.12, 2.05, 9.24)
+seats<-c(121, 411,  72,   9,   4,   4,   5)
+
+```
+
+Here's how I would calculate the weighted SD:
+
+```{r}
+w <- seats/sum(seats) 
+p_k<- sum(positions * w) / sum(w)
+polarization<-sqrt(sum(w  * ((positions - p_k))^2))
+
+```
+
+### Try it out
+
+Create a function that takes a vector of seats and positions and calculates the polarization measure.
+
+```{r}
+#| code-fold: true
+#| code-summary: "expand for answer"
+
+
+polarization<-function(positions, seats){
+  # normalized seats (sums to 1)
+  w <- seats/sum(seats) 
+  # weighted mean:
+  p_k<- sum(positions * w) / sum(w)
+  # sqrt of weighted squared deviations from weighted mean
+  polarization<-sqrt(sum(w  * ((positions - p_k))^2))
+  return(polarization)
+}
+
+```
+
+### When to make a function
+
+-   One good rule of thumb is to make a function when you find yourself copy-pasting code more than twice in a single sitting.
+
+-   A good practice is to specify functions at the top of the script so they're easy to find. Alternatively, you can write them in a separate file and use `source(filename)` to load them into the environment.
+
+## If statements
+
+### Problem: conditionally downloading a file
+
+Scenario:
+
+-   I'm sharing an analysis of conflict data from the [Uppsala Conflict Data Program (UCDP)](https://ucdp.uu.se/), but users need to download the files to replicate my analysis.
+
+-   The files come in a zip folder, so I would also like to automatically unzip the resulting data once it's available on the local device and place it in a new data directory.
+
+-   Some files are quite large, so I want the code to only download a file once **even if they run the code repeatedly**
+
+### Problem: in pseudo-code
+
+In general terms, I want something that does this:
+
+``` pseudocode
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+
+
+\begin{algorithm}
+\begin{algorithmic}
+  \State $url = \text{a link to a .zip file}$
+  \State $\text{filename} = \text{a filename}$
+  \State $\text{datafolder} = \text{a folder to store unzipped data}$
+
+  \If{$\text{filename doesn't exist}$}
+    \State \Call{download.file}{$\text{url}, \text{filename}$}
+  \EndIf
+ \State \Call{unzip.file}{$\text{filename}, \text{datafolder}$}
+
+\end{algorithmic}
+\end{algorithm}
+```
+
+### If
+
+`if` statement allows us to selectively run chunks of code.
+
+. . .
+
+The general syntax is:
+
+```         
+if(condition){
+   [... some code that runs if the condition is true]
+}
+```
+
+Code inside the `{}` runs only if the expression in `condition` is `TRUE`
+
+. . .
+
+```{r}
+
+i <- 10
+if(i %% 2 == 0 ){
+  print('i is evenly divisible by 2')
+}
+
+```
+
+### If-else
+
+I can also add an `else` statement that will execute only if the `if` condition is `FALSE`
+
+Example:
+
+```         
+if(condition){
+   [... some code that runs if the condition is true]
+}else{
+  [...code that runs if the condition is false]
+}
+```
+
+. . .
+
+```{r}
+
+i <- 11
+if(i %% 2 == 0 ){
+  print('i is evenly divisible by 2')
+}else{
+  print('i is not evenly divisible by 2')
+}
+
+```
+
+### Nested ifs
+
+I can also nest an if statement inside another if statement, to create code that requires multiple conditions:
+
+```         
+if(condition){
+   [... some code that runs if the condition is true]
+   
+   if(condition2){
+    [... code that runs if condition 1 is true and condition2 is also true]
+  }
+}
+```
+
+. . .
+
+```{r}
+i <- -10
+
+if(i%%2==0){
+  
+  if(i<0){
+    print("i is even and negative")
+  }
+}
+
+
+
+```
+
+### Conditional Downloads {.smaller}
+
+Back to our original problem:
+
+::::: columns
+::: {.column .incremental width="40%"}
+-   `!file.exists()` checks for a file called `battledeaths.zip` in the current working directory.
+
+-   `!` is a negation, so it flips `FALSE` to `TRUE`.
+
+-   `download.file` downloads the file from the specified URL, and places it in the folder specified in the `dest` argument
+
+-   The `unzip` function will extract the files from the zipped folder and move them to `exdir`
+:::
+
+::: {.column .incremental width="60%"}
+```{r,eval=FALSE}
+
+url<-'https://ucdp.uu.se/downloads/brd/ucdp-brd-dyadic-251-csv.zip'
+
+
+if(!file.exists('battledeaths.zip')){
+  download.file(url, dest='battledeaths.zip')
+  
+}
+
+unzip('battledeaths.zip',
+      exdir = 'ucdp_datasets')
+
+
+
+```
+:::
+:::::
+
+### Try it out
+
+Write code to download the .csv version of [the UCDP one-sided conflict data](https://ucdp.uu.se/downloads/index.html#onesided), call the new zip file `onesided.zip` The URL for the file is:
+
+https://ucdp.uu.se/downloads/nsos/ucdp-onesided-251-csv.zip
+
+### Try it out
+
+```{r,eval=FALSE}
+#| code-fold: true
+#| code-summary: "expand for answer"
+
+url<-'https://ucdp.uu.se/downloads/nsos/ucdp-onesided-251-csv.zip'
+
+
+if(!file.exists('onesided.zip')){
+  download.file(url, dest='onesided.zip')
+  
+}
+
+unzip('onsided.zip',
+      exdir = 'ucdp_datasets')
+
+
+
+```
+
+### Using "if" statements
+
+-   `if` statements are less important for code that you intend to use interactively (you can just skip lines, after all)
+
+-   but they're critical for code that runs unattended or for making code that works inside of a function or loop.
+
+## Loops
+
+### Problem: downloading multiple files
+
+The UCDP produces multiple data products, so what if my analysis requires users to grab multiple files?
+
+```{r}
+files<-data.frame(
+  filename = c('battledeaths.zip',
+           'nonstate_actors.zip',
+           'armed_conflicts.zip'),
+  url = c('https://ucdp.uu.se/downloads/brd/ucdp-brd-dyadic-251-csv.zip',
+          'https://ucdp.uu.se/downloads/nsos/ucdp-nonstate-251-csv.zip',
+          'https://ucdp.uu.se/downloads/ucdpprio/ucdp-prio-acd-251-csv.zip'
+          )
+)
+files
+
+```
+
+(In general, I want to avoid copy-pasting code, so I'll want to do this using a loop.)
+
+### The problem in pseudo-code:
+
+``` pseudocode
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+
+
+\begin{algorithm}
+\begin{algorithmic}
+  \State $files = \text{a dataframe with filenames and URLs}$
+  \STATE $\text{datafolder} = \text{a folder to store unzipped data}$
+  \FOR{$\text{each row } i \text{ in } files$}
+    \STATE $\text{url} = \text{files}[i, \text{url}]$
+    \STATE $\text{filename} = \text{files}[i, \text{file}]$
+  \If{$\text{filename doesn't exist}$}
+    \State \Call{download.file}{$\text{url}, \text{filename}$}
+  \EndIf
+ \State \Call{unzip.file}{$\text{filename}, \text{datafolder}$}
+  \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+```
+
+### Varieties of loop
+
+There are different flavors of loop, but they all allow us to repeat the same chunk of code multiple times.
+
+-   a `repeat` loop runs the code inside of `{}` infinitely unless it encounters a `break` statement
+
+-   a `while` loop runs until a specified condition is `TRUE`
+
+-   a `for` loop runs the code once for each element in a specified vector
+
+### A repeat loop
+
+```{r}
+i <- 1
+repeat{
+  print(i)
+  i <- i + 1
+  if (i > 15) {
+    break # break stops the loop
+  }
+}
+```
+
+### A while loop
+
+In a while loop, then `break` statement is implicit. These loops stop whenever the `while` condition evaluates as `TRUE`
+
+```{r}
+
+i <- 1
+while(i <= 15){
+  print(i)
+  i <- i +1
+}
+
+```
+
+### A for loop
+
+A for loop will just run for each element of the vector specified in the `for` statement:
+
+```{r}
+
+letters<-c("a", "b", "c", "d")
+for(i in letters){ 
+  
+  print(i) 
+  
+}
+
+```
+
+. . .
+
+Here, the variable (called `i` here) is created automatically and it automatically increments after each iteration of the loop.
+
+### A for loop
+
+What if I want to do row-wise addition of `df`?
+
+```{r}
+
+df<-data.frame(x = c(1, 2, 3, 4),
+               y = c(4, 3, 2, -1)
+               )
+
+
+```
+
+. . .
+
+I could get a vector with a sequence from 1 to the number of rows in `df`, and then put that sequence in a `for` loop:
+
+```{r, eval=FALSE}
+
+
+rowseq<-c(1, 2, 3, 4)
+
+for(i in rowseq){ 
+  print(df$x[i] + df$y[i])
+  
+}
+
+```
+
+### A for loop
+
+An even more flexible and concise way to write the previous loop would be to use the `:` operator:
+
+```{r}
+
+1:nrow(df)
+
+```
+
+. . .
+
+```{r}
+
+
+
+for(i in 1:nrow(df)){ 
+  print(df$x[i] + df$y[i])
+  
+}
+
+```
+
+### Try it out
+
+See if you can write a loop to solve the problem we laid out at the start of this section.
+
+```{r, eval=FALSE}
+
+files<-data.frame(
+  filename = c('battledeaths.zip',
+           'nonstate_actors.zip',
+           'armed_conflicts.zip'),
+  url = c('https://ucdp.uu.se/downloads/brd/ucdp-brd-dyadic-251-csv.zip',
+          'https://ucdp.uu.se/downloads/nsos/ucdp-nonstate-251-csv.zip',
+          'https://ucdp.uu.se/downloads/ucdpprio/ucdp-prio-acd-251-csv.zip'
+          )
+)
+
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "expand for answer"
+
+
+for(i in 1:nrow(files)){
+  if(!file.exists(files$filename[i])){
+    download.file(files$url[i] , dest=files$filename[i])
+  }
+  unzip(files$filename[i],
+        exdir = 'ucdp_datasets')
+}
+
+```
+
+### Using loops
+
+Why don't operations like `sum` or `mean` require us to write a loop?
+
+. . .
+
+Technically, summing a vector is a kind of loop operation:
+
+```{r}
+
+x<-c(1, 4, 5, 8, 2)
+y<-0
+for(i in x){
+  y <- y + i
+}
+
+y
+
+```
+
+But you'll never do this because you can just run:
+
+```{r}
+
+sum(x)
+
+```
+
+### Why isn't everything a loop?
+
+-   Many built-in R functions like `sum`, `prod`, `mean` etc. do ultimately use loops, but the loop isn't written in R.
+
+```{r}
+# the source code for the sum function isn't very informative, because
+# it doesn't actually call R code at all:
+sum
+```
+
+### Why isn't everything a loop?
+
+R loops are comparatively very slow: 
+![](images/bouncing_balls.gif){width="40%"}
+
+### Why isn't everything a loop?
+
+-   All code eventually gets translated to 1s and 0s, but R and Python do that translation each time you run a command. "Compiled" languages do the translation in one fell swoop.
+
+-   Each iteration of an R loop requires translating the command all over again, so loops written in R are slow.
+
+-   BUT: functions like `sum` call a loop that was already compiled in another language (`sum` uses compiled C code)
+
+### Using loops
+
+Use loops:
+
+-   When commands aren't already vectorized (like the file download problem we're discussing here)
+
+-   When the problem is small and you need fine-grained control over how things run
+
+### Apply loops
+
+Apply family functions are a more concise way of writing loops in R. They use a syntax that's similar to what we saw with `aggregate`, where a function specified by the `FUN` argument is applied to each element in a vector. So these two functions are more or less equivalent:
+
+```{r, eval=FALSE}
+
+x<-1:10
+for(i in 1:10){
+  print(i)
+}
+
+```
+
+```{r, eval=FALSE}
+x<-1:10
+sapply(x, FUN=function(x) print(x))
+
+```
+
+### Apply loops
+
+Some other "apply"-type functions are:
+
+-   `lapply` works like `sapply` but always returns a list
+
+-   `apply` will apply a function to each row or each column of a matrix or array
+
+-   `tapply` apply a function to each cell or column, after grouping by some factor variable (similar to `aggregate`)
+
+
+### In-Class excercise
+
+
+[Click here for the in-class excercise](https://neilblund.github.io/GVPT628Fall2026/Week%2002/classwork_02.html)
+
+
