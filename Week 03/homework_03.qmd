@@ -52,7 +52,7 @@ Create a data frame (or tibble) with the two party vote share and the winning ca
 
 ## Question 2.
 
-Use the data on 2024 house races to identify the senate candidates who most out-performed the presidential candidate for their respective parties. In other words: if the senate candidate was a Democrat, compare their share of the two-party vote to Harris vote share in that state, if they're a Republican, compare their share to the statewide vote share for Harris (I'll leave it up to you to determine how to handle Bernie Sanders...)
+Use the data on 2024 house races to identify the senate candidates who most out-performed the presidential candidate for their respective parties. In other words: if the senate candidate was a Democrat, compare their share of the two-party vote to Harris vote share in that state, if they're a Republican, compare their share to the statewide vote share for Harris (I'll leave it up to you to determine how to handle Bernie Sanders and Angus King...)
 
 ```{r, message=FALSE, warning=FALSE}
 

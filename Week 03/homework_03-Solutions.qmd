@@ -110,6 +110,7 @@ senate_voteshares<-read_csv('https://raw.githubusercontent.com/fivethirtyeight/e
          
          )|>
   mutate(ballot_party = case_when(candidate_name == "Bernie Sanders" ~ "DEM",
+                                  candidate_name == "Angus S. King Jr." ~ "DEM",
                                   .default = ballot_party
                                   ))|>
   filter(state !='Puerto Rico')|>
