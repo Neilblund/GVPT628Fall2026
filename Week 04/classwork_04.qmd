@@ -1,0 +1,161 @@
+---
+title: "Classwork 4: Data manipulation and plotting"
+format:
+  html:
+    toc: true
+    df-print: kable
+    code-tools: true
+    embed-resources: true
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+```
+
+
+```{r}
+library(tidyverse)
+library(tidycensus)
+url<-'https://dataverse.harvard.edu/api/access/datafile/12027896'
+ccc<-read_csv(url)
+
+```
+
+
+
+# Question 1
+
+
+Create a regular expression to extract events related to Israel/Palestine issues. Calculate the number of events on this issue per week and create a line plot to show the count of events.
+
+(make sure your line plot includes "0"s for weeks that have no data. You could either use a cross join or the `complete` function to accomplish this)
+
+```{r}
+# Code here
+
+# filtering and adding a week for each observation
+israel_palestine_events<-ccc|>
+  filter(str_detect(claims_summary, "Israel|Palestin|Gaza"))|>
+  mutate(week = floor_date(date, unit ='weeks'))
+
+
+# counting events per week and then using complete to fill out any potential missing
+# weeks
+israel_palestine_counts<-israel_palestine_events|>
+  count(week)|>
+  complete( week = seq.Date(from = min(week),
+                            to = max(week), by='week'), 
+            fill=list(n=0) )
+
+
+# Basic line plot:
+ggplot(israel_palestine_counts, aes(x=week, y=n)) + geom_line() +
+    labs(x='week', 
+         y='number of events', 
+         title ='Events mentioning Irael-Palestine')
+
+
+
+
+```
+
+
+Note: things look a little weird at the start and end here because the first and last weeks are incomplete. If you wanted to fix this, you could do something like the code below to drop observations where there was not yet a completed week:
+
+```{r}
+
+
+# generating a complete date sequence and then filtering all incomplete dates:
+completed_dates<-tibble(dates = seq.Date(min(ccc$date), max(ccc$date), by='days'),
+       week = floor_date(dates, unit='weeks'))|>
+  count(week, name = 'days_in_week')|>
+  filter(days_in_week == 7)
+
+
+
+israel_palestine_counts<-israel_palestine_events|>
+  count(week)|>
+  right_join(completed_dates, by=join_by(week == week))|>
+  replace_na(list(n = 0 ))
+
+ggplot(israel_palestine_counts, aes(x=week, y=n)) + 
+  geom_line() +
+  labs(x='week', y='number of events', title ='Events mentioning Irael-Palestine')
+  
+
+```
+
+Alternatively, you could use a 7 day rolling count to avoid this problem entirely:
+
+
+```{r}
+
+
+israel_palestine_counts<-israel_palestine_events|>
+  count(date)|>
+  complete( date= seq.Date(from = min(date),
+                            to = max(date), by='day'), 
+            fill=list(n=0) )|>
+  arrange(date)|>
+  mutate(rolling_count = zoo::rollsum(israel_palestine_counts$n, 7, na.pad=T))
+
+
+ggplot(israel_palestine_counts, aes(x=date, y=rolling_count)) + 
+  geom_line() +
+  labs(x='week', 
+       y='number of events (7 day rolling average)', 
+       title ='Events mentioning Irael-Palestine')
+  
+
+```
+
+
+# Question 2
+
+Use a series of joins to get a single data set that allows us to see the association between county population and the number of protest events since January 2025. Make a scatter plot to visualize the relationship between population and protest frequency.
+
+
+
+
+We can use data from the US census bureau, which we can access using the tidycensus package:
+
+```{r}
+
+census_data <- get_acs(
+  geography = "county",
+  variables = "B01001_001", # population
+    year = 2023)
+
+
+
+```
+
+
+```{r}
+# code here
+
+```
+
+# Question 3
+
+Get a data set that contains a list of all counties that haven't had any protests during the time period covered.
+
+
+```{r}
+# Code here
+
+```
+
+
+# Question 4
+
+The `organizations` column contains one or more organizations involved in each event. Make a list of the top 10 organizations by number of protests and then use ggplot and `graph_bar` to visualize the results.
+
+
+```{r}
+# Code here
+
+```
+
