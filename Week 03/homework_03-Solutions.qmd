@@ -174,9 +174,15 @@ voteshare_diff|>
 library(ggrepel)
 
 voteshare_diff|>
-  mutate(senator = paste0(senator,", ", state))|>
+  mutate(senator = if_else(
+    abs(difference) > .01,
+    paste0(senator,", ", state),""
+                           
+                           ))|>
   ggplot(aes(x=voteshare_pres, y=voteshare_senate, color=party, label=senator)) +
   geom_abline(intercept=0, slope=1, lty=2, col='black') +
+  geom_hline(yintercept = .5, lty=3, color='lightgrey')+
+  geom_vline(xintercept = .5, lty=3, color='lightgrey') +
   geom_text_repel( show.legend = FALSE) +
   geom_point()+
   theme_bw() +
