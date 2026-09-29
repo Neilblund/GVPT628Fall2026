@@ -15,7 +15,7 @@ We'll use the ANES cumulative time series data to explore changes in people's vi
 You can download the ANES cumulative time series file from this URL: <https://electionstudies.org/data-center/anes-time-series-cumulative-data-file/>. You'll need to create an account (you can use your UMD email address) and download the Stata formatted version of the file.
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
 
 Load the required libraries
@@ -159,8 +159,11 @@ totals<-anes_cols|>
   group_by(year)|>
   mutate(wtd_total = sum(wtd_n),
          proportion = wtd_n / wtd_total
-         )
+         )|>
+  ungroup()
 
+totals|>
+  slice_head(n=5)
 
 ```
 
@@ -226,7 +229,7 @@ base_plot +
   # placing the legend at the bottom instead of to the side:
   theme(legend.position="bottom", legend.box = "horizontal") +
   # manually changing the color scheme: 
-  scale_color_manual(values = c("grey", "red","blue")) 
+  scale_color_manual(values = c("grey","blue",  "red")) 
 
 
   
@@ -244,7 +247,9 @@ base_plot +
   geom_bar(stat='identity') +
   # use this to make the bars side by side instead of stacked:
   # geom_bar(stat='identity', position='dodge') +
-  theme_bw()
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent_format(scale = 100))+
+  ylab("Percent")
   
 
 ```
@@ -263,7 +268,10 @@ base_plot +
   # make the grid lines visible
   geom_area(alpha=.7) +
   # using a custom palette: 
-  paletteer::scale_fill_paletteer_d("futurevisions::atomic_red") 
+  paletteer::scale_fill_paletteer_d("futurevisions::atomic_red") +
+  scale_y_continuous(labels = scales::percent_format(scale = 100))+
+  ylab("Percent")
+
 
 
   
@@ -343,9 +351,11 @@ ggplot(totals, aes(x=year, y=proportion, color=`Party Placements`)) +
   theme(legend.position="bottom", legend.box = "horizontal") +
   # add a title and caption: 
   labs(title =  'VCF0502: Is one party more conservative? (by education)',
-       caption = "Source: ANES Time Series Cumulative Data File") +
+       caption = "Source: ANES Time Series Cumulative Data File",
+       y ='percent'
+       ) +
   # manually changing the color scheme: 
-  scale_color_manual(values = c("grey", "red","blue"))  +
+  scale_color_manual(values = c("grey", "blue", "red"))  +
   # rescale proportions as percentages: 
   scale_y_continuous(labels = scales::percent_format(scale = 100))
 
@@ -376,12 +386,19 @@ weighted_result <- anes_svy|>
   mutate(`proportion correct` =`Party Placements` == 'Yes, Republicans')|>
   group_by(year) |>
   summarise(survey_mean(`proportion correct`, vartype='ci'))
-  
+
+
 
 ggplot(weighted_result, aes(x=year, y=coef, ymin=`_low`, ymax=`_upp`))  + 
+  geom_line(lty=2) +
+  geom_ribbon(alpha=.5) +
   geom_point() +
   geom_pointrange() + 
-  theme_bw()
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent_format(scale = 100))+
+  ylab("Percent correct")
+
+
 
 ```
 
