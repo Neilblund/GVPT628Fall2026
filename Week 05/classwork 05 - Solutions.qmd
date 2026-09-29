@@ -28,15 +28,15 @@ library(srvyr)
 
 ```
 
-You should have a zip file with a name like `anes_timeseries_cdf_stata_20220916.zip`. You can either unzip this yourself and then use `read_dta` to import the relevant file, or you can do the unzipping from within R by running the code below:
+You should have a zip file with a name like `anes_timeseries_cdf_stata_20260205.zip`. You can either unzip this yourself and then use `read_dta` to import the relevant file, or you can do the unzipping from within R by running the code below:
 
 ```{r, cache=TRUE}
 
-fname<-here::here("Data", "anes_timeseries_cdf_stata_20220916.zip")
+fname<-here::here("Data", "anes_timeseries_cdf_stata_20260205.zip")
 
 # unz will extract the .dta file from the zipped folder 
 anes  <- haven::read_dta(unz(fname,
-                             "anes_timeseries_cdf_stata_20220916.dta"))
+                             "anes_timeseries_cdf_stata_20260205.dta"))
 
 
 
