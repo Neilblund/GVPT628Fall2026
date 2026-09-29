@@ -1,0 +1,388 @@
+---
+title: "Classwork 5"
+format:
+  html:
+    toc: true
+    df-print: kable
+    code-tools: true
+    embed-resources: true
+---
+
+
+
+We'll use the ANES cumulative time series data to explore changes in people's views of the U.S. political parties over time. Early public opinion research found that many people had a surprisingly difficult time identifying meaningful differences between the parties or correctly placing them along a left-right axis. However, there are reasons to suspect that this is no longer the case today.
+
+You can download the ANES cumulative time series file from this URL: <https://electionstudies.org/data-center/anes-time-series-cumulative-data-file/>. You'll need to create an account (you can use your UMD email address) and download the Stata formatted version of the file.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load the required libraries
+
+```{r, warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(haven)
+library(srvyr)
+
+```
+
+You should have a zip file with a name like `anes_timeseries_cdf_stata_20220916.zip`. You can either unzip this yourself and then use `read_dta` to import the relevant file, or you can do the unzipping from within R by running the code below:
+
+```{r, cache=TRUE}
+
+fname<-here::here("Data", "anes_timeseries_cdf_stata_20220916.zip")
+
+# unz will extract the .dta file from the zipped folder 
+anes  <- haven::read_dta(unz(fname,
+                             "anes_timeseries_cdf_stata_20220916.dta"))
+
+
+
+```
+
+This is a fairly large file. You'll want to keep in mind R's "copy-on-modify" behaviors and avoid creating a bunch of extra copies of these data. If you find things are sluggish, you might try removing some variables with `rm(variable_name)` and then using `gc()` to claw back some memory.
+
+# Setup
+
+Consult the codebook and appendices to find more information about the variable names and weighting procedures. You'll notice that most of the variables are named something wacky like `VCF0502`, so you might want to use `rename` or `mutate` to give more descriptive names to the variables you plan to use in your analysis.
+
+```{r}
+
+anes<-anes|>
+  mutate(year = VCF0004,
+         full.weight = VCF0009z
+         )
+
+
+
+```
+
+Moreover, you'll often find that the response labels are too long to fit on a graph or table, or they just contain formatting and abbreviations you don't want. In these cases, you can use a `case_when` or `fct_recode` statement to relabel categories.
+
+## Recoding Party Placements
+
+Question `VCF0502` asks respondents whether one party is more conservative than the other and, if so, which party they believe is more conservative. We can use this to track changes over time in how well people are able to distinguish the two major political parties.
+
+To prepare this question for plotting, we're going to drop/recode some NA and non-response variables, and create slightly shorter labels for some of the responses.
+
+We'll aim to create something that looks like this:
+
+| original variable                                      | Party Placements          |
+|--------------------------------------------------------|---------------------------|
+| 0\. NA; no Post IW; telephone IW (1984); form          | NA                        |
+| 1\. Yes, Democrats more conservative                   | Yes, Democrats            |
+| 2\. Yes, Republicans more conservative                 | Yes, Republicans          |
+| 9\. No, both the same; DK; no guess (1970-1976); other | No, Both Same, Don't Know |
+
+Here's how we can do that using a `case_when` statement
+
+```{r}
+anes<-anes|>
+  mutate(
+    VCF0502 = as_factor(VCF0502),
+    `Party Placements` = case_when(
+    VCF0502 == '1. Yes, Democrats more conservative' ~  "Yes, Democrats", 
+    VCF0502 == '2. Yes, Republicans more conservative'~ "Yes, Republicans", 
+    VCF0502 == '9. No, both the same; DK; no guess (1970-1976); other' ~ "No, Both Same, Don't Know"
+               ))
+
+
+```
+
+Note that we don't need to do anything with the "NA/DK" responses. If none of the `case_when` statements are `TRUE` for an observation, then it will get converted to an `NA` by default.
+
+
+Here's how you would do the same thing using `fct_recode` from the [`forcats`](https://forcats.tidyverse.org/reference/fct_recode.html) library:
+
+```{r}
+
+
+anes<-anes |>
+  mutate(
+    `Party Placements 2` = fct_recode(
+      as_factor(VCF0502),
+      "Yes, Democrats" = '1. Yes, Democrats more conservative',
+      "Yes, Republicans" = '2. Yes, Republicans more conservative',
+       "No, Both Same, Don't Know" = '9. No, both the same; DK; no guess (1970-1976); other'
+                                           ))
+
+```
+
+
+Now we can compare the new values to the old ones to see if we got things right:
+
+```{r}
+
+anes|>
+  select(`Party Placements`,`Party Placements 2`, VCF0502)|>
+  arrange(VCF0502)|>
+  distinct()
+
+
+```
+
+You'll want to go ahead and remove rows with `NA` values on the variables of interest. You can do this with a filter:
+
+```{r, eval=FALSE}
+anes_cols <-anes|>
+  filter(!is.na(`Party Placements`))
+
+
+```
+
+Or you could use the `drop_na` function to drop missing values for multiple variables:
+
+```{r}
+
+anes_cols<-anes|>
+  drop_na(`Party Placements`, year, full.weight)
+
+```
+
+(Keep in mind, you probably don't want to do this to the original data set because you run the risk of removing stuff you might need later)
+
+Now use the `anes_cols` data to answer the questions below:
+
+# Q1
+
+**Calculate the weighted proportion of each response to the question by year.**
+
+We want the (weighted) % of respondents who give each answer in each ANES wave. Normally we would just calculate the number of respondents who give each answer in a given year, but since we're using weights, we sum up the weights for each group instead. Then we divide this weighted count to get our totals:
+
+```{r}
+
+totals<-anes_cols|>
+  group_by(year, `Party Placements`)|>
+  summarise(wtd_n = sum(full.weight))|>
+  group_by(year)|>
+  mutate(wtd_total = sum(wtd_n),
+         proportion = wtd_n / wtd_total
+         )
+
+
+```
+
+(it can be tough to determine what variables we should be grouping over in which steps, especially when we are trying to get proportions across multiple different groups. But in general, you want proportions to sum up to 1 at each level of your independent variable(s))
+
+# Q2
+
+**Create a plot to show how this has changed over time. (there are a number of ways to present this. `geom_smooth` or `geom_area` may be better for viewing time trends, but `geom_bar` or `geom_line` could also work.**
+
+Here's a basic example using `geom_line` and `geom_point`:
+
+```{r}
+
+ggplot(totals, aes(x = year, y = proportion, color = `Party Placements`)) + 
+  geom_point() +
+  geom_line() +
+  # Add a title and caption: 
+  labs(title =  'VCF0502: Is one party more conservative?',
+       caption = "Source: ANES Time Series Cumulative Data File") +
+  # use the black and white theme
+  theme_bw() 
+
+
+```
+
+## Fancy versions
+
+Note: any of these could work. I've provided three different versions with a lot of additional bells and whistles just to give you some sense of how you can modify or improve the appearance of plots.
+
+Since we're plotting the same data across all of these sections, I'll use the same base plot object for all three plots and just add different geometries to each one.
+
+```{r}
+
+base_plot<-ggplot(totals, 
+                  aes(x=year, y=proportion)) + 
+  # Add a title and caption: 
+  labs(title =  'VCF0502: Is one party more conservative?',
+       caption = "Source: ANES Time Series Cumulative Data File") +
+  # use the black and white theme
+  theme_bw()
+
+
+
+```
+
+### Line plot example
+
+Here's an example using `geom_point`, `geom_line` and some additional options, including a smoothed loess curve and some additional formatting:
+
+```{r}
+
+
+base_plot + 
+  # default aesthetics can be a standalone argument here: 
+  aes(color = `Party Placements`) +
+  geom_line() +
+  geom_point()+ 
+  # add a smoothed loess curve: 
+  geom_smooth(method = "loess", se = FALSE) + 
+  # changing the proportions to percentages: 
+  scale_y_continuous(labels = scales::percent_format(scale = 100)) +
+  ylab('% of respondents') +
+  # placing the legend at the bottom instead of to the side:
+  theme(legend.position="bottom", legend.box = "horizontal") +
+  # manually changing the color scheme: 
+  scale_color_manual(values = c("grey", "red","blue")) 
+
+
+  
+
+```
+
+### Bar plot example
+
+Here's an example using `geom_bar`. I specify `stat="identity"` part so that `geom_bar` doesn't try to calculate some other summary statistic for each category. In essence it means "the value on Y should determine how high this bar is". I also use `fill=Party Placements` instead of `color=Party Placements`. When creating a bar plot, the color aesthetic just controls the color of the border of each bar, while the fill aesthetic controls the color of the bar itself.
+
+```{r}
+  
+base_plot +
+  aes(fill = `Party Placements`) +
+  geom_bar(stat='identity') +
+  # use this to make the bars side by side instead of stacked:
+  # geom_bar(stat='identity', position='dodge') +
+  theme_bw()
+  
+
+```
+
+### Area plot example
+
+Another option here would be to create an area plot using `geom_area`. Although I personally think this makes it harder to spot a trend, its actually the approach that [most closely resembles the way the ANES presents data from this survey.](https://electionstudies.org/data-tools/anes-guide/anes-guide.html?chart=which_party_more_conservative)
+
+This example also uses a custom color palette from the [paletteer package](https://pmassicotte.github.io/paletteer_gallery/#discrete-palettes), which has a ton of alternatives to the kind of ugly ggplot defaults.
+
+```{r}
+# install.packages("paletteer")
+base_plot + 
+  aes(fill = `Party Placements`) +
+  # alpha controls the transparency level. So I can set this lower to 
+  # make the grid lines visible
+  geom_area(alpha=.7) +
+  # using a custom palette: 
+  paletteer::scale_fill_paletteer_d("futurevisions::atomic_red") 
+
+
+  
+  
+
+```
+
+# Q3
+
+**Are these trends different for college-educated vs. non-college respondents? Find the variable for educational attainment by consulting the codebook, then create a variable that just indicates whether the respondent has a college degree and use it to re-calculate the relationship from Q1 separately for each group.**
+
+(Keep in mind that the proportions should sum up to 100% for each year/education level. Otherwise your interpretation will be biased by changes in the % of people with degrees)
+
+If we look at how the `VCF0110` variable is encoded, we can see that non-responses have a numeric value of 1, people with less than a Bachelor's degree have a value of 2, 3, or 4 and people with degrees have a value of 5.
+
+```{r}
+
+anes|>
+  select(VCF0110)|>
+  mutate(numeric_educ = as.numeric(VCF0110))|>
+  distinct() |>
+  arrange(numeric_educ)
+
+
+```
+
+So we can use a `case_when` statement to recode this into "Non-College" and "College grad" categories based on those numeric values:
+
+```{r}
+
+
+anes<-anes|>
+  mutate(`Degree` = case_when(as.numeric(VCF0110) %in% 2:4 ~ "Non-college", 
+                              as.numeric(VCF0110) == 5 ~ "College grad"
+                              ))
+
+# check the results of the recoding: 
+anes|>
+  select(`Degree`, VCF0110)|>
+  arrange(VCF0110)|>
+  distinct()
+
+
+```
+
+Calculate the weighted proportions using more-or-less the same approach you used in question 2, but also include `Degree` as a grouping variable in both steps:
+
+```{r}
+
+totals <- anes|>
+  # select onyl the relevant columns: 
+  select(`Party Placements`, `Degree`, full.weight, year)|>
+  # drop any NA values: 
+  drop_na(`Party Placements`, `Degree`)|>
+  group_by(`Party Placements`, year, `Degree`)|>
+  summarise(wtd_n = sum(full.weight))|>
+  group_by(year, Degree)|>
+  mutate(wtd_total = sum(wtd_n),
+         proportion = wtd_n / wtd_total
+         )
+
+
+```
+
+Now you should have separate proportions for college vs. non-college.
+
+We can use `facet_grid` or `facet_wrap` to create separate plots for different levels of a categorical variable. Here's what that looks like:
+
+```{r}
+ggplot(totals, aes(x=year, y=proportion, color=`Party Placements`)) + 
+  geom_point() +
+  geom_line() +
+  theme_bw() +
+  # creating separate facets for each group: 
+  facet_wrap(~Degree) +
+  # add legend along the bottom:
+  theme(legend.position="bottom", legend.box = "horizontal") +
+  # add a title and caption: 
+  labs(title =  'VCF0502: Is one party more conservative? (by education)',
+       caption = "Source: ANES Time Series Cumulative Data File") +
+  # manually changing the color scheme: 
+  scale_color_manual(values = c("grey", "red","blue"))  +
+  # rescale proportions as percentages: 
+  scale_y_continuous(labels = scales::percent_format(scale = 100))
+
+
+  
+
+```
+
+(There's plenty of evidence that education makes people better able to distinguish the parties, but dis-aggregating this by level of education suggests that its not just a function of more people going to college.)
+
+# Note on getting confidence intervals
+
+As I said in class: getting confidence intervals and p-values from weighted survey data is a bit more complicated than just calculating things like means and proportions. We'll generally just avoid this question for this course but I'm including some code here just in case its of interest.
+
+The ANES recommends including the Primary Sampling Unit and Stratum variables alongside the weight variable when calculating standard errors for ANES data. Unfortunately, the ANES doesn't appear to provide the PSU or strata information for the cumulative time series file, so we can only account for the weights here.
+
+Here's an example of using this to plot 95% confidence intervals around the party placements variable for each year using the `srvyr` package. ([more info here](http://gdfe.co/srvyr/articles/srvyr-vs-survey.html))
+
+```{r, warning=FALSE, message=FALSE}
+
+library(srvyr)
+anes_svy <- anes |>
+  as_survey_design(data = anes, weight = full.weight) 
+
+
+weighted_result <- anes_svy|>
+  drop_na(`Party Placements`)|>
+  mutate(`proportion correct` =`Party Placements` == 'Yes, Republicans')|>
+  group_by(year) |>
+  summarise(survey_mean(`proportion correct`, vartype='ci'))
+  
+
+ggplot(weighted_result, aes(x=year, y=coef, ymin=`_low`, ymax=`_upp`))  + 
+  geom_point() +
+  geom_pointrange() + 
+  theme_bw()
+
+```
+
+Since we don't have access to all the information needed to fully replicate the complex design of this survey, we should probably take these confidence intervals with a grain of salt! But the eyeball test indicates that the trend here is not just attributable to random sampling error. People have actually gotten better at answering this question.
