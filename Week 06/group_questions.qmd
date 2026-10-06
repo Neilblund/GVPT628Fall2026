@@ -145,7 +145,7 @@ Once you're set up, see if you can push new changes to your github repository.
 
 (if we don't have time for this, you can just email your contribution to the repo owner and they can incorporate your contributions into the repository)
 
-# Project Structure
+# Suggested Project Structure
 
 Your specific needs may vary, but here's one option for what would be included in a github repo for a more complicated project like this one.
 
