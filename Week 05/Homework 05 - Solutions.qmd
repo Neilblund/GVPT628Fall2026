@@ -217,6 +217,7 @@ Here's how you would want to weight the data for these analyses:
 ```{r}
 
 gss_weighted<-gss|>
+  filter(!is.na(wtssnrps))|>
   as_survey_design(ids = vpsu, 
                    strata=vstrat, 
                    weights = wtssnrps, 
@@ -587,14 +588,15 @@ Plotting the predictions and 95% confidence intervals from this model gives us a
 
 library(marginaleffects)
 
-plot_predictions(out, by=c('cantrust2', 'pid3')) +
+plot_predictions(out, by=c('cantrust', 'pid3')) +
   theme_minimal()  +
   scale_color_manual(values=c('#5D8CA8FF', '#595959FF', 
                               '#D5695DFF')) +
   labs(color ='Party ID',
        x="Social Trust",
        y="Pr(Must be born in America to be American)"
-  )
+  ) +
+  coord_flip()
 
 ```
 
