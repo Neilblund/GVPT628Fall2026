@@ -80,7 +80,37 @@ We'll do a quick-and-dirty version of the project setup for this class that uses
 
 -   Check to see if github is installed by entering `git` in the command line. If not, Install github. [There are some instructions you can follow here](https://github.com/git-guides/install-git)
 
--   Create a new test project using version git version control. Add something to it and then ensure you can push/pull from Rstudio.
+-   Create a new test project. Run the command `usethis::use_git()` to create the basic files for a local github repo, then follow the instructions below to connect to github.
+
+
+### Connecting to Github
+
+Run this command below, this will take to you a page where you can set up a personal access token. Be sure you copy paste your token somewhere.
+
+```{r, eval=FALSE}
+usethis::create_github_token()
+
+```
+
+Once you have your token you can run the command below to set your github credentials.
+
+```{r, eval=FALSE}
+
+usethis::gitcreds_set()
+
+```
+
+Finally, run the code below to connect your local repository to a github repo.
+
+```{r, eval=FALSE}
+
+usethis::use_github()
+
+
+```
+
+Once you're set up, see if you can push new changes to your github repository.
+
 
 ## 2. Creating a master project
 
