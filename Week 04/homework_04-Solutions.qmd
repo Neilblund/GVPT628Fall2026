@@ -128,7 +128,7 @@ sm_count<-ccc|>
   drop_na()|>
   mutate(
     # regular expression to get social media sources
-    sm_source = str_detect(str_to_lower(value), "x.com|twitter.com|facebook.com|instragram.com"))|>
+    sm_source = str_detect(str_to_lower(value), "x.com|twitter.com|facebook.com|instagram.com"))|>
   group_by(sm_source)|>
   summarize(total = length(unique(id)))
 

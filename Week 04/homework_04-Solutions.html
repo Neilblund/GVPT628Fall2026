@@ -2369,7 +2369,7 @@ font-family: inherit;
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()<span class="sc">|&gt;</span></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># regular expression to get social media sources</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">sm_source =</span> <span class="fu">str_detect</span>(<span class="fu">str_to_lower</span>(value), <span class="st">&quot;x.com|twitter.com|facebook.com|instragram.com&quot;</span>))<span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">sm_source =</span> <span class="fu">str_detect</span>(<span class="fu">str_to_lower</span>(value), <span class="st">&quot;x.com|twitter.com|facebook.com|instagram.com&quot;</span>))<span class="sc">|&gt;</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sm_source)<span class="sc">|&gt;</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total =</span> <span class="fu">length</span>(<span class="fu">unique</span>(id)))</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
@@ -2386,11 +2386,11 @@ font-family: inherit;
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">25864</td>
+<td style="text-align: right;">19025</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">2025</td>
+<td style="text-align: right;">10559</td>
 </tr>
 </tbody>
 </table>
@@ -3085,7 +3085,7 @@ font-family: inherit;
 <span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()<span class="sc">|&gt;</span></span>
 <span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a>    <span class="co"># regular expression to get social media sources</span></span>
-<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a>    <span class="at">sm_source =</span> <span class="fu">str_detect</span>(<span class="fu">str_to_lower</span>(value), <span class="st">&quot;x.com|twitter.com|facebook.com|instragram.com&quot;</span>))<span class="sc">|&gt;</span></span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a>    <span class="at">sm_source =</span> <span class="fu">str_detect</span>(<span class="fu">str_to_lower</span>(value), <span class="st">&quot;x.com|twitter.com|facebook.com|instagram.com&quot;</span>))<span class="sc">|&gt;</span></span>
 <span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sm_source)<span class="sc">|&gt;</span></span>
 <span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total =</span> <span class="fu">length</span>(<span class="fu">unique</span>(id)))</span>
 <span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a></span>
