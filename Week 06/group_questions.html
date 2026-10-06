@@ -2202,8 +2202,8 @@ vertical-align: -.125em;
   <li><a href="#data-folder" id="toc-data-folder" class="nav-link" data-scroll-target="#data-folder">Data folder</a></li>
   <li><a href="#code-folder" id="toc-code-folder" class="nav-link" data-scroll-target="#code-folder">Code folder</a></li>
   <li><a href="#results-folder-optional" id="toc-results-folder-optional" class="nav-link" data-scroll-target="#results-folder-optional">Results folder (optional)</a></li>
-  <li><a href="#extra-stuff-levels-of-replicability" id="toc-extra-stuff-levels-of-replicability" class="nav-link" data-scroll-target="#extra-stuff-levels-of-replicability">Extra stuff: levels of replicability</a></li>
   </ul></li>
+  <li><a href="#extra-stuff-levels-of-replicability" id="toc-extra-stuff-levels-of-replicability" class="nav-link" data-scroll-target="#extra-stuff-levels-of-replicability">Extra stuff: levels of replicability</a></li>
   </ul>
 </nav>
 </div>
@@ -2364,11 +2364,11 @@ vertical-align: -.125em;
 <h3 class="anchored" data-anchor-id="results-folder-optional">Results folder (optional)</h3>
 <p>If your analysis creates additional files (such as a new data set or a high-resolution plot or table) you can put them in a folder called “results.”</p>
 </section>
-<section id="extra-stuff-levels-of-replicability" class="level2">
-<h2 class="anchored" data-anchor-id="extra-stuff-levels-of-replicability">Extra stuff: levels of replicability</h2>
+</section>
+<section id="extra-stuff-levels-of-replicability" class="level1">
+<h1>Extra stuff: levels of replicability</h1>
 <p>If you really want to make things replicable, you might consider using something like the <a href="https://rstudio.github.io/renv/articles/renv.html">renv package</a> to create a reproducible R environment. This gives users an easy way to match the exact same packages/versions you used for your analysis. This can make a big difference if, for instance, a package you used is updated in a way that causes it to give different results, or that makes some functions no longer useable.</p>
 <p>If you really, really want to make things replicable, you might consider using <a href="https://en.wikipedia.org/wiki/Docker_(software)">Docker Container</a>. Docker Containers are standalone virtual machines than allow you to replicate everything from the operating system on down, so you can include the exact same operating system, R version, packages, and basically any other software you need to replicate an analysis. This is probably overkill for simple projects, but it can be a huge help if you want to ensure a really complicated project can run anywhere. (I haven’t tried this myself, but <a href="https://thinkr-open.github.io/dockerfiler/">the DockerFiler package</a> might make getting started a little easier if you’re coming from R)</p>
-</section>
 </section>
 
 </main>

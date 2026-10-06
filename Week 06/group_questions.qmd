@@ -146,7 +146,7 @@ If your analysis creates additional files (such as a new data set or a high-reso
 
 
 
-## Extra stuff: levels of replicability
+# Extra stuff: levels of replicability
 
 If you really want to make things replicable, you might consider using something like the [renv package](https://rstudio.github.io/renv/articles/renv.html) to create a reproducible R environment. This gives users an easy way to match the exact same packages/versions you used for your analysis. This can make a big difference if, for instance, a package you used is updated in a way that causes it to give different results, or that makes some functions no longer useable.
 
