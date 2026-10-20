@@ -1,0 +1,954 @@
+---
+title: "APIs and web data"
+format:
+  revealjs:
+    theme: [serif, clean]
+    df-print: tibble
+    smaller: true
+    slide-number: true
+    self-contained: true
+code-annotations: select
+output-location: column
+slide-level: 3
+---
+
+```{css}
+
+
+table {
+  font-size: 1rem;
+}
+```
+
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+
+```
+
+## Cat Fact
+
+I can use this code to retrieve random cat facts.
+
+```{r}
+library(httr2)
+
+
+request("https://catfact.ninja/fact?max_length=140")|>
+  req_perform()|>
+  resp_body_json()
+
+
+```
+
+## Some terms
+
+API
+
+-   API stands for Application Programming Interface.
+
+-   Its the computer analog of a "user interface"
+
+. . .
+
+HTTP
+
+-   HyperText Transfer Protocol is the system that your browser uses to load web pages.
+
+-   When you enter a URL into the browser bar, you're sending an HTTP `GET` request to a server and then retrieving the website.
+
+## GET Requests
+
+We can also use the `GET` method programmatically and retrieve the raw HTML for a website:
+
+```{r, cache=TRUE}
+
+httr::GET('https://www.google.com/')
+
+```
+
+## Web APIs
+
+
+-   Web-based APIs allow you to use HTTP methods (like `GET`) to interact with data from their servers and return it in a format that can be used by a computer
+
+-   In the simplest cases, your API request is just a URL that you can plug into a browser bar to retrieve data
+
+
+## Web APIs
+
+::::: columns
+::: {.column width="50%"}
+-   You've already used one of these indirectly through the `tidycensus` package, which is an R front-end for sending [Census API](https://www.census.gov/data/developers/guidance/api-user-guide.html) queries
+
+-   However, not all APIs will have a nice R package like this, so we'll have to learn how to write those `GET` requests ourselves.
+:::
+
+::: {.column width="50%"}
+![section of load_acs function from the tidycensus package](images/load_acs.png){fig-align="center"}
+:::
+:::::
+
+
+
+## Example: PokeAPI
+
+We'll use this example of sending a query to the [PokeAPI](https://pokeapi.co/) to retrieve data about Pokemon.
+
+
+
+
+## R code
+
+You can access the first page of data by just plugging the link below into your browser:
+
+<https://pokeapi.co/api/v2/pokemon/?limit=20&offset=20>
+
+Or you can perform the same operation in R using the code below:
+
+```{r, cache=TRUE}
+library(httr2)
+
+
+url<-'https://pokeapi.co/api/v2/pokemon/?limit=20&offset=20'
+
+# performing the request
+pokemon<-request(url)|>
+  req_perform()
+
+# formatting the result: 
+p_data <- pokemon|>
+  resp_body_json()
+
+p_data$results[1:5]
+
+```
+
+
+## The URL
+
+This  are we actually sending here? We can break this URL down into some basic components:
+
+
+
+
+<https://pokeapi.co/api/v2/pokemon/?limit=20&offset=20>
+
+
+::: incremental
+
+- This part `https://` is a protocol. This will almost always be `http` or `https`
+
+- `pokeapi.co` is the domain for this API
+
+- `/api/v2/pokemon/` is the path, which directs us to specific resources on this API. This works sort of like a directory, so you can think of each `/` as representing something like a "folder"
+
+- Everything after the `?` is a query parameter, which usually perform some kind of filtering on the data. If there's more than one query parameter, they'll be separated by an `&`
+
+
+:::
+
+## The URL
+
+Changing parts of the URL will retrieve different data. 
+
+::: fragment
+
+For instance, if we change the "offset" query parameter, we'll get data for another part of the data set:
+
+
+```{r, cache=TRUE}
+
+
+url<-'https://pokeapi.co/api/v2/pokemon/?limit=20&offset=40'
+
+# performing the request
+pokemon<-request(url)|>
+  req_perform()
+
+# formatting the result: 
+p_data <- pokemon|>
+  resp_body_json()
+
+p_data$results[1:5]
+
+```
+
+:::
+
+## The URL
+
+We could also change the path to get an entirely different data set:
+
+
+```{r, cache=TRUE}
+
+
+url<-'https://pokeapi.co/api/v2/move/?limit=20&offset=40'
+
+# performing the request
+moves<-request(url)|>
+  req_perform()
+
+# formatting the result: 
+m_data <- moves|>
+  resp_body_json()
+
+m_data$results[1:5]
+
+```
+## The URL
+
+
+
+```{r}
+url<-'https://pokeapi.co/api/v2/move/?limit=20&offset=40'
+
+# performing the request
+moves<-request(url)|>
+  req_perform()
+
+# formatting the result: 
+m_data <- moves|>
+  resp_body_json()
+
+
+move_url<-m_data$results[[1]]$url
+
+move_info<-request(move_url)|>
+  req_perform()|>
+  resp_body_json()
+move_info
+
+
+```
+
+## Structured Requests
+
+We *could* just construct a request "by hand" using text manipulation functions like `paste0`.
+
+However, its usually easier to use a package to handle this - especially as we develop more complicated queries.
+
+
+### httr2
+
+We'll use the [`httr2`](https://httr2.r-lib.org/index.html) package to create and send requests in R.
+
+We'll start by setting up the request URL:
+
+::::: {.columns}
+::: {.column width="50%"}
+
+- `request` will create the initial request object
+
+- `req_url_path_append` will adjust the path
+
+- `req_url_query` will add some key = values to the URL query parameters.
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| output-location: default
+
+library(httr2)
+base_url <- 'https://pokeapi.co/api/v2/'
+full_url <- request(base_url)|>               # this just creates a request object
+  req_url_path_append('move')|> # the / are added automatically
+  req_url_query('offset' = 0,                # & is added automatically to separate query parameters
+                'limit' = 10
+                )
+
+full_url$url                                 # we've now got a full URL
+```
+
+:::
+:::::
+
+
+### httr2
+
+Once we have the URL constructed, we'll use `req_perform` to send the request to the server. (When dealing with API query limits, `req_perform` is the part where we're consuming resources, so pay close attention to how often you run this function)
+
+
+```{r}
+#| output-location: default
+
+library(httr2)
+base_url <- 'https://pokeapi.co/api/v2/'
+full_url <- request(base_url)|>
+  req_url_path_append('move')|> 
+  req_url_query('offset' = 0,
+                'limit' = 10
+                )
+
+
+data<-full_url |>                     # send request
+  req_perform()
+data$status_code                    # status_code = 200 means everything is fine
+
+```
+
+
+### httr2
+
+
+
+::::: {.columns}
+::: {.column width="50%"}
+
+
+- Functions like `resp_body_json`, `resp_body_xml` and `resp_body_string` will convert the results of a completed request into R objects. 
+
+- Usually, you'll use `resp_body_json` because most APIs will return `json` formatted data.
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| output-location: default
+
+library(httr2)
+base_url <- 'https://pokeapi.co/api/v2/'
+full_url <- request(base_url)|> 
+  req_url_path_append('move')|>
+  req_url_query('offset' = 0,
+                'limit' = 10
+                )
+
+
+data<-full_url |>                     # send request
+  req_perform()
+
+json_data<-data|>
+  resp_body_json()
+
+
+json_data
+```
+
+:::
+:::::
+
+
+### Try it out
+
+Get detailed information about the first pokemon on the list of pokemon by adjusting the parameters on this URL: <https://pokeapi.co/api/v2/pokemon>. Then send another request to get more detail on that Pokemon.
+
+```{r, eval=FALSE}
+#| code-fold: true
+
+base_url <- 'https://pokeapi.co/api/v2'
+api_result <- request(base_url)|>               
+  req_url_path_append('pokemon')|> 
+  req_url_query('offset' = 0, 
+                'limit' = 10
+                )|>
+  req_perform()|>
+  resp_body_json()
+
+first_url<-api_result$results[[1]]$url # now get the URL and then visit the link
+
+
+request(first_url)|>
+  req_perform()|>
+  resp_body_json()
+
+```
+
+## Pagination
+
+We've got over 1351 results. How do we collect all of them?
+
+
+```{r}
+base_url <- 'https://pokeapi.co/api/v2'
+api_result <- request(base_url)|>               
+  req_url_path_append('pokemon')|> 
+  req_url_query('offset' = 0,             
+                'limit' = 10
+                )|>
+  req_perform()|>
+  resp_body_json()
+
+
+api_result$count
+
+
+
+```
+
+In those cases, we'll typically need a `page` or `offset` parameter to retrieve additional rows of data.
+
+## Pagination 
+
+The most straightforward way to handle this is with a loop that increases the `offset` parameter by the `limit` value each iteration and stores the result, but note that we want to avoid "hard-coding" an exact number of pages to check because we don't the amount of data available until we send our first query.
+
+
+## Pagination
+
+One way to handle this is by using a `while` loop instead of the more common `for` loop. Remember that `while` loops run until some condition is equal to `FALSE`. So the key here is finding a condition to stop our pagination process when we read the last page of data.
+
+```{r}
+
+i <- 1
+while(i < 10){
+  print(i)
+  i<-i + 1
+}
+
+
+```
+
+
+
+## Pagination
+
+One way to do this is by looking at each response to check for some key word that indicates we're receiving data. 
+
+Take a look at:
+
+<https://pokeapi.co/api/v2/pokemon?offset=1341>
+
+...and see if you spot a condition like this.
+
+
+
+## Pagination
+
+
+```{r, cache=TRUE}
+
+base_url <- 'https://pokeapi.co/api/v2'
+
+more_data <- TRUE
+offset <- 0
+limit  <- 100
+
+pokemon_req <- request(base_url) |>
+    req_url_path_append('pokemon') 
+all_results<-list() # empty list
+
+while(more_data ==TRUE){
+  print(offset)
+  poke_data <- pokemon_req |>
+    req_url_query('limit' = limit,
+                  'offset' = offset
+                  ) |>
+    req_perform() |>
+    resp_body_json()
+  more_data <- length(poke_data$results) > 0
+  if(more_data == TRUE){
+     page<-length(all_results) + 1
+     all_results[[page]] <- poke_data
+  }
+  offset<- offset + limit
+  Sys.sleep(.1)
+  
+}
+
+
+length(all_results)
+
+```
+### Try it out
+
+A more efficient way to set up our while loop might be to check for the `next` URL, because this would allow us to avoid sending an extraneous request when we've reached the last page of data. See if you can set up a while loop that uses the same structure as the previous slide but that check for `next` being an empty string.
+
+```{r, cache=T}
+#| code-fold: true
+
+
+base_url <- 'https://pokeapi.co/api/v2'
+
+more_data <- TRUE
+offset <- 0
+limit  <- 100
+
+pokemon_req <- request(base_url) |>
+    req_url_path_append('pokemon') 
+all_results<-list() # empty list
+
+while(more_data ==TRUE){
+  print(offset)
+  poke_data <- pokemon_req |>
+    req_url_query('limit' = limit,
+                  'offset' = offset
+                  ) |>
+    req_perform() |>
+    resp_body_json()
+  more_data <- !is.null(poke_data$`next`)
+  if(more_data == TRUE){
+     page<-length(all_results) + 1
+     all_results[[page]] <- poke_data
+  }
+  offset<- offset + limit
+  Sys.sleep(.1)
+  
+}
+
+
+length(all_results)
+
+
+
+```
+
+## Response objects: JSON
+
+Most APIs will return results using JSON formats, which is called `JSON` (Java Script Object Notation). JSON has very few restrictions on how it can be structured, so it can require some work to get it into a structure that is appropriate for analysis.
+
+
+
+```         
+{
+  "count": 1351,
+  "next": "https://pokeapi.co/api/v2/pokemon?offset=1346&limit=5",
+  "previous": "https://pokeapi.co/api/v2/pokemon?offset=1336&limit=5",
+  "results": [
+    {
+      "name": "magearna-mega",
+      "url": "https://pokeapi.co/api/v2/pokemon/10317/"
+    },
+    {
+      "name": "magearna-original-mega",
+      "url": "https://pokeapi.co/api/v2/pokemon/10318/"
+    },
+    {
+      "name": "zeraora-mega",
+      "url": "https://pokeapi.co/api/v2/pokemon/10319/"
+    },
+    {
+      "name": "scovillain-mega",
+      "url": "https://pokeapi.co/api/v2/pokemon/10320/"
+    },
+    {
+      "name": "glimmora-mega",
+      "url": "https://pokeapi.co/api/v2/pokemon/10321/"
+    }
+  ]
+}
+```
+
+
+
+
+### R list
+
+This becomes a (usually nested) list in R:
+
+```{r, echo=TRUE}
+
+result<-request('https://pokeapi.co/api/v2/pokemon?offset=1341&limit=5') |>
+  req_perform() |>
+  resp_body_json()
+
+result
+
+```
+
+
+
+## Reformatting JSON in R
+
+There are some shortcuts here, but - for more complex JSON objects - you may need to do some looping to reformat them properly.
+
+Remember that in R you can use `$` to retrieve a named element from a list. So retrieving parts of this is easy:
+
+```{r}
+result$count
+result$`next`
+
+
+
+
+
+```
+
+
+## Reformatting JSON in R
+
+
+The `results` part of this object is a nested list full of more lists. These aren't named, so you'll need to use a numeric index to access them. (The `[[]]` here will basically remove a single level of nesting)
+
+```{r}
+
+result$results[[1]]
+
+```
+
+
+## Reformatting JSON in R
+
+
+```{r}
+
+# using names and $
+result$results[[1]]$name
+
+# using names and more double brackets
+result[["results"]][[1]]$name
+
+# using indices (you can also get a range here!)
+result[["results"]][1:3]
+
+```
+
+## Reformatting JSON in an R loop
+
+If we have a good understanding of the nested structure, we can use a loop to create a data frame from this list:
+
+```{r}
+library(tidyverse)
+df<-tibble(
+   name = NA,
+   url = NA,
+  .rows =length(result$results))
+
+for(i in 1:length(result$results)){
+  data_i<-result$results[[i]]
+  
+  df$name[i] <-data_i$name
+  
+  df$url[i] <- data_i$url
+}
+
+df|>slice_head(n=5)
+
+
+
+
+```
+
+## Reformatting JSON with some shortcuts
+
+Depending on the formatting, the `bind_rows` function from `dplyr` might work even without the loop, but this is somewhat dependent on the structure of the list:
+
+```{r}
+
+
+df <- bind_rows(result$results)
+
+df|>slice_head(n=5)
+
+
+
+```
+
+### Try it out
+
+The `all_results` list you created in the previous section has multiple pages of data, use `bind_rows` in a loop to iterate over each page of `all_results` and create a single data frame with all of the data.
+
+```{r}
+#| code-fold: true
+
+df<-tibble(
+   name = NA,
+   url = NA,
+  .rows  = all_results[[1]]$count)
+
+i <- 1
+
+for(p in 1:length(all_results)) {
+  result <- all_results[[p]]
+    for (j in 1:length(result$results)) {
+      data_i <- result$results[[j]]
+      df$name[i] <- data_i$name
+      df$url[i] <- data_i$url
+      i <- i +1
+    }
+}
+
+
+
+
+```
+
+
+
+## API authentication
+
+::: incremental
+-   Many APIs will require you to set up an account and authenticate yourself before interacting with the data. This is either for security reasons, or just to set limits or charge money for repeated requests.
+-   The simplest forms of authentication will usually require you to pass your login information or an authentication key as a URL parameter.
+-   More complicated authentication processes may require you to pass authentication information in a header and/or use an [OAuth token](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0)
+-   Keys are generally more secure than sending your password, but you should still take some common-sense precautions when using them (more on that in a second)
+
+:::
+
+
+
+
+### Getting an API key for Congress.gov
+
+You can sign up for an API key at this address: <https://api.congress.gov/sign-up/>
+
+The Congress.gov API doesn't cost any money to use, the authentication process exists primarily to track/place reasonable limits on your usage. Once you send the request, you should get an email with your key.
+
+### Safely storing your key
+
+This isn't like your ATM pin or anything, its a free login. That said, its really not good practice to just write your API key in plain text in a script. Some better options are:
+
+1.  You can save your key in a text file (ideally outside of your current working directory and in a file that only you can access)
+2.  You write code to prompt for a password and then enter it manually each time (not ideal because we want to be able to run code without looking at it all the time!)
+3.  You can store the key in the `.Renviron` file. (this is the method we'll try here)
+
+([There's good advice](https://cran.r-project.org/web/packages/httr/vignettes/secrets.html) on this page for other methods if you ever do need something more secure)
+
+## Storing the key
+
+Step 1: in the R console (NOT the script editor) type the following and press enter
+
+```         
+usethis::edit_r_environ()
+```
+
+Step 2. Add your key as a new line in the `.Renviron` file that opens up. Then save the file.
+
+```         
+CONGRESS_API_KEY ='YOUR API KEY HERE'
+```
+
+Step 3.
+
+Restart R studio. Type `Sys.getenv("CONGRESS_API_KEY")` into the console should return your saved key. Now you can just use that code anywhere you would normally enter the key itself.
+
+(keep in mind this probably isn't adequate for really important stuff, but there's not much incentive to steal it)
+
+## API authentication
+
+We can authenticate by just adding the key as a parameter. Keep in mind that if you print the URL from this request somewhere then you'll be exposing the key. 
+
+
+So don't do that. Instead, just use the `Sys.getenv()` function
+
+
+
+```{r, cache=TRUE}
+#| output-location: default
+
+# the base request: 
+request = request('https://api.congress.gov/v3/')|>
+  # append the API key 
+  req_url_query('api_key'= Sys.getenv("CONGRESS_API_KEY"))
+
+
+law_request = request|>
+  # append the law path and the congress - data is only accessible from the 82nd onward: 
+  req_url_path_append("law",82)|>
+  req_url_query(limit = 50, # just to 50 for this example
+  )
+
+
+law_data<-
+  law_request|>
+  req_perform()|> 
+  resp_body_json()
+
+
+
+```
+
+
+
+
+
+## API Pagination with offsets
+
+You might notice that we only get 50 results here:
+
+```{r}
+length(law_data$bills)
+
+```
+
+We can set the response limit up to 250, but there's a lot more bills than that
+
+```{r}
+
+law_data$pagination$count
+
+```
+
+## Pagination with offsets
+
+Instead of using pagination here, the Congress API uses an offset parameter to accomplish the same goal. Whereas the page parameter just increased by one for every page of data, the offset parameter needs to tell the API how many results to skip over before returning data. So, if I have 50 items per request, my offset increases by 50 each time.
+
+```{r, eval=FALSE}
+
+nextpage<-law_request|>
+  req_url_query(offset=50)|>
+  req_perform()
+  
+
+```
+
+
+
+## Offset pagination in a loop
+
+Now we just need to loop over the offsets and create a list with all of our data (and then we might need another loop to put all of that data into a proper data frame.)
+
+The only thing we might want to add here would be some time delay between each iteration. The per-hour limit for the Congress API is quite high (5,000 an hour!) but some will be far lower. We can set a delay with the `Sys.sleep()` function
+
+```{r, eval=FALSE}
+
+
+results_list<- list()
+# the base request: 
+law_request <- request('https://api.congress.gov/v3/')|>
+  req_url_query('api_key'= Sys.getenv("CONGRESS_API_KEY")
+                )|>
+  req_url_path_append("law",82)
+offset<-0
+limit <- 250
+morepages<-TRUE
+while(morepages == TRUE){
+  nextpage<-
+    law_request|>
+    req_url_query(offset = offset, 
+                  limit = limit
+                  )|>
+    
+    req_perform()|>
+    resp_body_json()
+  
+  nth_element<-length(results_list) + 1
+  results_list[[nth_element]] <- nextpage
+  # sleep time set to ensure < 5000 requests in 3600 seconds
+  Sys.sleep(5000/3600)
+
+  offset <- offset + limit
+  morepages <- "next" %in% names(nextpage$pagination)
+  print(offset)
+}
+
+# using map instead of a loop here for a slighty more concise data frame
+df<-map(.x=results_list, .f=~pluck(.x, "bills") |>enframe()|>unnest_wider(value))|>
+  bind_rows()
+
+df|>slice_head()
+```
+
+
+
+## Some APIs to try
+
+All of these are free with (with some limits on queries) Some of them may have an R or Python package that makes them easier to work with, but no guarantees on this! Keep in mind that packages like `tidycensus` and `wbstats` are basically just wrappers around the kinds of `GET` requests we explored above, so you don't need a package to use data from sources like these.
+
+-   [ACLED](https://acleddata.com/knowledge-base/acled-access-guide/): conflict and protest data
+
+-   [The New York Times](https://developer.nytimes.com/): data about NYT publications
+
+-   [GDELT](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/): massive computer coded data on events
+
+-   [API.DATA.GOV](https://api.data.gov/): public use APIs for multiple government agencies
+
+-   [OECD](https://data.oecd.org/api/): access data on OECD countries
+
+-   [World Bank](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589): access world bank data
+
+
+
+
+<!-- 
+
+
+### Pagination with a function
+
+`httr2` provides some helper functions that can do this kind of pagination for us. We just need to create a pagination function that either returns a next page URL or `NULL` if there are no pages remaining. This gives us a much more generic way of processing data.
+
+```{r pagination_function}
+
+paginate_congress = function(resp, req, key){
+  # take the response, format as json, and extract the next URL 
+  nextpage<-resp|>
+    resp_body_json()|>
+    pluck('pagination', "next")
+  # this needs to explicitly return a NULL value if there is no page
+  if(is.null(nextpage)){
+    return(NULL)
+  }
+  # if its not null, then add the API key and return the new request object:
+  new_request <- nextpage|>
+    request()|>
+    req_url_query('api_key'= Sys.getenv("CONGRESS_API_KEY"))
+  
+  return(new_request)
+}
+
+
+```
+
+### The iterative function
+
+The `req_perform_iterative` function will now take a request and then automatically get all the subsequent pages from it. This takes a bit more work than just writing a loop, but the advantage is that this generalizes to any of the Congress API endpoints, so I can query a totally different resource and paginate through the results with very few changes to the underlying code:
+
+```{r iteration_function, eval=FALSE}
+
+# now the actual function: 
+congress_members<-req_perform_iterative(
+  # the initial query: 
+  request|>
+    req_url_path_append("member","congress", 118)|>
+    req_url_query(limit =250), 
+  # a function that returns the next page (or NULL if there is none)
+  next_req = paginate_congress
+
+)
+
+```
+
+
+### resps_data
+
+Once I've retrieved data from my iterator, I can use `resps_data` to apply a single function to every page of results:
+
+```{r, echo=FALSE, eval=FALSE}
+
+# now create a function for parsing the congressional info ---------------------
+congressParser<-function(x){
+  
+    x <- resp_body_json(x)$members
+    df<- tibble()
+    # loop through responses
+    for(i in 1:length(x)){
+      # get the i-th element of x
+      x_i <- x[[i]]
+      # get the terms information from this member 
+      terms<-x_i[['terms']][['item']]
+      row_i<-list('name' = x_i[['name']],
+           'bioguideId' = x_i[['bioguideId']],
+           'state' = x_i[['state']],
+           'partyName' = x_i[['partyName']],
+           'url' = x_i[['url']],
+           # terms are sorted from earliest to latest, so here we just extract
+           # the most recent term. 
+           'chamber' =  terms[[length(terms)]][['chamber']],
+           'endYear' = terms[[length(terms)]][['endYear']]
+             )
+      # add this result to the data frame
+      df<-bind_rows(df, row_i)
+    }
+    
+    return(df)}
+
+
+# resps_data takes a list of responses and applies the function specified in 
+# resp_data to each item in the list. Again: we could easily do all of this in a
+# loop, the primary difference here is just that we can write a little less code.
+congress_data <- resps_data(
+  # the list of responses
+  resps = congress_members,
+  # the function to perform on each element of the list
+  resp_data = congressParser
+    )
+
+congress_data|>
+  slice_head()
+
+```
+
+-->
