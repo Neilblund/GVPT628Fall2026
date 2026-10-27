@@ -202,34 +202,3 @@ all_leg<-bind_rows(readRDS('sponsors.rds'),
                    readRDS('cosponsorships.rds'))
                     
 
-# All bills from a single congress -----
-
-
-# Data on all bills in 119th congress: 
-bill_request<- request |>
-  req_url_path_append("bill",congress) |>
-  req_url_query(limit = 250, offset = 0) 
-
-all_bills<-req_perform_iterative(
-  # the initial query: 
-  req = bill_request,
-  # function to return the the next url 
-  next_req = paginate_congress
-  
-)
-billsframe<-resps_data(all_bills, billFunction)
-
-
-
-bill_url<-billsframe$url[1]
-
-# get more data on a single bill:
-single_bill_request<- request(bill_url)|>
-  req_url_query(format='json' , api_key = Sys.getenv("CONGRESS_API_KEY"))|>
-  req_perform()
-
-single_bill_request|>
-  resp_body_json()
-
-
-
