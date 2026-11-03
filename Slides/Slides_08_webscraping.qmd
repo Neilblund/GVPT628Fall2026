@@ -798,8 +798,8 @@ filterFunction<-function(page){
   links<-page|>
     html_elements("#mw-content-text p a")|>
     html_attr('href')
-  outlinks<-links[str_which(links, "https://en.wikipedia.org/wiki/")]|>
-    str_replace("#.+$", "")|>
+  outlinks<-links[str_which(links, "^\\/wiki\\/[^:]+$")]|>
+    str_replace("[#?].+$", "")
     unique()
   
   return(outlinks)

@@ -1093,7 +1093,7 @@ margin-right: 0; }
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href></a>httr<span class="sc">::</span><span class="fu">GET</span>(<span class="at">url =</span><span class="st">&#39;https://www.scrapethissite.com/pages/simple/&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Response [https://www.scrapethissite.com/pages/simple/]
-  Date: 2026-11-03 22:20
+  Date: 2026-11-03 22:25
   Status: 200
   Content-Type: text/html; charset=utf-8
   Size: 203 kB
@@ -1760,8 +1760,8 @@ margin-right: 0; }
 <span id="cb33-7"><a href></a>  links<span class="ot">&lt;-</span>page<span class="sc">|&gt;</span></span>
 <span id="cb33-8"><a href></a>    <span class="fu">html_elements</span>(<span class="st">&quot;#mw-content-text p a&quot;</span>)<span class="sc">|&gt;</span></span>
 <span id="cb33-9"><a href></a>    <span class="fu">html_attr</span>(<span class="st">&#39;href&#39;</span>)</span>
-<span id="cb33-10"><a href></a>  outlinks<span class="ot">&lt;-</span>links[<span class="fu">str_which</span>(links, <span class="st">&quot;https://en.wikipedia.org/wiki/&quot;</span>)]<span class="sc">|&gt;</span></span>
-<span id="cb33-11"><a href></a>    <span class="fu">str_replace</span>(<span class="st">&quot;#.+$&quot;</span>, <span class="st">&quot;&quot;</span>)<span class="sc">|&gt;</span></span>
+<span id="cb33-10"><a href></a>  outlinks<span class="ot">&lt;-</span>links[<span class="fu">str_which</span>(links, <span class="st">&quot;^</span><span class="sc">\\</span><span class="st">/wiki</span><span class="sc">\\</span><span class="st">/[^:]+$&quot;</span>)]<span class="sc">|&gt;</span></span>
+<span id="cb33-11"><a href></a>    <span class="fu">str_replace</span>(<span class="st">&quot;[#?].+$&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
 <span id="cb33-12"><a href></a>    <span class="fu">unique</span>()</span>
 <span id="cb33-13"><a href></a>  </span>
 <span id="cb33-14"><a href></a>  <span class="fu">return</span>(outlinks)</span>
