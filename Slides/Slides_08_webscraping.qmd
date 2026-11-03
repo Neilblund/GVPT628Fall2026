@@ -789,20 +789,23 @@ Full transcripts of SOTU addresses can be found [at the webpage for the American
 
 
 ```{r, eval=FALSE}
-
-url<-'https://en.wikipedia.org/wiki/Conservatism'
+library(httr2)
+library(rvest)
+urls<-c('https://en.wikipedia.org/wiki/Conservatism',
+        'https://en.wikipedia.org/wiki/Liberalism'
+        )
 filterFunction<-function(page){
   links<-page|>
     html_elements("#mw-content-text p a")|>
     html_attr('href')
-  outlinks<-links[str_which(links, "^\\/wiki\\/[^:]+$")]|>
-    str_replace("#.+$", "")
+  outlinks<-links[str_which(links, "https://en.wikipedia.org/wiki/")]|>
+    str_replace("#.+$", "")|>
+    unique()
   
-  abs_path<-xml2::url_absolute(outlinks, url)
-  newlinks<-table(abs_path)|>
+  newlinks<-table(outlinks)|>
     sort(decreasing=T)
   
-  newlinks<-setNames(as.vector(newlinks), names(newlinks))
+  newlinks<-names(newlinks)
   return(newlinks)
 }
 
@@ -811,9 +814,11 @@ visitFunction <- function() {
   visited_urls <- c()
   function(urls, maxurls=100) {
     linkdata <- list()
-    while(length(urls)>0 & visited_urls<maxurls) {
+    
+    while(length(urls)>0 & length(visited_urls)<maxurls) {
+      i<-urls[1]
       if (!i %in% visited_urls) {
-        i<-urls[1]
+
         page <- read_html(i)
         visited_urls <<- c(visited_urls, i)
         newlinks <- filterFunction(page)
@@ -831,9 +836,9 @@ pageVisitor<-visitFunction()
 
 
 
-out<-pageVisitor(url)
+out<-pageVisitor(urls)
 for(i in 1:length(out)){
-  out2<-pageVisitor(out[[i]])
+  out2<-pageVisitor(out[[i]][1:5])
 }
 d<-c(out, out2, out3)
 
