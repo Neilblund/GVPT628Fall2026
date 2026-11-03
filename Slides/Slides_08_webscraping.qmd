@@ -802,11 +802,7 @@ filterFunction<-function(page){
     str_replace("#.+$", "")|>
     unique()
   
-  newlinks<-table(outlinks)|>
-    sort(decreasing=T)
-  
-  newlinks<-names(newlinks)
-  return(newlinks)
+  return(outlinks)
 }
 
 
@@ -840,14 +836,8 @@ out<-pageVisitor(urls)
 for(i in 1:length(out)){
   out2<-pageVisitor(out[[i]][1:5])
 }
-d<-c(out, out2, out3)
-
-
-
-
-
-
-
+d<-c(out, out2)
+length(d)
 
 
 ```

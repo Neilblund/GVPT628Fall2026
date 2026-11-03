@@ -1093,7 +1093,7 @@ margin-right: 0; }
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href></a>httr<span class="sc">::</span><span class="fu">GET</span>(<span class="at">url =</span><span class="st">&#39;https://www.scrapethissite.com/pages/simple/&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Response [https://www.scrapethissite.com/pages/simple/]
-  Date: 2026-11-03 22:14
+  Date: 2026-11-03 22:20
   Status: 200
   Content-Type: text/html; charset=utf-8
   Size: 203 kB
@@ -1764,45 +1764,42 @@ margin-right: 0; }
 <span id="cb33-11"><a href></a>    <span class="fu">str_replace</span>(<span class="st">&quot;#.+$&quot;</span>, <span class="st">&quot;&quot;</span>)<span class="sc">|&gt;</span></span>
 <span id="cb33-12"><a href></a>    <span class="fu">unique</span>()</span>
 <span id="cb33-13"><a href></a>  </span>
-<span id="cb33-14"><a href></a>  newlinks<span class="ot">&lt;-</span><span class="fu">table</span>(outlinks)<span class="sc">|&gt;</span></span>
-<span id="cb33-15"><a href></a>    <span class="fu">sort</span>(<span class="at">decreasing=</span>T)</span>
-<span id="cb33-16"><a href></a>  </span>
-<span id="cb33-17"><a href></a>  newlinks<span class="ot">&lt;-</span><span class="fu">names</span>(newlinks)</span>
-<span id="cb33-18"><a href></a>  <span class="fu">return</span>(newlinks)</span>
-<span id="cb33-19"><a href></a>}</span>
-<span id="cb33-20"><a href></a></span>
-<span id="cb33-21"><a href></a></span>
-<span id="cb33-22"><a href></a>visitFunction <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb33-23"><a href></a>  visited_urls <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb33-24"><a href></a>  <span class="cf">function</span>(urls, <span class="at">maxurls=</span><span class="dv">100</span>) {</span>
-<span id="cb33-25"><a href></a>    linkdata <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb33-26"><a href></a>    </span>
-<span id="cb33-27"><a href></a>    <span class="cf">while</span>(<span class="fu">length</span>(urls)<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> <span class="fu">length</span>(visited_urls)<span class="sc">&lt;</span>maxurls) {</span>
-<span id="cb33-28"><a href></a>      i<span class="ot">&lt;-</span>urls[<span class="dv">1</span>]</span>
-<span id="cb33-29"><a href></a>      <span class="cf">if</span> (<span class="sc">!</span>i <span class="sc">%in%</span> visited_urls) {</span>
-<span id="cb33-30"><a href></a></span>
-<span id="cb33-31"><a href></a>        page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(i)</span>
-<span id="cb33-32"><a href></a>        visited_urls <span class="ot">&lt;&lt;-</span> <span class="fu">c</span>(visited_urls, i)</span>
-<span id="cb33-33"><a href></a>        newlinks <span class="ot">&lt;-</span> <span class="fu">filterFunction</span>(page)</span>
-<span id="cb33-34"><a href></a>        linkdata[[i]] <span class="ot">&lt;-</span> newlinks</span>
-<span id="cb33-35"><a href></a>        urls<span class="ot">&lt;-</span>urls[<span class="sc">-</span><span class="dv">1</span>L]</span>
-<span id="cb33-36"><a href></a>      }</span>
-<span id="cb33-37"><a href></a>    }</span>
-<span id="cb33-38"><a href></a>    <span class="fu">return</span>(linkdata)</span>
-<span id="cb33-39"><a href></a>  }</span>
-<span id="cb33-40"><a href></a>  </span>
-<span id="cb33-41"><a href></a>}</span>
+<span id="cb33-14"><a href></a>  <span class="fu">return</span>(outlinks)</span>
+<span id="cb33-15"><a href></a>}</span>
+<span id="cb33-16"><a href></a></span>
+<span id="cb33-17"><a href></a></span>
+<span id="cb33-18"><a href></a>visitFunction <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb33-19"><a href></a>  visited_urls <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb33-20"><a href></a>  <span class="cf">function</span>(urls, <span class="at">maxurls=</span><span class="dv">100</span>) {</span>
+<span id="cb33-21"><a href></a>    linkdata <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb33-22"><a href></a>    </span>
+<span id="cb33-23"><a href></a>    <span class="cf">while</span>(<span class="fu">length</span>(urls)<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> <span class="fu">length</span>(visited_urls)<span class="sc">&lt;</span>maxurls) {</span>
+<span id="cb33-24"><a href></a>      i<span class="ot">&lt;-</span>urls[<span class="dv">1</span>]</span>
+<span id="cb33-25"><a href></a>      <span class="cf">if</span> (<span class="sc">!</span>i <span class="sc">%in%</span> visited_urls) {</span>
+<span id="cb33-26"><a href></a></span>
+<span id="cb33-27"><a href></a>        page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(i)</span>
+<span id="cb33-28"><a href></a>        visited_urls <span class="ot">&lt;&lt;-</span> <span class="fu">c</span>(visited_urls, i)</span>
+<span id="cb33-29"><a href></a>        newlinks <span class="ot">&lt;-</span> <span class="fu">filterFunction</span>(page)</span>
+<span id="cb33-30"><a href></a>        linkdata[[i]] <span class="ot">&lt;-</span> newlinks</span>
+<span id="cb33-31"><a href></a>        urls<span class="ot">&lt;-</span>urls[<span class="sc">-</span><span class="dv">1</span>L]</span>
+<span id="cb33-32"><a href></a>      }</span>
+<span id="cb33-33"><a href></a>    }</span>
+<span id="cb33-34"><a href></a>    <span class="fu">return</span>(linkdata)</span>
+<span id="cb33-35"><a href></a>  }</span>
+<span id="cb33-36"><a href></a>  </span>
+<span id="cb33-37"><a href></a>}</span>
+<span id="cb33-38"><a href></a></span>
+<span id="cb33-39"><a href></a></span>
+<span id="cb33-40"><a href></a>pageVisitor<span class="ot">&lt;-</span><span class="fu">visitFunction</span>()</span>
+<span id="cb33-41"><a href></a></span>
 <span id="cb33-42"><a href></a></span>
 <span id="cb33-43"><a href></a></span>
-<span id="cb33-44"><a href></a>pageVisitor<span class="ot">&lt;-</span><span class="fu">visitFunction</span>()</span>
-<span id="cb33-45"><a href></a></span>
-<span id="cb33-46"><a href></a></span>
-<span id="cb33-47"><a href></a></span>
-<span id="cb33-48"><a href></a>out<span class="ot">&lt;-</span><span class="fu">pageVisitor</span>(urls)</span>
-<span id="cb33-49"><a href></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(out)){</span>
-<span id="cb33-50"><a href></a>  out2<span class="ot">&lt;-</span><span class="fu">pageVisitor</span>(out[[i]][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span>
-<span id="cb33-51"><a href></a>}</span>
-<span id="cb33-52"><a href></a>d<span class="ot">&lt;-</span><span class="fu">c</span>(out, out2, out3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb33-44"><a href></a>out<span class="ot">&lt;-</span><span class="fu">pageVisitor</span>(urls)</span>
+<span id="cb33-45"><a href></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(out)){</span>
+<span id="cb33-46"><a href></a>  out2<span class="ot">&lt;-</span><span class="fu">pageVisitor</span>(out[[i]][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span>
+<span id="cb33-47"><a href></a>}</span>
+<span id="cb33-48"><a href></a>d<span class="ot">&lt;-</span><span class="fu">c</span>(out, out2)</span>
+<span id="cb33-49"><a href></a><span class="fu">length</span>(d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
