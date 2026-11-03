@@ -4,6 +4,7 @@ format:
   html:
     toc: true
     toc-location: left
+    self-contained: true
 ---
 
 For your final project, you will use the skills you’ve acquired to conduct a detailed analysis of a topic in political science. Assume your audience consists of **reasonably well-informed professionals**[^1] and create a report that gives them some key insights into your topic.
