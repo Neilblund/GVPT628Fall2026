@@ -1,0 +1,213 @@
+---
+title: "Final Project"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+For your final project, you will use the skills you’ve acquired to conduct a detailed analysis of a topic in political science. Assume your audience consists of **reasonably well-informed professionals**[^1] and create a report that gives them some key insights into your topic.
+
+[^1]: By this, I mean that you can assume people know what the mean and median are, but maybe they don’t know what a regression model is or a P-value and they don’t really care about your R code. You’ll want to briefly explain these concepts if you’re referencing them, or leave them out entirely if they’re not essential for understanding your major findings.
+
+    I think a good thought exercise is to imagine you’re explaining your project to a parent, friend, or relative who follows politics but maybe doesn’t have any background with statistics or programming. Think about how you would explain what you were doing and summarize your findings without overwhelming them.
+
+Your final submission will have three components:
+
+-   A 5-10 minute presentation you’ll give in class (we’ll do these on the last week)
+
+-   A written memo (5-10 pages) that details/elaborates on your main findings and incorporates any feedback you got during the presentation (**due on the final exam date**)
+
+-   Annotated code and data that will allow me to replicate your findings with minimal changes (**due on the final exam date**)
+
+Ideally, you want to have something that you could share as part of a portfolio that showcases your skills, or as a jumping off point for your second year project for APAN. So I encourage you to choose something you’re interested in and challenge yourself (within reason) to do something cool. To that end, I will consider the degree of difficulty when grading your assignments, so if you’re collecting a novel data set, or using a more advanced method, or writing some really elegant code, then I’ll cut you some slack on the other components. And by the same token, if you’re just downloading the ANES and making some tables, I’ll expect you to be able to tell a really interesting story with them.
+
+# Components of the grade
+
+Here’s a general idea of the sorts of things I’ll be looking at when grading:
+
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Component**     | **Description**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Research Question | The research question/questions should be clear and appropriately selected for the intended audience. Most importantly, it should be a question on which you can offer meaningful insights! That means it shouldn’t be a matter of common knowledge, but it also shouldn’t be a question that is so complicated you have no hope of addressing it within the time frame available. You want the audience to be able to walk away with a handful of bullet points that they can say they didn’t know before they saw your presentation/read your analysis. |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | Note: you are not expected to test, much less definitely support, any specific hypothesis here. “I want to understand what Europeans think about Ukrainian refugees” is a reasonable question that you can address with mostly descriptive analyses. If your research leads you to a preliminary hypothesis test, that’s great, but start with description.                                                                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Data              | The bare minimum here is that you should select an appropriate pre-existing data source that can feasibly allow you to answer your research question and you clearly explain what you used and why you chose it.                                                                                                                                                                                                                                                                                                                                          |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | Full marks here would mean you did one of the following:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | -   did some significant modification, cleaning, variable selection, aggregation or joining to combine multiple existing data sets.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | -   You created/collected some original data by webscraping                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | -   You wrote code to create a data set that can be automatically updated using an API query.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Analysis          | Two viable options here:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | 1.  A presentation/memo with **lots** of good-looking tables and graphs that help you address your research question                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | 2.  Interactive/Easily updated code and a small number of specific graphs or screenshots                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | I’ll grade on aesthetics! Make things look nice. Pay particular attention to your graphs and tables to ensure that they fit on the page, have legible labels, and are informative                                                                                                                                                                                                                                                                                                                                                                         |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | I’ll also consider the difficulty/novelty of what you present. If you’re just making a bunch of bar plots, I’m going to expect a lot more than if you’re doing a topic model or a network analysis or building a machine learning model or something else ambitious.                                                                                                                                                                                                                                                                                      |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Code              | I should have all the materials needed to replicate your results with **minimal or no** changes to your code along with clear annotations that describe what each part does. This could be given in the form of a markdown file, or it could be organized in one or more R or Python scripts. Keep in mind that code often requires “editing” just like a written report, so “notes to self” or random stray marks are fine in the drafting process, but not in the stuff you submit for this assignment.                                                 |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | **To the maximum extent possible, all components of your analysis should be hosted in a github repo. (although I will allow you some leeway if the data you're using prohibits resharing under their TOS)**                                                                                                                                                                                                                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Presentation      | For your slides: I’ll be looking for something that is concise, readable, and gives the intended audience a clear picture of your findings and major takeaways with plenty of tables and plots. Crucially, **keep in mind that slides are meant to benefit the audience, not for the speaker.** So don’t just write your own speaker notes on a power point and then read it aloud.                                                                                                                                                                       |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | For the presentation itself: I’m not going to be grading you on your dress or posture or how many times you say “um”. I also am not really going to punish you for having anxiety about public speaking. I’ll encourage you to work on that if its an issue, but its not the central point of this class. That said: you should practice your slides a few times and try to project a general aura of “person who knows what they’re talking about”.                                                                                                      |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | Finally, keep the target audience in mind here. You can assume people know how to read a bar graph, but you might want to give a brief explanation of what a regression model is if you happened to use one.                                                                                                                                                                                                                                                                                                                                              |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Memo              | The final memo should be a prose version of what you presented, along with some additional technical detail, extra plots or tables, and review of the existing literature. You should attempt to incorporate any additional feedback you got from your presentation into the memo.                                                                                                                                                                                                                                                                        |
+|                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|                   | You should probably aim for 5-10 pages (double spaced, ignoring plots and code), but I won’t penalize you for submitting something longer. You should include citations where necessary. Any standard citation format is fine as long as you’re consistent.                                                                                                                                                                                                                                                                                               |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+# Data Sources
+
+Below is a non-exhaustive list of political science data sets and repositories that you could use for a project. I’ve tried to mostly restrict the list to larger sources that receive somewhat regular updates. If you’re looking for something more specific, feel free to reach out to me and I might be able to help you locate something.
+
+## Repositories
+
+The sources below have links or searchable archives of political science data. These are a good starting point, especially if you’re not sure what you’re interested in, or if you’re looking for research on a specific area/topic not listed below.
+
+-   [Erik Gahner](https://github.com/erikgahner/PolData)’s PolData collection on Github is just a list of links to publicly available political science data organized by topic.
+
+-   [The Harvard Dataverse](https://dataverse.harvard.edu/) is a searchable repository for academic data.
+
+-   [PoliSciData.com](https://www.poliscidata.com/pages/journalReplicationData.php) maintains a list of journal replication data archives where you can find data and code to replicate the findings of academic papers.
+
+-   [Registry of Research Data Repositories](https://www.re3data.org/): searchable database. I’m not sure how up-to-date this is, but check the “social sciences” and “economics” tags for useful links.
+
+-   [BSOS students have access to data housed at ICPSR](https://www.lib.umd.edu/research/data/icpsr), although you’ll need to create an account to access them
+
+-   [GESIS](https://www.gesis.org/en/services/finding-and-accessing-data) hosts a number of (mostly European) public opinion surveys and other data sets.
+
+-   [Pew Research](https://www.pewresearch.org/datasets/) publishes most of their surveys online after a short delay.
+
+## Public opinion surveys
+
+Keep in mind that all of these will require you to do some weighting in order to use them effectively, so you’ll want to read the documentation carefully.
+
+### U.S.
+
+-   [American National Election Studies](https://electionstudies.org/) (ANES) : a long running time series survey of American public opinion. Probably the most widely used source for understanding voter preferences over time.
+
+-   [General Social Survey](https://gss.norc.org/) (GSS) : another long running time series of American public opinion. This one goes back to 1972 and (as the name implies) is somewhat more focused on social attitudes compared to the ANES.
+
+    -   You can also try out Kieran Healy’s excellent [`gssr` package](https://kjhealy.github.io/gssr/), which provides access to the GSS data and some useful helper functions as well.
+
+-   [Cooperative Election Study](https://cces.gov.harvard.edu/) (CES) : very large regular survey of public opinion. This has a shorter time-series compared to the ANES but it is representative at the state and/or district level.
+
+-   [Americas Barometer](https://www.vanderbilt.edu/lapop/about-americasbarometer.php) common content for the U.S., Canada, Mexico along with South/Central America
+
+### Non-US data
+
+-   [European Social Survey](https://www.europeansocialsurvey.org/) (ESS): cross national survey on social and political attitudes in Europe since 2001.
+
+-   [Eurobarometer](https://www.gesis.org/en/eurobarometer-data-service/about) : Survey of European member states (and sometimes candidate states) dating back to 1972. Conducted on behalf of the EU.
+
+-   [European Values Study](https://europeanvaluesstudy.eu/) (EVS) : cross sectional time series of Europeans dating back to 1981. Emphasis on social attitudes.
+
+-   [The World Values Survey](https://www.worldvaluessurvey.org/wvs.jsp) (WVS) : 90-country survey conducted at regular intervals since 1981. Not all countries are included in all waves.
+
+-   [Arab Barometer](https://www.arabbarometer.org/): public opinion in the Middle East and North Africa.
+
+#### Global Barometer Surveys
+
+Collaborative global project that studies public opinion around the globe. Not all “barometer” surveys are contributors here, but the following projects are:
+
+-   [Latinobarometro](https://www.latinobarometro.org/lat.jsp)
+
+-   [Afrobarometer](https://www.afrobarometer.org/)
+
+-   [Asia Barometer](https://www.asianbarometer.org/)
+
+-   [Eurasia Barometer](https://office.eurasiabarometer.org/)
+
+-   [Global Barometer Surveys](https://www.globalbarometer.net/about_bg) will have common content from the surveys listed above
+
+## Institutions, Parties, and Elections
+
+-   [Chapel Hill Expert Surveys](https://www.chesdata.eu/) (CHES): expert coded data on party positions in Europe, Latin America, and Israel. The European Data also has IDs to allow you to easily merge party position data with data from the Comparative Manifestos Project (listed below)
+
+-   [Comparative Study of Electoral Systems](https://cses.org/about/) (CSES) comparative data on electoral systems.
+
+-   [Constituency Level Elections Archive](https://electiondataarchive.org/about-clea/) (CLEA) cross-national parliamentary election data archive
+
+-   [Comparative Candidate Survey](https://www.comparativecandidates.org/data-access) (CCS): cross national surveys of candidates for office
+
+-   [ParlGov](https://www.parlgov.org/): data on legislature and cabinet composition in EU and OECD member countries. The person who has maintained this data base retired earlier this year, so I’m not totally sure about the status of future updates, but they have coverage at least through 2023.
+
+-   [PartyFacts](https://partyfacts.herokuapp.com/data/): collates data on political parties from multiple projects. Most data sources have IDs that allow you to easily link them to one another, so you can combine data from multiple sources without simple joins.
+
+-   [Varieties of Democracy](https://www.v-dem.net/) (V-DEM) Primarily expert-coded information on democratic institutions cross nationally. Their main data set also includes a lot of basic country-level information from other sources (population, gdp, literacy etc) although some of these variables are not up to date.
+
+    -   [R package](https://github.com/vdeminstitute/vdemdata)
+
+-   [Comparative Manifestos Project](https://manifesto-project.wzb.eu/) (CMP) data from party manifestos (many coded at the sentence level). Good source for text data
+
+    -   [R package](https://manifesto-project.wzb.eu/information/documents/manifestoR)
+
+## Conflict and protest data
+
+-   [Correlates of War](https://correlatesofwar.org/data-sets/) (COW): data on interstate conflict, wars, and threats, along with some data on things like trade and diplomacy.
+
+-   [Armed Conflict Location and Event Data](https://acleddata.com/) (ACLED): political violence and protest events. Global coverage updated weekly (see below for API info)
+
+-   [Uppsala Conflict Data Program](https://ucdp.uu.se/) (UCDP) : global conflict data released on a monthly basis. Good source for data on time series data on civil wars, violent conflict between non-state actors, and one-sided violence.
+
+-   [Global Terrorism Database](https://www.start.umd.edu/gtd/) (GTD) : data on terrorist attacks
+
+-   [Crowd Counting Consortium](https://github.com/nonviolent-action-lab/crowd-counting-consortium) (CCC) : U.S. protest events from 2017 to the present. Coded using a mix of automated web crawlers and human coding. Updated weekly.
+
+    -   They maintain a blog [here](https://countingcrowds.org/), and R code for most of these posts is [hosted on their github](https://github.com/nonviolent-action-lab/crowd-counting-consortium/tree/master/blog_posts). So this is a good place to look if you want examples of good analysis.
+
+-   [Dynamics of Collective Action](https://web.stanford.edu/group/collectiveaction/cgi-bin/drupal/) (DOCA) : U.S. protest event data from 1960 through 1990.
+
+-   [Nonviolent and Violent Campaigns and Outcomes](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/MHOXDV) (NAVCO) : data on violent and non-violent campaigns. Mainly intended to show the relationship between movement tactics and the likelihood of success.
+
+## APIs
+
+These sources have Application Programming Interfaces that you can access using R code. Some of them may have an R “wrapper” that simplifies the process of gathering data from them and putting it into a data frame. I’ve listed some of the more useful ones here, but keep in mind that many legislatures, government agencies, or international organizations offer an API now, so don’t treat this as a definitive list.
+
+[Check this list of free APIs](https://github.com/public-apis/public-apis) (at least some of which are about politics)
+
+-   [Data.gov](https://api.data.gov/): Data from U.S. Federal Agencies
+
+-   [Census.gov](https://www.census.gov/data/developers/data-sets.html): U.S. Census Bureau
+
+    -   [R package](https://walker-data.com/tidycensus/)
+
+-   [BLS](https://www.bls.gov/developers/): U.S. Bureau of Labor Statistics
+
+-   [UCDP](https://ucdp.uu.se/) : Violent conflict and protest
+
+-   [ACLED](https://apidocs.acleddata.com/) : Violent conflict and protest (again)
+
+    -   [R package](https://github.com/cran/acled.api)
+
+-   [Congress.gov](https://gpo.congress.gov/) : U.S. Congress
+
+    -   [R package](https://miriamasagold.github.io/congressapi/)
+
+-   [UK Parliament](https://developer.parliament.uk/): (really, lots of legislative bodies have an API now, I won’t list them all here)
+
+    -   [R package](https://github.com/evanodell/hansard)
+
+-   [New York Times](https://developer.nytimes.com/apis): New York Times publications
+
+-   [World Bank](https://datatopics.worldbank.org/world-development-indicators/) (especially development indicators) are a good source for background data on things like GDP, literacy, etc.
+
+    -   [R package](https://github.com/vincentarelbundock/WDI)
+
+-   [Manifestos Project](https://manifesto-project.wzb.eu/information/documents/api): (the same one mentioned above)
+
+    -   [R package](https://manifesto-project.wzb.eu/information/documents/manifestoR)
+
+-   [OECD](https://data.oecd.org/api/) : Mostly economic data on OECD member states.
