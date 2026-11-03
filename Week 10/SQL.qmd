@@ -14,8 +14,8 @@ format:
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning= FALSE, message=FALSE)
 
-
-if(!file.exists('custom_parlgov.db')){
+fileloc<-here::here("Data", "custom_parlgov.db")
+if(!file.exists(fileloc)){
   file.copy(from = '../Slides/custom_parlgov.db', to = 'custom_parlgov.db',
           overwrite=T
           )
@@ -34,8 +34,8 @@ Use the code below to establish a connection with `custom_parlgov.db` from class
 library(tidyverse)
 library(DBI)
 
-
-con <- dbConnect(RSQLite::SQLite(), "custom_parlgov.db") 
+fileloc<-here::here("Data", "custom_parlgov.db")
+con <- dbConnect(RSQLite::SQLite(), fileloc) 
 
 dbListTables(con)
 

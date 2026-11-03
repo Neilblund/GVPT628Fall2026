@@ -550,10 +550,14 @@ Run the code below to download this version of the ParlGov database.
 # install.packages("RSQLite)
 
 library(DBI)
-download.file('https://github.com/Neilblund/GVPT628Fall2026/raw/refs/heads/master/Data/custom_parlgov.db',
+fileloc<-here::here("Data", "custom_parlgov.db")
+if(!file.exists(fileloc)){
+  download.file('https://github.com/Neilblund/GVPT628Fall2026/raw/refs/heads/master/Data/custom_parlgov.db',
               dest = 'custom_parlgov.db',
               mode='wb'
               )
+}
+
 
 ```
 
@@ -587,7 +591,8 @@ download.file('https://github.com/Neilblund/GVPT628Fall2026/raw/refs/heads/maste
 
 ```{r}
 
-newdb <- dbConnect(RSQLite::SQLite(), "custom_parlgov.db") 
+
+newdb <- dbConnect(RSQLite::SQLite(), here::here("Data", "custom_parlgov.db")) 
 
 ```
 
@@ -619,7 +624,7 @@ One useful advantage of this setup is that you can use R variables inside of you
 ```{r}
 library(glue)
 
-newdb <- dbConnect(RSQLite::SQLite(), "custom_parlgov.db") 
+newdb <- dbConnect(RSQLite::SQLite(), here::here("Data", "custom_parlgov.db")) 
 
 last_4year<-Sys.Date()-1461
   
@@ -648,7 +653,7 @@ First, you can connect to an external database using functions from the `DBI` pa
 
 ```{r}
 library(DBI)
-newdb <- dbConnect(RSQLite::SQLite(), "custom_parlgov.db") 
+newdb <- dbConnect(RSQLite::SQLite(), here::here("Data", "custom_parlgov.db")) 
 
 ```
 ````

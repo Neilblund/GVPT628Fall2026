@@ -1946,10 +1946,13 @@ Table party_election_result {
 <span id="cb4-2"><a href></a><span class="co"># install.packages(&quot;RSQLite)</span></span>
 <span id="cb4-3"><a href></a></span>
 <span id="cb4-4"><a href></a><span class="fu">library</span>(DBI)</span>
-<span id="cb4-5"><a href></a><span class="fu">download.file</span>(<span class="st">&#39;https://github.com/Neilblund/GVPT628Fall2026/raw/refs/heads/master/Data/custom_parlgov.db&#39;</span>,</span>
-<span id="cb4-6"><a href></a>              <span class="at">dest =</span> <span class="st">&#39;custom_parlgov.db&#39;</span>,</span>
-<span id="cb4-7"><a href></a>              <span class="at">mode=</span><span class="st">&#39;wb&#39;</span></span>
-<span id="cb4-8"><a href></a>              )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-5"><a href></a>fileloc<span class="ot">&lt;-</span>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;Data&quot;</span>, <span class="st">&quot;custom_parlgov.db&quot;</span>)</span>
+<span id="cb4-6"><a href></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(fileloc)){</span>
+<span id="cb4-7"><a href></a>  <span class="fu">download.file</span>(<span class="st">&#39;https://github.com/Neilblund/GVPT628Fall2026/raw/refs/heads/master/Data/custom_parlgov.db&#39;</span>,</span>
+<span id="cb4-8"><a href></a>              <span class="at">dest =</span> <span class="st">&#39;custom_parlgov.db&#39;</span>,</span>
+<span id="cb4-9"><a href></a>              <span class="at">mode=</span><span class="st">&#39;wb&#39;</span></span>
+<span id="cb4-10"><a href></a>              )</span>
+<span id="cb4-11"><a href></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 
@@ -1991,7 +1994,7 @@ Table party_election_result {
 <section id="sql-with-dbi" class="slide level3">
 <h3>SQL with DBI</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a>newdb <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">&quot;custom_parlgov.db&quot;</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href></a>newdb <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;Data&quot;</span>, <span class="st">&quot;custom_parlgov.db&quot;</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Use <code>dbGetQuery</code> to send a SQL query statement.</p>
 <div class="cell">
@@ -2055,7 +2058,7 @@ Table party_election_result {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href></a><span class="fu">library</span>(glue)</span>
 <span id="cb9-2"><a href></a></span>
-<span id="cb9-3"><a href></a>newdb <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">&quot;custom_parlgov.db&quot;</span>) </span>
+<span id="cb9-3"><a href></a>newdb <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;Data&quot;</span>, <span class="st">&quot;custom_parlgov.db&quot;</span>)) </span>
 <span id="cb9-4"><a href></a></span>
 <span id="cb9-5"><a href></a>last_4year<span class="ot">&lt;-</span><span class="fu">Sys.Date</span>()<span class="sc">-</span><span class="dv">1461</span></span>
 <span id="cb9-6"><a href></a>  </span>
@@ -2165,7 +2168,7 @@ Table party_election_result {
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href></a></span>
 <span id="cb11-2"><a href></a>```{r}</span>
 <span id="cb11-3"><a href></a>library(DBI)</span>
-<span id="cb11-4"><a href></a>newdb &lt;- dbConnect(RSQLite::SQLite(), &quot;custom_parlgov.db&quot;) </span>
+<span id="cb11-4"><a href></a>newdb &lt;- dbConnect(RSQLite::SQLite(), here::here(&quot;Data&quot;, &quot;custom_parlgov.db&quot;)) </span>
 <span id="cb11-5"><a href></a></span>
 <span id="cb11-6"><a href></a>```</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Once you’ve done this, you can create a SQL code chunk in a markdown file like this:</p>
