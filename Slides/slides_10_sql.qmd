@@ -547,13 +547,13 @@ Run the code below to download this version of the ParlGov database.
 ```{r, eval=FALSE}
 
 # install.packages("DBI")
-# install.packages("RSQLite)
+# install.packages("RSQLite")
 
 library(DBI)
 fileloc<-here::here("Data", "custom_parlgov.db")
 if(!file.exists(fileloc)){
   download.file('https://github.com/Neilblund/GVPT628Fall2026/raw/refs/heads/master/Data/custom_parlgov.db',
-              dest = 'custom_parlgov.db',
+              dest = fileloc,
               mode='wb'
               )
 }

@@ -1949,7 +1949,7 @@ Table party_election_result {
 <span id="cb4-5"><a href></a>fileloc<span class="ot">&lt;-</span>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;Data&quot;</span>, <span class="st">&quot;custom_parlgov.db&quot;</span>)</span>
 <span id="cb4-6"><a href></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(fileloc)){</span>
 <span id="cb4-7"><a href></a>  <span class="fu">download.file</span>(<span class="st">&#39;https://github.com/Neilblund/GVPT628Fall2026/raw/refs/heads/master/Data/custom_parlgov.db&#39;</span>,</span>
-<span id="cb4-8"><a href></a>              <span class="at">dest =</span> <span class="st">&#39;custom_parlgov.db&#39;</span>,</span>
+<span id="cb4-8"><a href></a>              <span class="at">dest =</span> fileloc,</span>
 <span id="cb4-9"><a href></a>              <span class="at">mode=</span><span class="st">&#39;wb&#39;</span></span>
 <span id="cb4-10"><a href></a>              )</span>
 <span id="cb4-11"><a href></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
